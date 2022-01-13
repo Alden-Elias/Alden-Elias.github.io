@@ -1,0 +1,557 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Servlet初涉 | 扶明の小站</title><meta name="keywords" content="Servlet"><meta name="author" content="扶明"><meta name="copyright" content="扶明"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Servlet简介 servlet是JavaEE的规范（接口）之一， 也是JavaWeb的三大组件之一；三大组件分别是Servlet程序、Filter过滤器、Listener监听器。 Servlet是运行在服务器上的一个Java小程序，它可以接收客户端发送过来的请求，并相应数据给客户端。 实现Servlet程序   编写一个类去实现servlet接口 创建一个类然后implements Servl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Servlet初涉">
+<meta property="og:url" content="https://alden-elias.github.io/2022/01/08/Servlet/index.html">
+<meta property="og:site_name" content="扶明の小站">
+<meta property="og:description" content="Servlet简介 servlet是JavaEE的规范（接口）之一， 也是JavaWeb的三大组件之一；三大组件分别是Servlet程序、Filter过滤器、Listener监听器。 Servlet是运行在服务器上的一个Java小程序，它可以接收客户端发送过来的请求，并相应数据给客户端。 实现Servlet程序   编写一个类去实现servlet接口 创建一个类然后implements Servl">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (25).jpg">
+<meta property="article:published_time" content="2022-01-08T10:12:48.399Z">
+<meta property="article:modified_time" content="2022-01-13T07:31:16.991Z">
+<meta property="article:author" content="扶明">
+<meta property="article:tag" content="Servlet">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (25).jpg"><link rel="shortcut icon" href="https://gitee.com/kong_lingyun/img_bed/raw/master/img/favicon.png"><link rel="canonical" href="https://alden-elias.github.io/2022/01/08/Servlet/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 扶明","link":"链接: ","source":"来源: 扶明の小站","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'mediumZoom',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Servlet初涉',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-01-13 15:31:16'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    document.addEventListener('pjax:complete', detectApple)})(window)</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/Fu_ming.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">41</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pictures"><i class="fa-fw fas fa-image"></i><span> 图库</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 社交</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 小伙伴</span></a></li><li><a class="site-page child" href="/message_board/"><i class="fa-fw fa fa-edit"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (25).jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">扶明の小站</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pictures"><i class="fa-fw fas fa-image"></i><span> 图库</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 社交</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 小伙伴</span></a></li><li><a class="site-page child" href="/message_board/"><i class="fa-fw fa fa-edit"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Servlet初涉</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2022-01-08T10:12:48.399Z" title="undefined 2022-01-08 18:12:48">2022-01-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java-Web/">Java Web</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Servlet初涉"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="Servlet简介">Servlet简介</h3>
+<p>servlet是JavaEE的规范（接口）之一， 也是JavaWeb的三大组件之一；三大组件分别是Servlet程序、Filter过滤器、Listener监听器。</p>
+<p>Servlet是运行在服务器上的一个Java小程序，它可以接收客户端发送过来的请求，并相应数据给客户端。</p>
+<h3 id="实现Servlet程序">实现Servlet程序</h3>
+<ol>
+<li>
+<p>编写一个类去实现servlet接口</p>
+<p>创建一个类然后<code>implements Servlet</code>并实现其方法（实际开发中不使用）</p>
+<p>创建一个类然后<code>extends HttpServlet</code>去继承已经实现好的<code>Servlet</code>子类（实际使用）</p>
+</li>
+<li>
+<p>实现service方法处理请求并响应数据</p>
+</li>
+<li>
+<p>在<code>web.xml</code>中去配置<code>servlet</code>程序的访问地址</p>
+<p>要在<code>web.xml</code>中配置两个标签<code>servlet</code>和<code>servlet-mapping</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--  servlet标签给Tomcat配置Servlet程序  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--    servlet-name标签：给Servlet程序其一个别名（一般设定为类名）   --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>HelloServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--    servlet-class是servlet程序的全类名    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.example.tomcat_web.HelloServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--  servlet-mapping标签给servlet程序配置访问地址  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--    servlet-name标签的作用是表明这个标签是为哪一个servlet程序配置的    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>HelloServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--    url-pattern标签配置访问地址表明在工程路径下的访问地址    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/hello<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="Servlet的生命周期">Servlet的生命周期</h3>
+<ol>
+<li>执行Servlet构造方法</li>
+<li>执行<code>init()</code>初始化</li>
+<li>执行<code>service()</code>方法</li>
+<li>执行<code>destory()</code>销毁方法</li>
+</ol>
+<p>1~2步创建服务时调用，3步每次访问都会调用，4步结束服务时调用</p>
+<h3 id="获取访问类型">获取访问类型</h3>
+<p>使用<code>service()</code>方法中类型为<code>ServletRequest</code>的参数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">service</span><span class="params">(ServletRequest req, ServletResponse res)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.service(req, res);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//强制类型转换 因为HttpServletRequest 是 ServletRequest 的一个子类</span></span><br><span class="line">    <span class="comment">//但只有子类实现了getMethod()方法</span></span><br><span class="line">    HttpServletRequest httpServletRequest = (HttpServletRequest) req;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取请求的类型（GET/POST）</span></span><br><span class="line">    String method = httpServletRequest.getMethod();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(method.equals(<span class="string">&quot;GET&quot;</span>))&#123;</span><br><span class="line">        doGet();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(method.equals(<span class="string">&quot;POST&quot;</span>))&#123;</span><br><span class="line">        doPost();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="通过继承HTTPServlet实现Servlet程序">通过继承HTTPServlet实现Servlet程序</h3>
+<ol>
+<li>编写一个类去继承HttpServlet类</li>
+<li>根据需要重写<code>doGet()</code>或<code>doPost()</code>方法和其他</li>
+<li>同样需要配置<code>web.xml</code></li>
+</ol>
+<h3 id="直接使用IDEA创建Servlet程序">直接使用IDEA创建Servlet程序</h3>
+<p>在需要创建servlet程序的包上<code>New -&gt; Servlet程序</code>即可实现自动配置</p>
+<p>一般取消<code>创建Java EE6+ 注解类选项</code>，完成后只需要在<code>web.xml</code>中配置<code>servlet-mapping</code>即可</p>
+<h3 id="Servlet类的继承体系">Servlet类的继承体系</h3>
+<p><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/Servlet%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF%E4%BD%93%E7%B3%BB.png" alt="Servlet类的继承体系"></p>
+<h3 id="ServletConfig类">ServletConfig类</h3>
+<p>从类名上看显然该类与Servlet程序的配置有关</p>
+<p>ServletConfig类的三大作用：</p>
+<ol>
+<li>
+<p>获取Servlet程序的别名即<code>web.xml</code>中<code>servlet-name</code>的值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig config)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.init(config);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取Servlet别名</span></span><br><span class="line">    String servletName =  config.getServletName();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>获取初始化参数<code>init-param</code></p>
+<p>初始化参数是在<code>web.xml</code>中配置的，需要在对应的<code>servlet</code>标签下配置，可以配置多组</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--  servlet标签给Tomcat配置Servlet程序  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--    servlet-name标签：给Servlet程序其一个别名（一般设定为类名）   --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>HelloServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--    servlet-class是servlet程序的全类名    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.example.tomcat_web.HelloServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--init-param是初始化参数--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--参数名--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>username<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--参数值--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>root<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后在对应的类中就可获取这个初始化参数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig config)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.init(config);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取初始参数</span></span><br><span class="line">    String initParameter = config.getInitParameter(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>获取<code>ServletContext</code>对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig config)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.init(config);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取ServletContext对象</span></span><br><span class="line">    ServletContext servletContext = config.getServletContext();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>注意：当我们需要重写继承自HTTPServlet的类的<code>init()</code>方法时，一定要在方法内加入这段代码<code>super.init(config);</code>，表示向父类传递类型为<code>ServletConfig</code>的servlet配置对象，原因是<code>HttpServlet</code>的父类<code>GenericServlet</code>需要使用到了这个参数并且保存了它的值</p>
+</blockquote>
+<h3 id="ServletContext类">ServletContext类</h3>
+<ol>
+<li>ServletContex是一个接口，表示Servlet上下文对象</li>
+<li>一个Web工程只有一个ServletContext对象实例</li>
+<li>ServletContext对象是一个域对象</li>
+<li>ServletContext是在web工程部署启动的时候创建，在web工程停止的时候销毁的</li>
+</ol>
+<p>注：域对象是可以像Map一样存取数据的对象，这里的域是指存取数据的操作范围（整个Web工程）</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>存数据</th>
+<th>取数据</th>
+<th>删除数据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Map</td>
+<td>put()</td>
+<td>get()</td>
+<td>remove()</td>
+</tr>
+<tr>
+<td>域对象</td>
+<td>setAttribute()</td>
+<td>getAttribute()</td>
+<td>removeAttribute()</td>
+</tr>
+</tbody>
+</table>
+<p>ServletContext类的作用：</p>
+<ol>
+<li>
+<p>获取<code>web.xml</code>中配置的上下文参数 context-param</p>
+<p>先在<code>web.xml</code>中配置上下文参数，同样可以根据需要配置多组但是这里配置的参数所有在该web工程下的类都能通过<code>ServletContext</code>访问即属于整个web工程</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--  这里的context-param标签是上下文参数标签，属于整个web项目  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>username<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>context<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后就可以通过<code>ServletContext</code>类获取到这些参数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig config)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.init(config);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取初始参数</span></span><br><span class="line">    String initParameter1 = config.getInitParameter(<span class="string">&quot;username&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取ServletContext对象</span></span><br><span class="line">    ServletContext servletContext = config.getServletContext();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取上下文参数</span></span><br><span class="line">    String initParameter2 = servletContext.getInitParameter(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里把通过<code>ServletConfig</code>对象实例获取得到的初始化参数与通过<code>Servletcontext</code>对象实例获取得到的初始化参数同时放在了一起，这里需要注意的是通过<code>ServletConfig</code>获取的初始化参数是在<code>web.xml</code>中专门为当前类配置的初始化参数，而通过<code>ServletContext</code>获取的是属于整个web工程的初始化参数</p>
+</li>
+<li>
+<p>获取当前的工程路径（格式为：<code>/工程路径</code>）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig config)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.init(config);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取ServletContext对象</span></span><br><span class="line">    ServletContext servletContext = config.getServletContext();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取当前工程路径</span></span><br><span class="line">    String contextPath = servletContext.getContextPath();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>获取工程部署后在服务器磁盘上的绝对路径</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig config)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.init(config);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取ServletContext对象</span></span><br><span class="line">    ServletContext servletContext = config.getServletContext();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取当前工程的绝对路径</span></span><br><span class="line">    String realPath = servletContext.getRealPath(<span class="string">&quot;/&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的在函数中传入的参数<code>/</code>是被解析为当前工程工程路径，传入<code>getRealPath()</code>方法后获取得到了该web项目部署在服务器上是绝对路径</p>
+</li>
+<li>
+<p>像Map一样存储数据</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@<span class="function">Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig config)</span> throws ServletException </span>&#123;</span><br><span class="line">    super.<span class="built_in">init</span>(config);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取ServletContext对象</span></span><br><span class="line">    ServletContext servletContext = config.<span class="built_in">getServletContext</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//像Map一样存储数据</span></span><br><span class="line">    servletContext.<span class="built_in">setAttribute</span>(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;Object&quot;</span>);</span><br><span class="line">    servletContext.<span class="built_in">getAttribute</span>(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">扶明</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://alden-elias.github.io/2022/01/08/Servlet/">https://alden-elias.github.io/2022/01/08/Servlet/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://alden-elias.github.io" target="_blank">扶明の小站</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Servlet/">Servlet</a></div><div class="post_share"><div class="social-share" data-image="https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (25).jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://gitee.com/kong_lingyun/img_bed/raw/master/img/wechat.png" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/wechat.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://gitee.com/kong_lingyun/img_bed/raw/master/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/01/10/%E8%80%8D%E6%9D%82%E6%8A%80%E7%9A%84%E7%89%9B%20%E7%AC%AC%E4%BA%94%E7%AF%87%E9%A2%98%E8%A7%A3/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (27).jpg" onerror="onerror=null;src='https://gitee.com/kong_lingyun/img_bed/raw/master/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">贪心——耍杂技的牛</div></div></a></div><div class="next-post pull-right"><a href="/2022/01/08/Tomcat/"><img class="next-cover" src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (24).jpg" onerror="onerror=null;src='https://gitee.com/kong_lingyun/img_bed/raw/master/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Tomcat初涉</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Servlet%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">Servlet简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0Servlet%E7%A8%8B%E5%BA%8F"><span class="toc-number">2.</span> <span class="toc-text">实现Servlet程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Servlet%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">3.</span> <span class="toc-text">Servlet的生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E8%AE%BF%E9%97%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">获取访问类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E7%BB%A7%E6%89%BFHTTPServlet%E5%AE%9E%E7%8E%B0Servlet%E7%A8%8B%E5%BA%8F"><span class="toc-number">5.</span> <span class="toc-text">通过继承HTTPServlet实现Servlet程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8IDEA%E5%88%9B%E5%BB%BAServlet%E7%A8%8B%E5%BA%8F"><span class="toc-number">6.</span> <span class="toc-text">直接使用IDEA创建Servlet程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Servlet%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF%E4%BD%93%E7%B3%BB"><span class="toc-number">7.</span> <span class="toc-text">Servlet类的继承体系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ServletConfig%E7%B1%BB"><span class="toc-number">8.</span> <span class="toc-text">ServletConfig类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ServletContext%E7%B1%BB"><span class="toc-number">9.</span> <span class="toc-text">ServletContext类</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background: #00c4b6"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2022 By 扶明</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="rightside.chat_btn"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (document.getElementsByClassName('mermaid').length) {
+  if (window.mermaidJsLoad) mermaid.init()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(() => {
+      window.mermaidJsLoad = true
+      mermaid.initialize({
+        theme: 'default',
+      })
+      true && mermaid.init()
+    })
+  }
+}</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'ap0wxVCDc5JxFU1hw3IbBAne-gzGzoHsz',
+      appKey: 'r0t4h8GIwleAWHx8j02VQAGc',
+      placeholder: '留下昵称和邮箱,可以方便辨识身份~',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: true,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: {"QQ-0":"https://7.dusays.com/2021/01/15/28896e0ad6fd2.gif","QQ-1":"https://7.dusays.com/2021/01/15/e1b49acc90150.gif","QQ-10":"https://7.dusays.com/2021/01/15/ccf7ecc0f3629.gif","QQ-100":"https://7.dusays.com/2021/01/15/d9347f35566e9.gif","QQ-101":"https://7.dusays.com/2021/01/15/5cf591c70871b.gif","QQ-102":"https://7.dusays.com/2021/01/15/a54757a19c9b0.gif","QQ-103":"https://7.dusays.com/2021/01/15/d305b3e66f08e.gif","QQ-104":"https://7.dusays.com/2021/01/15/e5aac17baab3b.gif","QQ-105":"https://7.dusays.com/2021/01/15/8143a3f5f096f.gif","QQ-106":"https://7.dusays.com/2021/01/15/c414277f1a604.gif","QQ-107":"https://7.dusays.com/2021/01/15/a2d76a0d67386.gif","QQ-108":"https://7.dusays.com/2021/01/15/6add7b094fe26.gif","QQ-109":"https://7.dusays.com/2021/01/15/6b959f0e83bbb.gif","QQ-11":"https://7.dusays.com/2021/01/15/8c4388560de79.gif","QQ-110":"https://7.dusays.com/2021/01/15/cbd1fc6ade730.gif","QQ-111":"https://7.dusays.com/2021/01/15/e32ed216e81e8.gif","QQ-112":"https://7.dusays.com/2021/01/15/f680f2639d9ae.gif","QQ-113":"https://7.dusays.com/2021/01/15/16830bae9b7ab.gif","QQ-114":"https://7.dusays.com/2021/01/15/907af163812f4.gif","QQ-115":"https://7.dusays.com/2021/01/15/7997817d2503d.gif","QQ-116":"https://7.dusays.com/2021/01/15/fac5675efa0e1.gif","QQ-117":"https://7.dusays.com/2021/01/15/d07f738e4c604.gif","QQ-118":"https://7.dusays.com/2021/01/15/05955be86e552.gif","QQ-119":"https://7.dusays.com/2021/01/15/f0b5dae50d7b6.gif","QQ-12":"https://7.dusays.com/2021/01/15/92ba48a45b920.gif","QQ-120":"https://7.dusays.com/2021/01/15/7f9581a4af35f.gif","QQ-121":"https://7.dusays.com/2021/01/15/667b3c4bc1bc8.gif","QQ-122":"https://7.dusays.com/2021/01/15/69386ba3437cc.gif","QQ-123":"https://7.dusays.com/2021/01/15/6b8ef181a5aa2.gif","QQ-124":"https://7.dusays.com/2021/01/15/3cde111610151.gif","QQ-125":"https://7.dusays.com/2021/01/15/6f6d89214d8b3.gif","QQ-126":"https://7.dusays.com/2021/01/15/940b26f3bd37a.gif","QQ-127":"https://7.dusays.com/2021/01/15/bd7f7f21e3fe0.gif","QQ-128":"https://7.dusays.com/2021/01/15/b4c458b5a8621.gif","QQ-129":"https://7.dusays.com/2021/01/15/b95de272e27ba.gif","QQ-13":"https://7.dusays.com/2021/01/15/46f812e5e0956.gif","QQ-130":"https://7.dusays.com/2021/01/15/d927193fcff8c.gif","QQ-131":"https://7.dusays.com/2021/01/15/391a1103dace4.gif","QQ-132":"https://7.dusays.com/2021/01/15/fc3602298f0f1.gif","QQ-133":"https://7.dusays.com/2021/01/15/33017fe6c64c1.gif","QQ-134":"https://7.dusays.com/2021/01/15/1d3f0e3415090.gif","QQ-135":"https://7.dusays.com/2021/01/15/e302919641d8c.gif","QQ-136":"https://7.dusays.com/2021/01/15/e60ff59529091.gif","QQ-137":"https://7.dusays.com/2021/01/15/8e07d67cccc64.gif","QQ-138":"https://7.dusays.com/2021/01/15/b012f7df8af71.gif","QQ-139":"https://7.dusays.com/2021/01/15/6824a0ac0138e.gif","QQ-14":"https://7.dusays.com/2021/01/15/e1c9de290a4b9.gif","QQ-140":"https://7.dusays.com/2021/01/15/b5f5bbc92b0eb.gif","QQ-141":"https://7.dusays.com/2021/01/15/a7c1a56b40a72.gif","QQ-142":"https://7.dusays.com/2021/01/15/6055240f4f3ec.gif","QQ-143":"https://7.dusays.com/2021/01/15/e5e01f51d3397.gif","QQ-144":"https://7.dusays.com/2021/01/15/581e6465f99d2.gif","QQ-145":"https://7.dusays.com/2021/01/15/59bc408781170.gif","QQ-146":"https://7.dusays.com/2021/01/15/46fa2ac201d46.gif","QQ-147":"https://7.dusays.com/2021/01/15/ff6ba63ad179b.gif","QQ-148":"https://7.dusays.com/2021/01/15/a266c3d930e6c.gif","QQ-149":"https://7.dusays.com/2021/01/15/5dbf143c14332.gif","QQ-15":"https://7.dusays.com/2021/01/15/49fadb70d4d4a.gif","QQ-150":"https://7.dusays.com/2021/01/15/44d966569704d.gif","QQ-151":"https://7.dusays.com/2021/01/15/d724d84b59da6.gif","QQ-152":"https://7.dusays.com/2021/01/15/45159da4cbbc1.gif","QQ-153":"https://7.dusays.com/2021/01/15/148b7a971564a.gif","QQ-154":"https://7.dusays.com/2021/01/15/e4836ac7b02fd.gif","QQ-155":"https://7.dusays.com/2021/01/15/07a7e803090c5.gif","QQ-156":"https://7.dusays.com/2021/01/15/727bcb256d5bf.gif","QQ-157":"https://7.dusays.com/2021/01/15/be01981cfc259.gif","QQ-158":"https://7.dusays.com/2021/01/15/ec85fd8268395.gif","QQ-159":"https://7.dusays.com/2021/01/15/2725fbfc403ba.gif","QQ-16":"https://7.dusays.com/2021/01/15/b91fc930f3f5f.gif","QQ-160":"https://7.dusays.com/2021/01/15/0b000885b5287.gif","QQ-161":"https://7.dusays.com/2021/01/15/b2a25f4489cad.gif","QQ-162":"https://7.dusays.com/2021/01/15/8463bfc591e84.gif","QQ-163":"https://7.dusays.com/2021/01/15/525ad959adf90.gif","QQ-164":"https://7.dusays.com/2021/01/15/44d16f9f9e9d6.gif","QQ-165":"https://7.dusays.com/2021/01/15/23afc128fe8aa.gif","QQ-166":"https://7.dusays.com/2021/01/15/c79d957438c16.gif","QQ-167":"https://7.dusays.com/2021/01/15/77802b6a1bf7c.gif","QQ-168":"https://7.dusays.com/2021/01/15/863c3b2574eb8.gif","QQ-169":"https://7.dusays.com/2021/01/15/d55715888a6d0.gif","QQ-17":"https://7.dusays.com/2021/01/15/300717a56c5c0.gif","QQ-170":"https://7.dusays.com/2021/01/15/9547eb290aa3c.gif","QQ-171":"https://7.dusays.com/2021/01/15/e21554f3564f4.gif","QQ-172":"https://7.dusays.com/2021/01/15/313498d46cfb4.gif","QQ-173":"https://7.dusays.com/2021/01/15/513fbc423a416.gif","QQ-174":"https://7.dusays.com/2021/01/15/5d05a5e59e001.gif","QQ-175":"https://7.dusays.com/2021/01/15/af3b5ac5740eb.gif","QQ-176":"https://7.dusays.com/2021/01/15/e90117a9e5b01.gif","QQ-177":"https://7.dusays.com/2021/01/15/0173a13106d22.gif","QQ-178":"https://7.dusays.com/2021/01/15/ac5293255b949.gif","QQ-179":"https://7.dusays.com/2021/01/15/12acdb0f99e16.gif","QQ-18":"https://7.dusays.com/2021/01/15/0b8c62f76937f.gif","QQ-180":"https://7.dusays.com/2021/01/15/a0dbd5f305b88.gif","QQ-181":"https://7.dusays.com/2021/01/15/31adddf7ba95d.gif","QQ-182":"https://7.dusays.com/2021/01/15/883f3559a5835.gif","QQ-183":"https://7.dusays.com/2021/01/15/f771c3e2ebce6.gif","QQ-184":"https://7.dusays.com/2021/01/15/1b129a5eeee94.gif","QQ-185":"https://7.dusays.com/2021/01/15/f485dd61e6ae7.gif","QQ-186":"https://7.dusays.com/2021/01/15/7ac4c7b7a5ebf.gif","QQ-187":"https://7.dusays.com/2021/01/15/8717659515b30.gif","QQ-188":"https://7.dusays.com/2021/01/15/731cad82d4856.gif","QQ-189":"https://7.dusays.com/2021/01/15/898b7bcd7e887.gif","QQ-19":"https://7.dusays.com/2021/01/15/b4f0b9b412587.gif","QQ-190":"https://7.dusays.com/2021/01/15/6223952a4197f.gif","QQ-191":"https://7.dusays.com/2021/01/15/1b43cbf23c8e5.gif","QQ-192":"https://7.dusays.com/2021/01/15/4bcd98340b6b8.gif","QQ-193":"https://7.dusays.com/2021/01/15/8d4df30c31631.gif","QQ-194":"https://7.dusays.com/2021/01/15/39708ccd71a95.gif","QQ-195":"https://7.dusays.com/2021/01/15/0009210ca52f8.gif","QQ-196":"https://7.dusays.com/2021/01/15/8c5c13adbdd77.gif","QQ-197":"https://7.dusays.com/2021/01/15/43e12ffc82f3c.gif","QQ-198":"https://7.dusays.com/2021/01/15/f6639a3dc72a3.gif","QQ-199":"https://7.dusays.com/2021/01/15/70d4041539912.gif","QQ-2":"https://7.dusays.com/2021/01/15/600eabcdab574.gif","QQ-20":"https://7.dusays.com/2021/01/15/494844390362d.gif","QQ-200":"https://7.dusays.com/2021/01/15/d998032a584e9.gif","QQ-201":"https://7.dusays.com/2021/01/15/bd4cb0b7768e3.gif","QQ-202":"https://7.dusays.com/2021/01/15/3703881a2d813.gif","QQ-203":"https://7.dusays.com/2021/01/15/e59beb80fd449.gif","QQ-204":"https://7.dusays.com/2021/01/15/1c584da0914bd.gif","QQ-205":"https://7.dusays.com/2021/01/15/2b666bead720b.gif","QQ-206":"https://7.dusays.com/2021/01/15/ea16ee931c8da.gif","QQ-207":"https://7.dusays.com/2021/01/15/8708ed000df31.gif","QQ-21":"https://7.dusays.com/2021/01/15/027775e9743ab.gif","QQ-22":"https://7.dusays.com/2021/01/15/0c23acb228950.gif","QQ-23":"https://7.dusays.com/2021/01/15/8acb1e4210aea.gif","QQ-24":"https://7.dusays.com/2021/01/15/9de819ab7c8cb.gif","QQ-25":"https://7.dusays.com/2021/01/15/5993ed35f6d49.gif","QQ-26":"https://7.dusays.com/2021/01/15/8fe0ec5ef3f69.gif","QQ-27":"https://7.dusays.com/2021/01/15/9f7ff1464be4c.gif","QQ-28":"https://7.dusays.com/2021/01/15/ced6f2c057160.gif","QQ-29":"https://7.dusays.com/2021/01/15/404754a6c6fa2.gif","QQ-3":"https://7.dusays.com/2021/01/15/cd20be11abcce.gif","QQ-30":"https://7.dusays.com/2021/01/15/ab932a53b58a3.gif","QQ-31":"https://7.dusays.com/2021/01/15/2d366ab8e5e9e.gif","QQ-32":"https://7.dusays.com/2021/01/15/837b455fd15fc.gif","QQ-33":"https://7.dusays.com/2021/01/15/196a7ac1f41f1.gif","QQ-34":"https://7.dusays.com/2021/01/15/aeaa075dbd734.gif","QQ-35":"https://7.dusays.com/2021/01/15/3a8f0774b9dae.gif","QQ-36":"https://7.dusays.com/2021/01/15/0e18c10485931.gif","QQ-37":"https://7.dusays.com/2021/01/15/9605e27e400c0.gif","QQ-38":"https://7.dusays.com/2021/01/15/34f2ef866b3ca.gif","QQ-39":"https://7.dusays.com/2021/01/15/9241b131f6d52.gif","QQ-4":"https://7.dusays.com/2021/01/15/110c67a8cd42a.gif","QQ-40":"https://7.dusays.com/2021/01/15/468fc2660dc41.gif","QQ-41":"https://7.dusays.com/2021/01/15/dd4b05f14e180.gif","QQ-42":"https://7.dusays.com/2021/01/15/0c1d65cad7ddd.gif","QQ-43":"https://7.dusays.com/2021/01/15/ca5dfef7dc5b6.gif","QQ-44":"https://7.dusays.com/2021/01/15/627cd1c4d591d.gif","QQ-45":"https://7.dusays.com/2021/01/15/66d92d3ff3297.gif","QQ-46":"https://7.dusays.com/2021/01/15/713aae4354061.gif","QQ-47":"https://7.dusays.com/2021/01/15/927f5e879af60.gif","QQ-48":"https://7.dusays.com/2021/01/15/62d20c83f754e.gif","QQ-49":"https://7.dusays.com/2021/01/15/0aa84e1f7c51d.gif","QQ-5":"https://7.dusays.com/2021/01/15/d4fbad555d826.gif","QQ-50":"https://7.dusays.com/2021/01/15/5a8f103c7f7a6.gif","QQ-51":"https://7.dusays.com/2021/01/15/4b474c7966afe.gif","QQ-52":"https://7.dusays.com/2021/01/15/a7c1a56b40a72.gif","QQ-53":"https://7.dusays.com/2021/01/15/d58b434fe8acf.gif","QQ-54":"https://7.dusays.com/2021/01/15/e7477cbce1c30.gif","QQ-55":"https://7.dusays.com/2021/01/15/fc97eaa6e5853.gif","QQ-56":"https://7.dusays.com/2021/01/15/06fd40a7bf77d.gif","QQ-57":"https://7.dusays.com/2021/01/15/28812822c01aa.gif","QQ-58":"https://7.dusays.com/2021/01/15/7997817d2503d.gif","QQ-59":"https://7.dusays.com/2021/01/15/805daa7195f2c.gif","QQ-6":"https://7.dusays.com/2021/01/15/0a1bf206e6ae9.gif","QQ-60":"https://7.dusays.com/2021/01/15/9a92f54aca20d.gif","QQ-61":"https://7.dusays.com/2021/01/15/926dd2cba14c6.gif","QQ-62":"https://7.dusays.com/2021/01/15/9037338ec9bc5.gif","QQ-63":"https://7.dusays.com/2021/01/15/8ab1357161687.gif","QQ-64":"https://7.dusays.com/2021/01/15/cfacd1babd14b.gif","QQ-65":"https://7.dusays.com/2021/01/15/87f81ce1fd008.gif","QQ-66":"https://7.dusays.com/2021/01/15/b6a582fed3bda.gif","QQ-67":"https://7.dusays.com/2021/01/15/8c5b85d3cd3c7.gif","QQ-68":"https://7.dusays.com/2021/01/15/d927193fcff8c.gif","QQ-69":"https://7.dusays.com/2021/01/15/b95de272e27ba.gif","QQ-7":"https://7.dusays.com/2021/01/15/4c0631cb31bfc.gif","QQ-70":"https://7.dusays.com/2021/01/15/f09d97e885c26.gif","QQ-71":"https://7.dusays.com/2021/01/15/3698c4fe6151f.gif","QQ-72":"https://7.dusays.com/2021/01/15/429eae09fcaed.gif","QQ-73":"https://7.dusays.com/2021/01/15/006232fd75b4f.gif","QQ-74":"https://7.dusays.com/2021/01/15/b5302a85814b7.gif","QQ-75":"https://7.dusays.com/2021/01/15/0a05c30806fe0.gif","QQ-76":"https://7.dusays.com/2021/01/15/8b670e52b61ec.gif","QQ-77":"https://7.dusays.com/2021/01/15/e7bbed5bda51a.gif","QQ-78":"https://7.dusays.com/2021/01/15/02b1e32036ed4.gif","QQ-79":"https://7.dusays.com/2021/01/15/319b45bdaced1.gif","QQ-8":"https://7.dusays.com/2021/01/15/514fc3a849b94.gif","QQ-80":"https://7.dusays.com/2021/01/15/948b0bb1b1147.gif","QQ-81":"https://7.dusays.com/2021/01/15/8a268e9f4f6c4.gif","QQ-82":"https://7.dusays.com/2021/01/15/ef898256928e9.gif","QQ-83":"https://7.dusays.com/2021/01/15/d49b581e203cb.gif","QQ-84":"https://7.dusays.com/2021/01/15/2dc09beb0f627.gif","QQ-85":"https://7.dusays.com/2021/01/15/480e405d8aab9.gif","QQ-86":"https://7.dusays.com/2021/01/15/682341ae85a49.gif","QQ-87":"https://7.dusays.com/2021/01/15/1c7ba3af0f0f8.gif","QQ-88":"https://7.dusays.com/2021/01/15/81a32d6380404.gif","QQ-89":"https://7.dusays.com/2021/01/15/161407c141f74.gif","QQ-9":"https://7.dusays.com/2021/01/15/333ca8158377b.gif","QQ-90":"https://7.dusays.com/2021/01/15/aa757c7f53f66.gif","QQ-91":"https://7.dusays.com/2021/01/15/766fd95462727.gif","QQ-92":"https://7.dusays.com/2021/01/15/4eff2dfd36cfb.gif","QQ-93":"https://7.dusays.com/2021/01/15/0ef3ae2acddf0.gif","QQ-94":"https://7.dusays.com/2021/01/15/807a44282df46.gif","QQ-95":"https://7.dusays.com/2021/01/15/f84ff66189a8d.gif","QQ-96":"https://7.dusays.com/2021/01/15/e0454a54ad84b.gif","QQ-97":"https://7.dusays.com/2021/01/15/b63a098facfb2.gif","QQ-98":"https://7.dusays.com/2021/01/15/3b6ed67c2a54f.gif","QQ-99":"https://7.dusays.com/2021/01/15/dad0a76be3d48.gif","QQ-不你不想":"https://7.dusays.com/2021/01/18/1fe9d7fc2d679.gif","QQ-哇哦":"https://7.dusays.com/2021/01/18/0c8030b35dc45.gif","QQ-哦":"https://7.dusays.com/2021/01/18/e2deda94f7fe9.gif","QQ-打call":"https://7.dusays.com/2021/01/18/8038a5d46e822.gif","QQ-打脸":"https://7.dusays.com/2021/01/18/2cc550223b16a.gif","QQ-摸鱼":"https://7.dusays.com/2021/01/18/60891c4e72059.gif","QQ-敬礼":"https://7.dusays.com/2021/01/18/27db33aa7a424.gif","QQ-无眼笑":"https://7.dusays.com/2021/01/18/5c0060e18accf.gif","QQ-比心":"https://7.dusays.com/2021/01/18/eee0aa3f76053.gif","QQ-没眼看":"https://7.dusays.com/2021/01/18/dedd7c3530aa4.gif","QQ-滚":"https://7.dusays.com/2021/01/18/5ba245a20c154.gif","QQ-狂笑":"https://7.dusays.com/2021/01/18/d72781e9e35dd.gif","QQ-睁眼":"https://7.dusays.com/2021/01/18/3b847d18f10c8.gif","QQ-考虑中":"https://7.dusays.com/2021/01/18/0fc06cf6d8982.gif","QQ-面无表情":"https://7.dusays.com/2021/01/18/bf5a929ca94f6.gif","QQ-魔鬼笑":"https://7.dusays.com/2021/01/18/69ae4fba3efd1.gif","bilibili_tv_gif-doge":"https://7.dusays.com/2021/01/15/3de5568861758.gif","bilibili_tv_gif-亲亲":"https://7.dusays.com/2021/01/15/48f8fb39734fd.gif","bilibili_tv_gif-偷笑":"https://7.dusays.com/2021/01/15/f7272fe624fae.gif","bilibili_tv_gif-再见":"https://7.dusays.com/2021/01/15/8252ffdb2cd6c.gif","bilibili_tv_gif-发怒":"https://7.dusays.com/2021/01/15/6fc804d102f33.gif","bilibili_tv_gif-发财":"https://7.dusays.com/2021/01/15/934731e956a6d.gif","bilibili_tv_gif-可爱":"https://7.dusays.com/2021/01/15/df742ca600b6f.gif","bilibili_tv_gif-吐血":"https://7.dusays.com/2021/01/15/825e474035d41.gif","bilibili_tv_gif-呆":"https://7.dusays.com/2021/01/15/dc01b83c8b63c.gif","bilibili_tv_gif-呕吐":"https://7.dusays.com/2021/01/15/e84d2b2f164d5.gif","bilibili_tv_gif-困":"https://7.dusays.com/2021/01/15/1ebb4265e35d6.gif","bilibili_tv_gif-坏笑":"https://7.dusays.com/2021/01/15/0d4b84c868ac1.gif","bilibili_tv_gif-大佬":"https://7.dusays.com/2021/01/15/554bc754252fb.gif","bilibili_tv_gif-大哭":"https://7.dusays.com/2021/01/15/a61cf83e2a393.gif","bilibili_tv_gif-委屈":"https://7.dusays.com/2021/01/15/bb706ad009ca3.gif","bilibili_tv_gif-害羞":"https://7.dusays.com/2021/01/15/6783d7b3f85b5.gif","bilibili_tv_gif-尴尬":"https://7.dusays.com/2021/01/15/94fde68114d10.gif","bilibili_tv_gif-微笑":"https://7.dusays.com/2021/01/15/ae8b966f5d6dd.gif","bilibili_tv_gif-思考":"https://7.dusays.com/2021/01/15/4779160502ea4.gif","bilibili_tv_gif-惊吓":"https://7.dusays.com/2021/01/15/cf308976cfcff.gif","bilibili_tv_gif-打脸":"https://7.dusays.com/2021/01/15/1e73ac65adedb.gif","bilibili_tv_gif-抓狂":"https://7.dusays.com/2021/01/15/a9a2816b47155.gif","bilibili_tv_gif-抠鼻子":"https://7.dusays.com/2021/01/15/da0e09a7df77c.gif","bilibili_tv_gif-斜眼笑":"https://7.dusays.com/2021/01/15/ef02f8604d8da.gif","bilibili_tv_gif-无奈":"https://7.dusays.com/2021/01/15/34f110a029e9f.gif","bilibili_tv_gif-晕":"https://7.dusays.com/2021/01/15/3c1ec79da1798.gif","bilibili_tv_gif-流汗":"https://7.dusays.com/2021/01/15/f8476b1819899.gif","bilibili_tv_gif-流鼻血":"https://7.dusays.com/2021/01/15/0c7f2fc4aa9ac.gif","bilibili_tv_gif-点赞":"https://7.dusays.com/2021/01/15/3a52c830b19d1.gif","bilibili_tv_gif-生气":"https://7.dusays.com/2021/01/15/52386ddb3e00b.gif","bilibili_tv_gif-生病":"https://7.dusays.com/2021/01/15/a196e70f1892d.gif","bilibili_tv_gif-疑问":"https://7.dusays.com/2021/01/15/5df1be7cebfcc.gif","bilibili_tv_gif-白眼":"https://7.dusays.com/2021/01/15/dde92b9d44d0a.gif","bilibili_tv_gif-睡着":"https://7.dusays.com/2021/01/15/fde17be95e29a.gif","bilibili_tv_gif-笑哭":"https://7.dusays.com/2021/01/15/6c2742bef700b.gif","bilibili_tv_gif-腼腆":"https://7.dusays.com/2021/01/15/c23c85b649289.gif","bilibili_tv_gif-色":"https://7.dusays.com/2021/01/15/f75d5f33ae1df.gif","bilibili_tv_gif-调皮":"https://7.dusays.com/2021/01/15/1d06267e48ecb.gif","bilibili_tv_gif-鄙视":"https://7.dusays.com/2021/01/15/5696d02abd653.gif","bilibili_tv_gif-闭嘴":"https://7.dusays.com/2021/01/15/1f90ef05d7af2.gif","bilibili_tv_gif-难过":"https://7.dusays.com/2021/01/15/7535d32a53d50.gif","bilibili_tv_gif-馋":"https://7.dusays.com/2021/01/15/13375b80ddacb.gif","bilibili_tv_gif-黑人问号":"https://7.dusays.com/2021/01/15/48f24129bf37c.gif","bilibili_tv_gif-鼓掌":"https://7.dusays.com/2021/01/15/d7e60de1a2e5b.gif"},
+      enableQQ: true,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = () => {
+    const serverURL = 'https://ap0wxVCD.api.lncldglobal.com'
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'ap0wxVCDc5JxFU1hw3IbBAne-gzGzoHsz',
+        "X-LC-Key": 'r0t4h8GIwleAWHx8j02VQAGc',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(function (e) {
+          return {
+            'avatar': getIcon(e.QQAvatar, e.mail),
+            'content': changeContent(e.comment),
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.updatedAt,
+          }
+        })
+        saveToLocal.set('valine-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      }) 
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('valine-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script>(function(d, w, c) {
+    w.ChatraID = 'a6YzsH3iRrmCX8Biy';
+    var s = d.createElement('script');
+    w[c] = w[c] || function() {
+        (w[c].q = w[c].q || []).push(arguments);
+    };
+    s.async = true;
+    s.src = 'https://call.chatra.io/chatra.js';
+    if (d.head) d.head.appendChild(s);
+})(document, window, 'Chatra');
+
+if (true) {
+  var chatBtnFn = () => {
+    var chatBtn = document.getElementById("chat_btn")
+    chatBtn.addEventListener("click", function(){
+      Chatra('openChat')
+    });
+  }
+  chatBtnFn()
+} else {
+  if (true) {
+    function chatBtnHide () {
+      Chatra('hide')
+    }
+    function chatBtnShow () {
+      Chatra('show')
+    }
+  }
+}</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"]):not([href="/music/"]):not([href="/no-pjax/"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
