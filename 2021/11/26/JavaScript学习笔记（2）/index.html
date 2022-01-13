@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JavaScript学习笔记（2） | 扶明の小站</title><meta name="keywords" content="JavaScript,DOM模型"><meta name="author" content="扶明"><meta name="copyright" content="扶明"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="DOM模型   DOM模型全称 Document     Object     Model 文档对象模型 将页面文档中的标签、属性、文本转换为对象来进行管理  Document对象  Document管理了所有的HTML文档的内容 Document是采取树状结构的进行对象管理，有明显的层级关系 我们可以通过Document访问所有的对象化标签  HTML标签的对象化： 1234567class D">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JavaScript学习笔记（2） | 扶明の小站</title><meta name="keywords" content="JavaScript,DOM模型"><meta name="author" content="扶明"><meta name="copyright" content="扶明"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="DOM模型   DOM模型全称 Document     Object     Model 文档对象模型 将页面文档中的标签、属性、文本转换为对象来进行管理  Document对象   Document管理了所有的HTML文档的内容 Document是采取树状结构的进行对象管理，有明显的层级关系 我们可以通过Document访问所有的对象化标签  HTML标签的对象化： 1234567class">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JavaScript学习笔记（2）">
 <meta property="og:url" content="https://alden-elias.github.io/2021/11/26/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/index.html">
 <meta property="og:site_name" content="扶明の小站">
-<meta property="og:description" content="DOM模型   DOM模型全称 Document     Object     Model 文档对象模型 将页面文档中的标签、属性、文本转换为对象来进行管理  Document对象  Document管理了所有的HTML文档的内容 Document是采取树状结构的进行对象管理，有明显的层级关系 我们可以通过Document访问所有的对象化标签  HTML标签的对象化： 1234567class D">
+<meta property="og:description" content="DOM模型   DOM模型全称 Document     Object     Model 文档对象模型 将页面文档中的标签、属性、文本转换为对象来进行管理  Document对象   Document管理了所有的HTML文档的内容 Document是采取树状结构的进行对象管理，有明显的层级关系 我们可以通过Document访问所有的对象化标签  HTML标签的对象化： 1234567class">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (8).jpg">
 <meta property="article:published_time" content="2021-11-26T02:30:00.673Z">
@@ -152,12 +152,14 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/Fu_ming.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pictures"><i class="fa-fw fas fa-image"></i><span> 图库</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 社交</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 小伙伴</span></a></li><li><a class="site-page child" href="/message_board/"><i class="fa-fw fa fa-edit"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (8).jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">扶明の小站</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pictures"><i class="fa-fw fas fa-image"></i><span> 图库</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 社交</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 小伙伴</span></a></li><li><a class="site-page child" href="/message_board/"><i class="fa-fw fa fa-edit"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">JavaScript学习笔记（2）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-11-26T02:30:00.673Z" title="undefined 2021-11-26 10:30:00">2021-11-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java-Web/">Java Web</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">974</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="JavaScript学习笔记（2）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="DOM模型"><a href="#DOM模型" class="headerlink" title="DOM模型"></a>DOM模型</h2><hr>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/Fu_ming.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pictures"><i class="fa-fw fas fa-image"></i><span> 图库</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 社交</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 小伙伴</span></a></li><li><a class="site-page child" href="/message_board/"><i class="fa-fw fa fa-edit"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (8).jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">扶明の小站</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pictures"><i class="fa-fw fas fa-image"></i><span> 图库</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 社交</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 小伙伴</span></a></li><li><a class="site-page child" href="/message_board/"><i class="fa-fw fa fa-edit"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">JavaScript学习笔记（2）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-11-26T02:30:00.673Z" title="undefined 2021-11-26 10:30:00">2021-11-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java-Web/">Java Web</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">980</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="JavaScript学习笔记（2）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="DOM模型">DOM模型</h2>
+<hr>
 <blockquote>
-<p> DOM模型全称 Document     Object     Model 文档对象模型</p>
+<p>DOM模型全称 Document     Object     Model 文档对象模型</p>
 <p>将页面文档中的标签、属性、文本转换为对象来进行管理</p>
 </blockquote>
-<h3 id="Document对象"><a href="#Document对象" class="headerlink" title="Document对象"></a>Document对象</h3><p><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/141235@1636943440@2.png" alt="141235@1636943440@2"></p>
+<h3 id="Document对象">Document对象</h3>
+<p><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/141235@1636943440@2.png" alt="141235@1636943440@2"></p>
 <ol>
 <li>Document管理了所有的HTML文档的内容</li>
 <li>Document是采取树状结构的进行对象管理，有明显的层级关系</li>
@@ -165,37 +167,36 @@
 </ol>
 <p>HTML标签的对象化：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class DOM&#123;</span><br><span class="line">	private String id; //id属性</span><br><span class="line">	private String tagName; //标签名</span><br><span class="line">	private Dom parentNode; //父节点</span><br><span class="line">	private List&lt;Dom&gt; children; //子节点</span><br><span class="line">	private String innerHTML; //标签起始与结束中间的内容</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="通过Document查找文档内标签的方法"><a href="#通过Document查找文档内标签的方法" class="headerlink" title="通过Document查找文档内标签的方法"></a>通过Document查找文档内标签的方法</h3><div class="table-container">
+<h3 id="通过Document查找文档内标签的方法">通过Document查找文档内标签的方法</h3>
 <table>
 <thead>
 <tr>
 <th style="text-align:left">方法</th>
-<th>描述                                   </th>
+<th>描述</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left"> getElementById()</td>
-<td>返回第一个id符合的标签（只能返回一个） </td>
+<td style="text-align:left">getElementById()</td>
+<td>返回第一个id符合的标签（只能返回一个）</td>
 </tr>
 <tr>
-<td style="text-align:left"> getElementsByClassName()</td>
-<td>返回指定类的对象<strong>集合</strong>               </td>
+<td style="text-align:left">getElementsByClassName()</td>
+<td>返回指定类的对象<strong>集合</strong></td>
 </tr>
 <tr>
-<td style="text-align:left"> getElementsByName()</td>
-<td>返回带有指定名称的对象<strong>集合</strong>         </td>
+<td style="text-align:left">getElementsByName()</td>
+<td>返回带有指定名称的对象<strong>集合</strong></td>
 </tr>
 <tr>
-<td style="text-align:left"> getElementsByTagName()</td>
-<td>返回带有指定标签名的对象<strong>集合</strong>       </td>
+<td style="text-align:left">getElementsByTagName()</td>
+<td>返回带有指定标签名的对象<strong>集合</strong></td>
 </tr>
 </tbody>
 </table>
-</div>
 <blockquote>
 <p>获取的对象集合是按文档中标签从上到下的顺序排列的</p>
-<p>获取文档内标签对象必须在页面加载完成之后进行（在头部\<script\>标签的window.onload()方法中或者在函数内，如果以单一一条语句的形式存在于\<script\>中则无法正常获取标签对象。</p>
+<p>获取文档内标签对象必须在页面加载完成之后进行（在头部&lt;script&gt;标签的window.onload()方法中或者在函数内，如果以单一一条语句的形式存在于&lt;script&gt;中则无法正常获取标签对象。</p>
 </blockquote>
 <p>示例1：通过文本输入框获取并验证用户名合法性</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 需求：当用户点击校验按钮获取输入框内容然后校验其合法性</span></span><br><span class="line"><span class="comment">// 校验规则：字母、数字、下划线组成，长度5~12位</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onclick_function2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;这是一个静态注册的onclick事件&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> obj_username = <span class="built_in">document</span>.getElementById(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> username_text = obj_username.value;</span><br><span class="line">    <span class="keyword">let</span> patt = <span class="regexp">/^\w&#123;5,12&#125;$/</span>;</span><br><span class="line">    <span class="keyword">if</span>(patt.test(username_text))&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;用户名合法！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        alert(<span class="string">&quot;用户名不合法！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -210,10 +211,10 @@
 <p>复选框对象的checked属性表示其选中状态</p>
 </blockquote>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> hobbies = <span class="built_in">document</span>.getElementsByName(<span class="string">&quot;hobby&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//全选</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkAll</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> t <span class="keyword">of</span> hobbies) &#123;</span><br><span class="line">        t.checked = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//全不选</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkNone</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> t <span class="keyword">of</span> hobbies) &#123;</span><br><span class="line">        t.checked = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//反选</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkReverse</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> t <span class="keyword">of</span> hobbies) &#123;</span><br><span class="line">        t.checked = !t.checked;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="标签对象的常用属性和方法"><a href="#标签对象的常用属性和方法" class="headerlink" title="标签对象的常用属性和方法"></a>标签对象的常用属性和方法</h3><p>注：标签对象也别称为节点 (Document文档树的节点)</p>
+<h3 id="标签对象的常用属性和方法">标签对象的常用属性和方法</h3>
+<p>注：标签对象也别称为节点 (Document文档树的节点)</p>
 <p>方法：</p>
 <p>通过具体的元素节点调用（区别于通过Document对象调用）</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -232,56 +233,53 @@
 </tr>
 </tbody>
 </table>
-</div>
 <p>属性：</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
 <th style="text-align:left">属性</th>
-<th>作用                                               </th>
+<th>作用</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left"> childNodes</td>
-<td>获取当前节点的所有子节点                           </td>
+<td style="text-align:left">childNodes</td>
+<td>获取当前节点的所有子节点</td>
 </tr>
 <tr>
-<td style="text-align:left"> firstChild</td>
-<td>获取当前节点的第一个子节点                         </td>
+<td style="text-align:left">firstChild</td>
+<td>获取当前节点的第一个子节点</td>
 </tr>
 <tr>
-<td style="text-align:left"> lastChild</td>
-<td>获取当前节点的最后一个子节点                       </td>
+<td style="text-align:left">lastChild</td>
+<td>获取当前节点的最后一个子节点</td>
 </tr>
 <tr>
-<td style="text-align:left"> parentNode</td>
-<td>获取当前节点的父节点                               </td>
+<td style="text-align:left">parentNode</td>
+<td>获取当前节点的父节点</td>
 </tr>
 <tr>
-<td style="text-align:left"> nextSibling</td>
-<td>获取当前节点的下一个节点（兄弟节点）               </td>
+<td style="text-align:left">nextSibling</td>
+<td>获取当前节点的下一个节点（兄弟节点）</td>
 </tr>
 <tr>
-<td style="text-align:left"> previousSibling</td>
-<td>获取当前节点的上一个节点（兄弟节点）               </td>
+<td style="text-align:left">previousSibling</td>
+<td>获取当前节点的上一个节点（兄弟节点）</td>
 </tr>
 <tr>
-<td style="text-align:left"> className</td>
-<td>用于获取或设置标签的class属性                      </td>
+<td style="text-align:left">className</td>
+<td>用于获取或设置标签的class属性</td>
 </tr>
 <tr>
-<td style="text-align:left"> innerHTML</td>
-<td>用于获取或设置标签对象的起始标签与结束标签中的内容 </td>
+<td style="text-align:left">innerHTML</td>
+<td>用于获取或设置标签对象的起始标签与结束标签中的内容</td>
 </tr>
 <tr>
-<td style="text-align:left"> innerText</td>
-<td>用于获取或设置标签对象的起始标签与结束标签中的文本 </td>
+<td style="text-align:left">innerText</td>
+<td>用于获取或设置标签对象的起始标签与结束标签中的文本</td>
 </tr>
 </tbody>
 </table>
-</div>
 <p>注：使用childNodes属性时要需要注意的是标签之间的分隔符（空白符、换行符）都属于子节点</p>
 <p>示例1：通过 appendChild 在 body 中添加标签</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj_div = <span class="built_in">document</span>.createElement(<span class="string">&quot;div&quot;</span>);</span><br><span class="line">obj_div.innerHTML = <span class="string">&quot;这是一个通过appendChild方法添加的一个div标签&quot;</span>;</span><br><span class="line"><span class="built_in">document</span>.body.appendChild(obj_div);</span><br></pre></td></tr></table></figure>
