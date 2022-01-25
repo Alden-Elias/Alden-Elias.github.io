@@ -1,0 +1,694 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>深入理解计数机系统Datelab实验报告（超详细） | 扶明の小站</title><meta name="keywords" content="计算机系统实验"><meta name="author" content="扶明"><meta name="copyright" content="扶明"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言 面对有着计算机神书之称的《深入理解计算机系统》的第一个开篇实验Datelib，身为小白的我肯定是即惶恐又期待的，其实第一次了解这本书是在大一下临近期末的时候在知乎博主的推荐下去网路上找了这本书的电子版看的，但由于基础知识的缺乏抱着这本书啃的过程其实是举步维艰的甚至于跟着听CMU的课程也只是一知半解，后来就放弃挣扎了🤣 然后，现在过去一学期补充了相关的前置背景知识（计算机组成原理、linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解计数机系统Datelab实验报告（超详细）">
+<meta property="og:url" content="https://alden-elias.github.io/2022/01/25/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E6%95%B0%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%EF%BC%881%EF%BC%89Datelib/index.html">
+<meta property="og:site_name" content="扶明の小站">
+<meta property="og:description" content="前言 面对有着计算机神书之称的《深入理解计算机系统》的第一个开篇实验Datelib，身为小白的我肯定是即惶恐又期待的，其实第一次了解这本书是在大一下临近期末的时候在知乎博主的推荐下去网路上找了这本书的电子版看的，但由于基础知识的缺乏抱着这本书啃的过程其实是举步维艰的甚至于跟着听CMU的课程也只是一知半解，后来就放弃挣扎了🤣 然后，现在过去一学期补充了相关的前置背景知识（计算机组成原理、linux">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (30).jpg">
+<meta property="article:published_time" content="2022-01-25T11:42:28.370Z">
+<meta property="article:modified_time" content="2022-01-25T11:44:41.963Z">
+<meta property="article:author" content="扶明">
+<meta property="article:tag" content="计算机系统实验">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (30).jpg"><link rel="shortcut icon" href="https://gitee.com/kong_lingyun/img_bed/raw/master/img/favicon.png"><link rel="canonical" href="https://alden-elias.github.io/2022/01/25/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E6%95%B0%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%EF%BC%881%EF%BC%89Datelib/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 扶明","link":"链接: ","source":"来源: 扶明の小站","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'mediumZoom',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '深入理解计数机系统Datelab实验报告（超详细）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-01-25 19:44:41'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    document.addEventListener('pjax:complete', detectApple)})(window)</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/Fu_ming.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">32</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">43</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pictures"><i class="fa-fw fas fa-image"></i><span> 图库</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 社交</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 小伙伴</span></a></li><li><a class="site-page child" href="/message_board/"><i class="fa-fw fa fa-edit"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (30).jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">扶明の小站</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pictures"><i class="fa-fw fas fa-image"></i><span> 图库</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 社交</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 小伙伴</span></a></li><li><a class="site-page child" href="/message_board/"><i class="fa-fw fa fa-edit"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">深入理解计数机系统Datelab实验报告（超详细）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2022-01-25T11:42:28.370Z" title="undefined 2022-01-25 19:42:28">2022-01-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CS-APP/">CS:APP</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>21分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="深入理解计数机系统Datelab实验报告（超详细）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="前言">前言</h2>
+<p>面对有着计算机神书之称的《深入理解计算机系统》的第一个开篇实验<strong>Datelib</strong>，身为小白的我肯定是即惶恐又期待的，其实第一次了解这本书是在大一下临近期末的时候在知乎博主的推荐下去网路上找了这本书的电子版看的，但由于基础知识的缺乏抱着这本书啃的过程其实是举步维艰的甚至于跟着听CMU的课程也只是一知半解，后来就放弃挣扎了🤣</p>
+<p>然后，现在过去一学期补充了相关的前置背景知识（计算机组成原理、linux系统入门），然后借着镜像计划这个契机正好算是挽回一下先前的遗憾吧~</p>
+<h2 id="实验准备">实验准备</h2>
+<ol>
+<li>
+<p>下载必要文件并解压</p>
+</li>
+<li>
+<p>测试编译文件时发生了这样的错误提示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/include/gnu/stubs.h:7:27: 致命错误：gnu/stubs-32.h：没有那个文件或目录</span><br><span class="line"> <span class="comment"># include &lt;gnu/stubs-32.h&gt;</span></span><br><span class="line">                           ^</span><br></pre></td></tr></table></figure>
+<p>搜索后发现是由于64位机上未安装32位的glibc库文件，于是安装了相应的库文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install glibc-devel.i686</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>由于编译的过程会经常用到<code>make</code>和<code>make clean</code>指令，所以方便起见就直接编写脚本<code>run.sh</code>用于测试数据通过量（注意修改权限为可执行）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#/bin/bash</span></span><br><span class="line">make clean</span><br><span class="line">make btest</span><br><span class="line">./btest</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>运行脚本测试，发现总通过量为 <code>Total points: 0/37</code>确定脚本无误</p>
+</li>
+</ol>
+<h2 id="正式实验">正式实验</h2>
+<h3 id="实现1bitXor-int-x-int-y">实现1		bitXor( int x,  int y)</h3>
+<p>解题思路：</p>
+<ol>
+<li>通过样例我猜想：结果应该是以 <code>~x&amp;y</code> 的形式存在的，然而一跑起来就一发入魂（bushi 😂）然后看了错误样例大概是<code>x = 1000B, y = 0111B</code>的时候跑错了</li>
+<li>然后经过简单分析后得到了这样的式子 <code>(~x&amp;y)+(x&amp;~y)</code>，测试了一下发现跑过了（显然老爷子的测试工具没有对每一个实现去限制操作符，然后被我偷桃成功了，ps：后面发现<code>dlc</code>这个工具，好吧老爷子yyds 😂）</li>
+<li>然后考虑到这里的<code>+</code>运算符是起到了<code>|</code>的作用的，于是转为去使用<code>&amp;</code>和<code>~</code>去实现<code>|</code>运算的功能，简单罗列真值表后发现<code>~((~x) &amp; (~y))</code>的作用等价于<code>x|y</code>于是进一步改进得到最终答案<code>~(~(~x&amp;y)&amp;~(x&amp;~y))</code></li>
+<li>跑测试后得到<code>Total points: 1/37</code>，最终用到了8个操作符解决问题😁</li>
+</ol>
+<h3 id="实现2tmin-void">实现2		tmin(void)</h3>
+<p>解题思路：</p>
+<ol>
+<li>由补码的权值分配我们可以发现32位整型变量的第32位代表着最小的权重即<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><msup><mn>2</mn><mn>31</mn></msup></mrow><annotation encoding="application/x-tex">-2^{31}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">31</span></span></span></span></span></span></span></span></span></span></span></span>​于是我们就可以得到最小补码为<code>1&lt;&lt;31</code></li>
+<li>测试通过<code>Total points: 2/37</code>，用到1个操作符解决问题</li>
+</ol>
+<h3 id="实现3isTmax-int-x">实现3		isTmax(int x)</h3>
+<p>解题思路：</p>
+<ol>
+<li>由补码的权值分配我们知道了32位整型变量只有第32位权值为负也就是最大的补码就是最小补码取法<code>~(1&lt;&lt;31)</code></li>
+<li>判断一个数是否与最大补码相同这里想到了之前实现的异或操作，只要把x与最大补码异或一下就可以判断该数是否与补码相同了<code>x^~(1&lt;&lt;31)</code></li>
+<li>然而我们可以发现虽然得到了判断是否相同的方法，但是如果按照前述的计算方案往年可以发现如果x就是最大补码那么返回值就是0而其他情况则会返回非零值，这就与题目要求的需要返回1和0相违背了😬</li>
+<li>正当我在思考这么吧0映射到1，把非0映射到0的时候发现题干给出了<code>!</code>运算符，这就正好符合我们的要求，于是得到了结果为<code>!(x^~(1&lt;&lt;31))</code>😆</li>
+<li>然而，我万万没想到用<code>dlc</code>跑过之后发现老爷子居然禁掉了移位操作 😅</li>
+<li>于是想到了最大补码加一会转换为最小补码的情况，这样就可以做到自产自销了于是进一步改进代码为<code>!(x^~(x+1))</code></li>
+<li>但是这样就会引进特殊情况也就是当<code>x = -1</code>时，这也正好能通过故加上限制条件<code>!((x^~(x+1))|!(x+1))</code></li>
+<li>受此启发还得到了另一种变形的答案<code>!(~(x+x+1)|!(x+1))</code>这个实际上得出<code>x = -1</code>才是正常的结论（<code>~(x+x+1)</code>的用意是得到<code>x+x+1 = -1</code>化简得到了<code>x = -1</code>）但是由于补码的特殊性才会让最大补码也能混入然后排除了<code>x = -1</code>就得到了想要的结果</li>
+<li>测试通过<code>Total points: 4/37</code>，用到7个操作符解决问题</li>
+</ol>
+<h3 id="实现4allOddBits-int-x">实现4		allOddBits(int x)</h3>
+<p>解题思路：</p>
+<ol>
+<li>
+<p>一开始实验的时候理解错了，原来老爷子的数永远是从0开始的🤣</p>
+</li>
+<li>
+<p>更正后想到对于一个奇数位完全为1的数如果补齐他所有的偶数位就会得到一个很规范的数<code>0xffffffff</code>就可以用于判断操作了，这时通过初步判断得到了这样的式子 <code>!(~(x|0x55555555))</code>，跑测试后是可以通过的</p>
+</li>
+<li>
+<p>但是我隐约记得前面有限制不能定义超过一个字节的常量，翻到前面确认确实如此，只能另寻他法了😥</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Each <span class="string">&quot;Expr&quot;</span> is an expression using ONLY the following:</span><br><span class="line">1. Integer constants 0 through 255 (0xFF), inclusive. You are not allowed to use big constants such as 0xffffffff.</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>然后想到通过一个字节的这个常数逐步构建出来我们需要的<code>0x55555555</code>，于是便得到了</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">allOddBits</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t = <span class="number">0x55</span>;</span><br><span class="line">    t = (t&lt;&lt;<span class="number">8</span>)+t;</span><br><span class="line">    t = (t&lt;&lt;<span class="number">16</span>)+t;</span><br><span class="line">    <span class="keyword">return</span> !(~(x|t));</span><br><span class="line">&#125;               </span><br></pre></td></tr></table></figure>
+<p>貌似这次不能一行搞定了🤣</p>
+</li>
+<li>
+<p>测试通过<code>Total points: 6/37</code>，用到7个操作符解决问题</p>
+</li>
+</ol>
+<h3 id="实现5negate-int-x">实现5		negate(int x)</h3>
+<p>解题思路：</p>
+<ol>
+<li>根据补码的权值分配情况还是很容易想到这个的（bushi），印象中老爷子在讲整数补码的时候有提到过，然后学校上课的时候也提到了两种整型补码求负的方法：一种时取反加一<code>(~x)+1</code>；另一种时保持第一个出现的一及以前的数不变后面的数取反（一般用于人工计算），然后就得到最后的结果了<code>(~x)+1</code></li>
+<li>测试通过<code>Total points: 8/37</code>，用到2个操作符解决问题</li>
+</ol>
+<h3 id="实现6isAsciiDigit-int-x">实现6		isAsciiDigit(int x)</h3>
+<p>解题思路：</p>
+<ol>
+<li>这个题类比到了符号位的溢出判断当这个数是在<code>0x30 ~ 0x39</code>之间时，如果加上一个<code>0x06</code>的话还会保持在<code>0x36 ~ 0x3f</code>之间，但是如果是在<code>0x3A ~ 0x3f</code>之间的数就会发生溢出为<code>0x40 ~ 0x46</code>之间的数，这样就可以将一个在<code>0x30 ~ 0x3f</code>之间的数给转换为可以判断其是否在<code>0x30 ~ 0x39</code>之间啦，式子为<code>((x+0x6)&gt;&gt;4^3)</code> 😉</li>
+<li>然后需要判断这个数是否在<code>0x30 ~ 0x3f</code>之间我们同样要用到只需要一开始就用到异或运算就可以了<code>(x&gt;&gt;4^3)</code>，最终得到结果为<code>!((x&gt;&gt;4^3)|((x+0x6)&gt;&gt;4^3))</code></li>
+<li>测试通过<code>Total points: 11/37</code>，用到7个操作符解决问题</li>
+</ol>
+<h3 id="实现7conditional-int-x-int-y-int-z">实现7		conditional(int x, int y, int z)</h3>
+<p>解题思路：</p>
+<ol>
+<li>一般先去想如何把<code>x</code>化为规整的数可以显然地得到<code>!!x</code>可以将所有的非零映射为1 将零映射为0这样就将判断的数字缩小到两个了</li>
+<li>现在我们想到要将一个数的影响降到最小我们可以让这个数与上<code>0</code>就可以同样的要将这个数的影响完全保留就与上全1即<code>-1</code>，通过这里我们可以发现如果我们对刚才得到的<code>!!x</code>取反就正好能得到这样规整的<code>全0</code>和<code>全1</code>，于是有了这样的式子<code>x = ~(!!x)+1</code>就可以将<code>x</code>完全规整化了 😉</li>
+<li>然后简单思考一下就可以得到这样的式子<code>(x&amp;y)|(~x&amp;z)</code>这也就是答案啦 😁</li>
+<li>测试通过<code>Total points: 14/37</code>，用到8个操作符解决问题</li>
+</ol>
+<h3 id="实现8isLessOrEqual-int-x-int-y">实现8		isLessOrEqual(int x, int y)</h3>
+<p>解题思路：</p>
+<ol>
+<li>要判断<code>x</code>与<code>y</code>的大小关系我们首先想到的就是作减法啦😜</li>
+<li>然后可以看到题目是要求小于或等于时返回1，为了方便我们来判断大于</li>
+<li>当<code>x &gt; y</code>时，<code>y-x</code>就一定是负数即符号位为<code>1</code>（虽然补码没有专门代表的符号的位但我们可以姑且将唯一代表着负数权值的最高位成为符号位），当<code>x==y</code>或者<code>x &lt; y</code>时其值符号位一定是<code>0</code>，然后只要得到符号位并且将其取非就可以得到结果了，因此我们就可以得到这样的式子<code>!((y+(~x)+1)&gt;&gt;31)</code></li>
+<li>但是这里就出现了溢出的问题，所以加上限制条件当两个数的符号不相同的时候可以直接判断<code>!sign_x^sign_y)&amp;(!((y+(~x)+1)&gt;&gt;31)</code>其中<code>sign_x</code>和<code>sign_y</code>分别表示<code>x</code>和<code>y</code>的符号</li>
+<li>当这<code>x</code>和<code>y</code>的符号不一致时简单罗列真值表就可以看出<code>sign_x&amp;(!sign_y)</code>，然后和前面有限制式子与一下就可以得到答案了<code>(sign_x&amp;(!sign_y))|((!sign_x^sign_y)&amp;(!((y+(~x)+1)&gt;&gt;31)))</code></li>
+<li>测试通过<code>Total points: 17/37</code>，用到13个操作符解决问题</li>
+</ol>
+<h3 id="实现9int-logicalNeg-int-x">实现9		int logicalNeg(int x)</h3>
+<p>解题思路：</p>
+<ol>
+<li>
+<p>首先我们着眼容易下手的<code>0</code>，我们可以发现想到对<code>0</code>取反后就可以达到全<code>1</code>,所以我们就对全<code>1</code>进行每次对半进行与如果最终得到了<code>1</code>就说明这个数的每一位都是<code>1</code>即为取反前的<code>0</code>，所有得到代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">logicalNeg</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">	x =  ~x;</span><br><span class="line">	x = (x&gt;&gt;<span class="number">16</span>) &amp; x;</span><br><span class="line">	x = (x&gt;&gt;<span class="number">8</span>) &amp; x;</span><br><span class="line">	x = (x&gt;&gt;<span class="number">4</span>) &amp; x;</span><br><span class="line">	x = (x&gt;&gt;<span class="number">2</span>) &amp; x;</span><br><span class="line">	x = (x&gt;&gt;<span class="number">1</span>) &amp; x;</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>但是我大意了，右移操作居然是算术右移所以这显然得不到正确答案 😖</p>
+</li>
+<li>
+<p>所以我恬不知耻地去找了一下其他前辈的做法然后得到了最终的做法😀：针对<code>0</code>取反得到的任为<code>0</code>，而其他数都会得到其对应的相反数然后将这个数与其相反数取或就一定得到的是一个负数（尽管最小补码取负后任为其本身但取或后的结果也是负的故不影响判断）然后只要移位判断其最高位即可，于是得到结果为<code>~(x|((~x)+1))&gt;&gt;31&amp;1</code></p>
+</li>
+<li>
+<p>然后我灵光一现就想到了，其实最早的想法离成功只差一步就是将<code>x&amp;1</code>即可将算数移位的影响给抵消掉了，于是有了这个差一点就超过操作符限制的答案🤣：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// int logicalNeg(int x) &#123;</span></span><br><span class="line"><span class="comment">//     return ~(x|((~x)+1))&gt;&gt;31&amp;1;</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">logicalNeg</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    x =  ~x; </span><br><span class="line">    x = (x&gt;&gt;<span class="number">16</span>) &amp; x;</span><br><span class="line">    x = (x&gt;&gt;<span class="number">8</span>) &amp; x;</span><br><span class="line">    x = (x&gt;&gt;<span class="number">4</span>) &amp; x;</span><br><span class="line">    x = (x&gt;&gt;<span class="number">2</span>) &amp; x;</span><br><span class="line">    x = (x&gt;&gt;<span class="number">1</span>) &amp; x;</span><br><span class="line">    <span class="keyword">return</span> x&amp;<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>测试通过<code>Total points: 21/37</code>，用到12个操作符解决问题</p>
+</li>
+</ol>
+<h3 id="实现10howManyBits-int-x">实现10		howManyBits(int x)</h3>
+<p>解题思路：</p>
+<ol>
+<li>
+<p>看这个允许的操作符数就明白这个题属实复杂，一开始只是想着去用移位加一但是后面发现这明显会超过指令条数限制</p>
+</li>
+<li>
+<p>于是想到了二分的方案：对于一个数如果是整数，那么这个数最后一个1代表着最少需要的位数，然后二分地计算如果其高16位有数字的话那么就意味着答案至少<code>16~32</code>之间，然后答案加16继续将前一半与后一半合并 如果后一半有数字就将前一半的影响降为0如果后一半全为0那么就意味着后一半本身贡献的影响就为0就不用关注，于是可以得到这样的代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x_32 = x;</span><br><span class="line"><span class="keyword">int</span> t = (~(!!(x_32&gt;&gt;<span class="number">16</span>))+<span class="number">1</span>);</span><br><span class="line">ans += t&amp;<span class="number">16</span>;</span><br><span class="line"><span class="keyword">int</span> x_16 = (x_32&amp;(~t))|(x_32&gt;&gt;<span class="number">16</span>);</span><br></pre></td></tr></table></figure>
+<p>同样的操作进行多次就可以了得到这样的结果了：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">howManyBits</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> x_32 = x;</span><br><span class="line">    <span class="keyword">int</span> t = (~(!!(x_32&gt;&gt;<span class="number">16</span>))+<span class="number">1</span>);</span><br><span class="line">    ans += t&amp;<span class="number">16</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> x_16 = (x_32&amp;(~t))|(x_32&gt;&gt;<span class="number">16</span>);</span><br><span class="line">    t = (~(!!(x_16&gt;&gt;<span class="number">8</span>))+<span class="number">1</span>);</span><br><span class="line">    ans += t&amp;<span class="number">8</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> x_8 = (x_16&amp;(~t))|(x_16&gt;&gt;<span class="number">8</span>);</span><br><span class="line">    t = (~(!!(x_8&gt;&gt;<span class="number">4</span>))+<span class="number">1</span>);</span><br><span class="line">    ans += t&amp;<span class="number">4</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> x_4 = (x_8&amp;(~t))|(x_8&gt;&gt;<span class="number">4</span>);</span><br><span class="line">    t = (~(!!(x_4&gt;&gt;<span class="number">2</span>))+<span class="number">1</span>);</span><br><span class="line">    ans += t&amp;<span class="number">2</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> x_2 = (x_4&amp;(~t))|(x_4&gt;&gt;<span class="number">2</span>);</span><br><span class="line">    t = x_2&amp;<span class="number">3</span>;</span><br><span class="line">    ans += t + (~(t&gt;&gt;<span class="number">1</span>&amp;t)+<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ans+<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(最后的答案<code>+1</code>是因为要算上符号位)</p>
+</li>
+<li>
+<p>但是这样的解答还需要考虑到负数的情况，考虑负数是要找到最后一个0的情况正好与整数时候相反我们就对当x为负数时将<code>x</code>取反就可以得到结果啦，这时候我们可以重点考虑符号位移位的方式就可以得到这样的符号位<code>sign = x&gt;&gt;31</code>，然后很庆幸这里是算术移位如果不是的话 <code>x</code> 为负数我们会得到<code>sign = 1</code>还需要对其进行去负数，然而由于是算术移位就x为负就会得到<code>sign = -1</code>，<code>x</code>为正就会得到<code>sign = 0</code>这样规整的数；我们根据前面的经验就很容易得到将负数的<code>x</code>取反而正数的<code>x</code>不变的式子<code>x_32 = (x&amp;~sign)|(~x&amp;sign)</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">howManyBits</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> sign = x&gt;&gt;<span class="number">31</span>;</span><br><span class="line">    <span class="keyword">int</span> x_32 = (x&amp;~sign)|(~x&amp;sign);</span><br><span class="line">    <span class="keyword">int</span> t = (~(!!(x_32&gt;&gt;<span class="number">16</span>))+<span class="number">1</span>);</span><br><span class="line">    ans += t&amp;<span class="number">16</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> x_16 = (x_32&amp;(~t))|(x_32&gt;&gt;<span class="number">16</span>);</span><br><span class="line">    t = (~(!!(x_16&gt;&gt;<span class="number">8</span>))+<span class="number">1</span>);</span><br><span class="line">    ans += t&amp;<span class="number">8</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> x_8 = (x_16&amp;(~t))|(x_16&gt;&gt;<span class="number">8</span>);</span><br><span class="line">    t = (~(!!(x_8&gt;&gt;<span class="number">4</span>))+<span class="number">1</span>);</span><br><span class="line">    ans += t&amp;<span class="number">4</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> x_4 = (x_8&amp;(~t))|(x_8&gt;&gt;<span class="number">4</span>);</span><br><span class="line">    t = (~(!!(x_4&gt;&gt;<span class="number">2</span>))+<span class="number">1</span>);</span><br><span class="line">    ans += t&amp;<span class="number">2</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> x_2 = (x_4&amp;(~t))|(x_4&gt;&gt;<span class="number">2</span>);</span><br><span class="line">    t = x_2&amp;<span class="number">3</span>;</span><br><span class="line">    ans += t + (~(t&gt;&gt;<span class="number">1</span>&amp;t)+<span class="number">1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> ans+<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实这里最后的临界条件<code>x_2</code>转换改了很多次版，最后确定的思路就是罗列出四种情况</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x_2	-&gt;	ans</span><br><span class="line">0	-&gt;	0</span><br><span class="line">1	-&gt;	1</span><br><span class="line">2	-&gt;	2</span><br><span class="line">3	-&gt;	2</span><br></pre></td></tr></table></figure>
+<p>我们可以发现只有当<code>x_2 = 3</code>的时候才会异常所以考虑这种状态的时候减去1即可，而有发现只有数字<code>3</code>的二进制第一位和第零位全为<code>1</code>，所以根据这个性质得到<code>ans += t + (~(t&gt;&gt;1&amp;t)+1)</code></p>
+</li>
+<li>
+<p>最终这个有（亿）点复杂的问题就通过二分的方法解决了<code>Total points: 25/37</code>，共用到了42个操作符😂</p>
+</li>
+<li>
+<p>副栏：值得注意的是在使用<code>dlc</code>工具时发生了这样的报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">./bits.c:266: syntax error</span><br><span class="line">./bits.c:267: undeclared variable `x_16<span class="string">&#x27;</span></span><br><span class="line"><span class="string">./bits.c:270: syntax error</span></span><br><span class="line"><span class="string">./bits.c:271: undeclared variable `x_8&#x27;</span></span><br><span class="line">./bits.c:274: syntax error</span><br><span class="line">./bits.c:275: undeclared variable `x_4<span class="string">&#x27;</span></span><br><span class="line"><span class="string">./bits.c:278: syntax error</span></span><br><span class="line"><span class="string">./bits.c:279: undeclared variable `x_2&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>原因是早期的<code>c</code>程序是要求所有的变量在最开头就声明好的，不允许在程序运行的中间去声明变量的所以会发生这样的错误（如果我没有记错的话这点应该是大一入学时教c语言的老师顺嘴提到的 🤣）将所有的变量声明提到开头就可以了</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">howManyBits</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> sign = x&gt;&gt;<span class="number">31</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> x_32 = (x&amp;~sign)|(~x&amp;sign);</span><br><span class="line">    <span class="keyword">int</span> x_16, x_8, x_4, x_2;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> t = (~(!!(x_32&gt;&gt;<span class="number">16</span>))+<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    ans += t&amp;<span class="number">16</span>;</span><br><span class="line">    </span><br><span class="line">    x_16 = (x_32&amp;(~t))|(x_32&gt;&gt;<span class="number">16</span>);</span><br><span class="line">    t = (~(!!(x_16&gt;&gt;<span class="number">8</span>))+<span class="number">1</span>);</span><br><span class="line">    ans += t&amp;<span class="number">8</span>;</span><br><span class="line">    </span><br><span class="line">    x_8 = (x_16&amp;(~t))|(x_16&gt;&gt;<span class="number">8</span>);</span><br><span class="line">    t = (~(!!(x_8&gt;&gt;<span class="number">4</span>))+<span class="number">1</span>);</span><br><span class="line">    ans += t&amp;<span class="number">4</span>;</span><br><span class="line">    </span><br><span class="line">    x_4 = (x_8&amp;(~t))|(x_8&gt;&gt;<span class="number">4</span>);</span><br><span class="line">    t = (~(!!(x_4&gt;&gt;<span class="number">2</span>))+<span class="number">1</span>);</span><br><span class="line">    ans += t&amp;<span class="number">2</span>;</span><br><span class="line">    </span><br><span class="line">    x_2 = (x_4&amp;(~t))|(x_4&gt;&gt;<span class="number">2</span>);</span><br><span class="line">    t = x_2&amp;<span class="number">3</span>;</span><br><span class="line">    ans += t + (~(t&gt;&gt;<span class="number">1</span>&amp;t)+<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ans+<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>最终是用到了58个操作符解决问题</p>
+</li>
+</ol>
+<h3 id="实现11float-twice-unsigned-uf">实现11		float_twice(unsigned uf)</h3>
+<p>解题思路：</p>
+<ol>
+<li>
+<p>由于博猪对浮点数的理解有限以下的解法多少都参考了其他前辈的解法，然后加上了自己了理解写成的（别骂了 别骂了🥺）</p>
+</li>
+<li>
+<p>首先要对IEEE754规范下的单精度浮点数的划分有理解 ：</p>
+<table>
+<thead>
+<tr>
+<th>符号位</th>
+<th>阶码</th>
+<th>尾码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1位</td>
+<td>8位</td>
+<td>23位</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>然后要考虑的是一些特殊情况当阶码为<code>0xff</code>的时候就表示无穷大或<code>NAN</code>情况乘2仍然为无穷大或<code>NAN</code>就直接返回原数据即可，当阶码位<code>0</code>时就表示无穷小或0，这时就直接将尾码左移就和然后需要注意的是保留符号位即可于是写出式子<code>(uf&lt;&lt;1)|(uf&amp;(1&lt;&lt;31))</code></p>
+</li>
+<li>
+<p>排除了这些特殊情况之后就直接将阶码加一就可以得到结果啦，但是要注意的是加完之后需要判断此时的值是否为无穷大，如果为无穷大的话那么就要将尾码置零才能表示无穷大😀</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="title">float_twice</span><span class="params">(<span class="keyword">unsigned</span> uf)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">exp</span> = uf&gt;&gt;<span class="number">23</span>&amp;<span class="number">0xff</span>;</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">exp</span> == <span class="number">0xff</span>) <span class="keyword">return</span> uf; </span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">exp</span> == <span class="number">0</span>) <span class="keyword">return</span> (uf&lt;&lt;<span class="number">1</span>)|(uf&amp;(<span class="number">1</span>&lt;&lt;<span class="number">31</span>));</span><br><span class="line">    uf = uf + (<span class="number">1</span>&lt;&lt;<span class="number">23</span>);</span><br><span class="line">    <span class="keyword">if</span>(((uf&gt;&gt;<span class="number">23</span>)&amp;<span class="number">0xff</span>) == <span class="number">0xff</span>) <span class="keyword">return</span> uf&amp;((<span class="number">0xff</span>&lt;&lt;<span class="number">23</span>)|(<span class="number">1</span>&lt;&lt;<span class="number">31</span>));</span><br><span class="line">    <span class="keyword">return</span> uf; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>测试通过<code>Total points: 29/37</code>，用到17个操作符解决问题</p>
+</li>
+</ol>
+<h3 id="实现12float-i2f-int-x">实现12		float_i2f(int x)</h3>
+<p>解题思路：</p>
+<ol>
+<li>
+<p>首先我们朴素的想法就是要找到这个最后一个<code>1</code>这样就可以确定移位的多少也就是其阶码的值，可以通过移位又可以得到尾码，而符号位只需要根据原<code>int</code>值的符号即可确定</p>
+</li>
+<li>
+<p>这里要找到最后一个<code>1</code>也就需要保证这个<code>int</code>值是正数，然而我们由前面的经验可以知道最小补码是不能表示其相应的相反数的（取负后任然为其本身）所以我们特殊处理直接特判返回（这里有个小技巧：可以根据老爷子的判题工具直接得到正确返回，你错过一次后判题工具会给出其正确返回值😉）还有当<code>x = 0</code>时无法找到其最后一个<code>1</code>也作特判返回即可</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> sign = x&amp;(<span class="number">1</span>&lt;&lt;<span class="number">31</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(x == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(x == sign) <span class="keyword">return</span> <span class="number">0xcf000000</span>;</span><br></pre></td></tr></table></figure>
+<p><code>sign</code>这个变量本来应该是用来保存<code>x</code>的符号的，但是可以发现的是最小补码正好满足<code>x == sign</code>就偷懒用上前面得到的<code>sign</code>啦😁</p>
+</li>
+<li>
+<p>然后先根据符号值去取反确保其为正数，再根据移位去得到其最后一个<code>1</code>的位置 就能得到阶码部分的值了，需要注意的是阶码部分的表示法是使用了移码，而样将8位补码转化为8位移码就需要加上<code>127</code>，（这种理解方式更原始，手算的时候其实只要将8位的补码的符号位取反即可）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">i = <span class="number">30</span>;</span><br><span class="line"><span class="keyword">while</span>(!(x&gt;&gt;i)) i--;</span><br><span class="line"><span class="built_in">exp</span> = i+<span class="number">127</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>然后将这个<code>x</code>对齐让最后一个<code>1</code>标齐到最左边，这样就可以把整个<code>x</code>化为整个的尾码，然后向右移8位与取后23位得到的数就是真正的尾码了（这里需要注意的是右移8位是因为最高位的<code>1</code>是要被舍去的这个的规范决定的，能够扩大尾码的表示范围）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x &lt;&lt;= <span class="number">31</span>-i;</span><br><span class="line">fra = (x&gt;&gt;<span class="number">8</span>)&amp;<span class="number">0x7fffff</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>最后需要注意的就是尾码舍去问题，注意这里的舍去是根据<code>银行家舍入法</code>进行舍入的即大于<code>0.5</code>就进位等于<code>0.5</code>要看整数部分奇偶性，奇数则进位；于是就得到了<code>fra += (x&gt;128 || ((x==128) &amp;&amp; (fra&amp;1)))</code>，然后还要判断这个尾码加完之后是否会溢出要进位于是整体就得到了：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">x = x&amp;<span class="number">0xff</span>;</span><br><span class="line">del = (x&gt;<span class="number">128</span> || ((x==<span class="number">128</span>) &amp;&amp; (fra&amp;<span class="number">1</span>)));</span><br><span class="line">fra += del;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(fra &gt;&gt; <span class="number">23</span>)&#123;</span><br><span class="line">    fra &amp;= <span class="number">0x7fffff</span>;</span><br><span class="line">    <span class="built_in">exp</span>+=<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>最后按顺序组合符号位+阶码+尾码返回即可，最终的结果为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="title">float_i2f</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sign = x&amp;(<span class="number">1</span>&lt;&lt;<span class="number">31</span>);</span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">exp</span>, fra, del, i;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(x == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(x == sign) <span class="keyword">return</span> <span class="number">0xcf000000</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(sign) x = -x; </span><br><span class="line"></span><br><span class="line">    i = <span class="number">30</span>; </span><br><span class="line">    <span class="keyword">while</span>(!(x&gt;&gt;i)) i--;</span><br><span class="line">    <span class="built_in">exp</span> = i+<span class="number">127</span>;</span><br><span class="line">    </span><br><span class="line">    x &lt;&lt;= <span class="number">31</span>-i;</span><br><span class="line">    fra = (x&gt;&gt;<span class="number">8</span>)&amp;<span class="number">0x7fffff</span>;</span><br><span class="line"></span><br><span class="line">    x = x&amp;<span class="number">0xff</span>;</span><br><span class="line">    del = (x&gt;<span class="number">128</span> || ((x==<span class="number">128</span>) &amp;&amp; (fra&amp;<span class="number">1</span>)));</span><br><span class="line">    fra += del;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(fra &gt;&gt; <span class="number">23</span>)&#123;</span><br><span class="line">        fra &amp;= <span class="number">0x7fffff</span>;</span><br><span class="line">        <span class="built_in">exp</span>+=<span class="number">1</span>;</span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (sign | (<span class="built_in">exp</span>&lt;&lt;<span class="number">23</span>) | fra);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>测试通过<code>Total points: 33/37</code>，用到26个操作符解决问题</p>
+</li>
+</ol>
+<h3 id="实现13float-f2i-unsigned-uf">实现13		float_f2i(unsigned uf)</h3>
+<p>解题思路：</p>
+<ol>
+<li>
+<p>这个相对于前一个将整数转换为浮点的确实要轻松很多，毕竟整数转浮点需要考虑到更多的特殊情况 😉</p>
+</li>
+<li>
+<p>首先提取出浮点数的每一个部分，有了上一题的铺垫其实这个还是很好处理的</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> sign = uf &amp; (<span class="number">1</span>&lt;&lt;<span class="number">31</span>);</span><br><span class="line"><span class="keyword">int</span> <span class="built_in">exp</span> = ((uf&gt;&gt;<span class="number">23</span>)&amp;<span class="number">0xff</span>)<span class="number">-127</span>;</span><br><span class="line"><span class="keyword">int</span> fra = uf &amp; <span class="number">0x7fffff</span>;</span><br></pre></td></tr></table></figure>
+<p>这里的阶码为了运算方便就减去的<code>127</code>使其移码的表示形式变成补码的表示形式方便计算。</p>
+</li>
+<li>
+<p>然后就需要排除掉一些不能表示的部分了，根据规范浮点数的尾码用二进制表示一定是这种形式<code>1.xxx</code>，当其阶码大于<code>32</code>时就表示这个尾码经过移位一定是会超过<code>int</code>的表示范围的，根据要求我们返回<code>0x80000000u</code>即可（这里也一并考虑到了无穷大和<code>NAN</code>的情况），而同样的如果阶码小于<code>0</code>就表示为<code>0.xxx</code>的形式了我们直接返回<code>0</code>即可（这里也一并算是考虑到了浮点<code>0</code>的情况）于是我们有了</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="built_in">exp</span> &gt; <span class="number">32</span>) <span class="keyword">return</span> <span class="number">0x80000000</span>u;</span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">exp</span> &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>然后补齐尾码默认的<code>1</code>，注意我们可以注意到现在得到的尾码其实是相当于对实际的尾码进行左移<code>23</code>位得到的整数形式，于是我们注意移位方向就好啦😜</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fra |= <span class="number">1</span>&lt;&lt;<span class="number">23</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">exp</span> &gt; <span class="number">23</span>) fra &lt;&lt;= <span class="built_in">exp</span><span class="number">-23</span>;</span><br><span class="line"><span class="keyword">else</span> fra &gt;&gt;= <span class="number">23</span>-<span class="built_in">exp</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>最后的返回值根据符号位来就好啦</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">float_f2i</span><span class="params">(<span class="keyword">unsigned</span> uf)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sign = uf &amp; (<span class="number">1</span>&lt;&lt;<span class="number">31</span>);</span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">exp</span> = ((uf&gt;&gt;<span class="number">23</span>)&amp;<span class="number">0xff</span>)<span class="number">-127</span>;</span><br><span class="line">    <span class="keyword">int</span> fra = uf &amp; <span class="number">0x7fffff</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">exp</span> &gt; <span class="number">32</span>) <span class="keyword">return</span> <span class="number">0x80000000</span>u;</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">exp</span> &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    fra |= <span class="number">1</span>&lt;&lt;<span class="number">23</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">exp</span> &gt; <span class="number">23</span>) fra &lt;&lt;= <span class="built_in">exp</span><span class="number">-23</span>;</span><br><span class="line">    <span class="keyword">else</span> fra &gt;&gt;= <span class="number">23</span>-<span class="built_in">exp</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(sign) <span class="keyword">return</span> -fra;</span><br><span class="line">    <span class="keyword">return</span> fra;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>测试通过<code>Total points: 33/37</code>，用到16个操作符解决问题</p>
+</li>
+</ol>
+<h2 id="实验总结">实验总结</h2>
+<p>这次Datelib可以分为两个部分：整数处理、浮点数处理</p>
+<p>个人觉得整数处理的部分更偏向考验脑力的部分，因为整数的补码表示本来就不算特别复杂（相对与浮点表示），但是由于限制了操作符解题的过程就是让人求而不得的历程呢🤣</p>
+<p>而浮点数部分开放了很多运算符写起来就相对较平衡，感觉浮点部分的三个题主要还是对 个人IEEE浮点数规范的理解的考察吧，特别是后面两个整数浮点数相互转换的题</p>
+<p>整个实验看先来个人觉得最难的就是<code>实现10</code>（最少多少位表示的题）啦，考察到了补码的表示形式和二分的思想确实是一个很棒（nan）的题啊！</p>
+<p>一轮实验下来感觉对整数浮点数的表示理解更加深入到位了，特别是之前理解得很模糊的浮点数规范，老爷子的题真的非常给力啊👍️</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">扶明</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://alden-elias.github.io/2022/01/25/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E6%95%B0%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%EF%BC%881%EF%BC%89Datelib/">https://alden-elias.github.io/2022/01/25/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E6%95%B0%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%EF%BC%881%EF%BC%89Datelib/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://alden-elias.github.io" target="_blank">扶明の小站</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/">计算机系统实验</a></div><div class="post_share"><div class="social-share" data-image="https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (30).jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://gitee.com/kong_lingyun/img_bed/raw/master/img/wechat.png" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/wechat.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://gitee.com/kong_lingyun/img_bed/raw/master/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/01/25/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E6%95%B0%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%EF%BC%882%EF%BC%89bomblab/"><img class="next-cover" src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (32).jpg" onerror="onerror=null;src='https://gitee.com/kong_lingyun/img_bed/raw/master/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">深入理解计数机系统Bomblab实验报告（超详细）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/01/25/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E6%95%B0%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%EF%BC%882%EF%BC%89bomblab/" title="深入理解计数机系统Bomblab实验报告（超详细）"><img class="cover" src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (32).jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-25</div><div class="title">深入理解计数机系统Bomblab实验报告（超详细）</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%87%86%E5%A4%87"><span class="toc-number">2.</span> <span class="toc-text">实验准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E5%BC%8F%E5%AE%9E%E9%AA%8C"><span class="toc-number">3.</span> <span class="toc-text">正式实验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B01bitXor-int-x-int-y"><span class="toc-number">3.1.</span> <span class="toc-text">实现1		bitXor( int x,  int y)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B02tmin-void"><span class="toc-number">3.2.</span> <span class="toc-text">实现2		tmin(void)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B03isTmax-int-x"><span class="toc-number">3.3.</span> <span class="toc-text">实现3		isTmax(int x)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B04allOddBits-int-x"><span class="toc-number">3.4.</span> <span class="toc-text">实现4		allOddBits(int x)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B05negate-int-x"><span class="toc-number">3.5.</span> <span class="toc-text">实现5		negate(int x)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B06isAsciiDigit-int-x"><span class="toc-number">3.6.</span> <span class="toc-text">实现6		isAsciiDigit(int x)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B07conditional-int-x-int-y-int-z"><span class="toc-number">3.7.</span> <span class="toc-text">实现7		conditional(int x, int y, int z)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B08isLessOrEqual-int-x-int-y"><span class="toc-number">3.8.</span> <span class="toc-text">实现8		isLessOrEqual(int x, int y)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B09int-logicalNeg-int-x"><span class="toc-number">3.9.</span> <span class="toc-text">实现9		int logicalNeg(int x)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B010howManyBits-int-x"><span class="toc-number">3.10.</span> <span class="toc-text">实现10		howManyBits(int x)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B011float-twice-unsigned-uf"><span class="toc-number">3.11.</span> <span class="toc-text">实现11		float_twice(unsigned uf)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B012float-i2f-int-x"><span class="toc-number">3.12.</span> <span class="toc-text">实现12		float_i2f(int x)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B013float-f2i-unsigned-uf"><span class="toc-number">3.13.</span> <span class="toc-text">实现13		float_f2i(unsigned uf)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">实验总结</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background: #00c4b6"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2022 By 扶明</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat_btn" type="button" title="rightside.chat_btn"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (document.getElementsByClassName('mermaid').length) {
+  if (window.mermaidJsLoad) mermaid.init()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(() => {
+      window.mermaidJsLoad = true
+      mermaid.initialize({
+        theme: 'default',
+      })
+      true && mermaid.init()
+    })
+  }
+}</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'ap0wxVCDc5JxFU1hw3IbBAne-gzGzoHsz',
+      appKey: 'r0t4h8GIwleAWHx8j02VQAGc',
+      placeholder: '留下昵称和邮箱,可以方便辨识身份~',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: true,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: {"QQ-0":"https://7.dusays.com/2021/01/15/28896e0ad6fd2.gif","QQ-1":"https://7.dusays.com/2021/01/15/e1b49acc90150.gif","QQ-10":"https://7.dusays.com/2021/01/15/ccf7ecc0f3629.gif","QQ-100":"https://7.dusays.com/2021/01/15/d9347f35566e9.gif","QQ-101":"https://7.dusays.com/2021/01/15/5cf591c70871b.gif","QQ-102":"https://7.dusays.com/2021/01/15/a54757a19c9b0.gif","QQ-103":"https://7.dusays.com/2021/01/15/d305b3e66f08e.gif","QQ-104":"https://7.dusays.com/2021/01/15/e5aac17baab3b.gif","QQ-105":"https://7.dusays.com/2021/01/15/8143a3f5f096f.gif","QQ-106":"https://7.dusays.com/2021/01/15/c414277f1a604.gif","QQ-107":"https://7.dusays.com/2021/01/15/a2d76a0d67386.gif","QQ-108":"https://7.dusays.com/2021/01/15/6add7b094fe26.gif","QQ-109":"https://7.dusays.com/2021/01/15/6b959f0e83bbb.gif","QQ-11":"https://7.dusays.com/2021/01/15/8c4388560de79.gif","QQ-110":"https://7.dusays.com/2021/01/15/cbd1fc6ade730.gif","QQ-111":"https://7.dusays.com/2021/01/15/e32ed216e81e8.gif","QQ-112":"https://7.dusays.com/2021/01/15/f680f2639d9ae.gif","QQ-113":"https://7.dusays.com/2021/01/15/16830bae9b7ab.gif","QQ-114":"https://7.dusays.com/2021/01/15/907af163812f4.gif","QQ-115":"https://7.dusays.com/2021/01/15/7997817d2503d.gif","QQ-116":"https://7.dusays.com/2021/01/15/fac5675efa0e1.gif","QQ-117":"https://7.dusays.com/2021/01/15/d07f738e4c604.gif","QQ-118":"https://7.dusays.com/2021/01/15/05955be86e552.gif","QQ-119":"https://7.dusays.com/2021/01/15/f0b5dae50d7b6.gif","QQ-12":"https://7.dusays.com/2021/01/15/92ba48a45b920.gif","QQ-120":"https://7.dusays.com/2021/01/15/7f9581a4af35f.gif","QQ-121":"https://7.dusays.com/2021/01/15/667b3c4bc1bc8.gif","QQ-122":"https://7.dusays.com/2021/01/15/69386ba3437cc.gif","QQ-123":"https://7.dusays.com/2021/01/15/6b8ef181a5aa2.gif","QQ-124":"https://7.dusays.com/2021/01/15/3cde111610151.gif","QQ-125":"https://7.dusays.com/2021/01/15/6f6d89214d8b3.gif","QQ-126":"https://7.dusays.com/2021/01/15/940b26f3bd37a.gif","QQ-127":"https://7.dusays.com/2021/01/15/bd7f7f21e3fe0.gif","QQ-128":"https://7.dusays.com/2021/01/15/b4c458b5a8621.gif","QQ-129":"https://7.dusays.com/2021/01/15/b95de272e27ba.gif","QQ-13":"https://7.dusays.com/2021/01/15/46f812e5e0956.gif","QQ-130":"https://7.dusays.com/2021/01/15/d927193fcff8c.gif","QQ-131":"https://7.dusays.com/2021/01/15/391a1103dace4.gif","QQ-132":"https://7.dusays.com/2021/01/15/fc3602298f0f1.gif","QQ-133":"https://7.dusays.com/2021/01/15/33017fe6c64c1.gif","QQ-134":"https://7.dusays.com/2021/01/15/1d3f0e3415090.gif","QQ-135":"https://7.dusays.com/2021/01/15/e302919641d8c.gif","QQ-136":"https://7.dusays.com/2021/01/15/e60ff59529091.gif","QQ-137":"https://7.dusays.com/2021/01/15/8e07d67cccc64.gif","QQ-138":"https://7.dusays.com/2021/01/15/b012f7df8af71.gif","QQ-139":"https://7.dusays.com/2021/01/15/6824a0ac0138e.gif","QQ-14":"https://7.dusays.com/2021/01/15/e1c9de290a4b9.gif","QQ-140":"https://7.dusays.com/2021/01/15/b5f5bbc92b0eb.gif","QQ-141":"https://7.dusays.com/2021/01/15/a7c1a56b40a72.gif","QQ-142":"https://7.dusays.com/2021/01/15/6055240f4f3ec.gif","QQ-143":"https://7.dusays.com/2021/01/15/e5e01f51d3397.gif","QQ-144":"https://7.dusays.com/2021/01/15/581e6465f99d2.gif","QQ-145":"https://7.dusays.com/2021/01/15/59bc408781170.gif","QQ-146":"https://7.dusays.com/2021/01/15/46fa2ac201d46.gif","QQ-147":"https://7.dusays.com/2021/01/15/ff6ba63ad179b.gif","QQ-148":"https://7.dusays.com/2021/01/15/a266c3d930e6c.gif","QQ-149":"https://7.dusays.com/2021/01/15/5dbf143c14332.gif","QQ-15":"https://7.dusays.com/2021/01/15/49fadb70d4d4a.gif","QQ-150":"https://7.dusays.com/2021/01/15/44d966569704d.gif","QQ-151":"https://7.dusays.com/2021/01/15/d724d84b59da6.gif","QQ-152":"https://7.dusays.com/2021/01/15/45159da4cbbc1.gif","QQ-153":"https://7.dusays.com/2021/01/15/148b7a971564a.gif","QQ-154":"https://7.dusays.com/2021/01/15/e4836ac7b02fd.gif","QQ-155":"https://7.dusays.com/2021/01/15/07a7e803090c5.gif","QQ-156":"https://7.dusays.com/2021/01/15/727bcb256d5bf.gif","QQ-157":"https://7.dusays.com/2021/01/15/be01981cfc259.gif","QQ-158":"https://7.dusays.com/2021/01/15/ec85fd8268395.gif","QQ-159":"https://7.dusays.com/2021/01/15/2725fbfc403ba.gif","QQ-16":"https://7.dusays.com/2021/01/15/b91fc930f3f5f.gif","QQ-160":"https://7.dusays.com/2021/01/15/0b000885b5287.gif","QQ-161":"https://7.dusays.com/2021/01/15/b2a25f4489cad.gif","QQ-162":"https://7.dusays.com/2021/01/15/8463bfc591e84.gif","QQ-163":"https://7.dusays.com/2021/01/15/525ad959adf90.gif","QQ-164":"https://7.dusays.com/2021/01/15/44d16f9f9e9d6.gif","QQ-165":"https://7.dusays.com/2021/01/15/23afc128fe8aa.gif","QQ-166":"https://7.dusays.com/2021/01/15/c79d957438c16.gif","QQ-167":"https://7.dusays.com/2021/01/15/77802b6a1bf7c.gif","QQ-168":"https://7.dusays.com/2021/01/15/863c3b2574eb8.gif","QQ-169":"https://7.dusays.com/2021/01/15/d55715888a6d0.gif","QQ-17":"https://7.dusays.com/2021/01/15/300717a56c5c0.gif","QQ-170":"https://7.dusays.com/2021/01/15/9547eb290aa3c.gif","QQ-171":"https://7.dusays.com/2021/01/15/e21554f3564f4.gif","QQ-172":"https://7.dusays.com/2021/01/15/313498d46cfb4.gif","QQ-173":"https://7.dusays.com/2021/01/15/513fbc423a416.gif","QQ-174":"https://7.dusays.com/2021/01/15/5d05a5e59e001.gif","QQ-175":"https://7.dusays.com/2021/01/15/af3b5ac5740eb.gif","QQ-176":"https://7.dusays.com/2021/01/15/e90117a9e5b01.gif","QQ-177":"https://7.dusays.com/2021/01/15/0173a13106d22.gif","QQ-178":"https://7.dusays.com/2021/01/15/ac5293255b949.gif","QQ-179":"https://7.dusays.com/2021/01/15/12acdb0f99e16.gif","QQ-18":"https://7.dusays.com/2021/01/15/0b8c62f76937f.gif","QQ-180":"https://7.dusays.com/2021/01/15/a0dbd5f305b88.gif","QQ-181":"https://7.dusays.com/2021/01/15/31adddf7ba95d.gif","QQ-182":"https://7.dusays.com/2021/01/15/883f3559a5835.gif","QQ-183":"https://7.dusays.com/2021/01/15/f771c3e2ebce6.gif","QQ-184":"https://7.dusays.com/2021/01/15/1b129a5eeee94.gif","QQ-185":"https://7.dusays.com/2021/01/15/f485dd61e6ae7.gif","QQ-186":"https://7.dusays.com/2021/01/15/7ac4c7b7a5ebf.gif","QQ-187":"https://7.dusays.com/2021/01/15/8717659515b30.gif","QQ-188":"https://7.dusays.com/2021/01/15/731cad82d4856.gif","QQ-189":"https://7.dusays.com/2021/01/15/898b7bcd7e887.gif","QQ-19":"https://7.dusays.com/2021/01/15/b4f0b9b412587.gif","QQ-190":"https://7.dusays.com/2021/01/15/6223952a4197f.gif","QQ-191":"https://7.dusays.com/2021/01/15/1b43cbf23c8e5.gif","QQ-192":"https://7.dusays.com/2021/01/15/4bcd98340b6b8.gif","QQ-193":"https://7.dusays.com/2021/01/15/8d4df30c31631.gif","QQ-194":"https://7.dusays.com/2021/01/15/39708ccd71a95.gif","QQ-195":"https://7.dusays.com/2021/01/15/0009210ca52f8.gif","QQ-196":"https://7.dusays.com/2021/01/15/8c5c13adbdd77.gif","QQ-197":"https://7.dusays.com/2021/01/15/43e12ffc82f3c.gif","QQ-198":"https://7.dusays.com/2021/01/15/f6639a3dc72a3.gif","QQ-199":"https://7.dusays.com/2021/01/15/70d4041539912.gif","QQ-2":"https://7.dusays.com/2021/01/15/600eabcdab574.gif","QQ-20":"https://7.dusays.com/2021/01/15/494844390362d.gif","QQ-200":"https://7.dusays.com/2021/01/15/d998032a584e9.gif","QQ-201":"https://7.dusays.com/2021/01/15/bd4cb0b7768e3.gif","QQ-202":"https://7.dusays.com/2021/01/15/3703881a2d813.gif","QQ-203":"https://7.dusays.com/2021/01/15/e59beb80fd449.gif","QQ-204":"https://7.dusays.com/2021/01/15/1c584da0914bd.gif","QQ-205":"https://7.dusays.com/2021/01/15/2b666bead720b.gif","QQ-206":"https://7.dusays.com/2021/01/15/ea16ee931c8da.gif","QQ-207":"https://7.dusays.com/2021/01/15/8708ed000df31.gif","QQ-21":"https://7.dusays.com/2021/01/15/027775e9743ab.gif","QQ-22":"https://7.dusays.com/2021/01/15/0c23acb228950.gif","QQ-23":"https://7.dusays.com/2021/01/15/8acb1e4210aea.gif","QQ-24":"https://7.dusays.com/2021/01/15/9de819ab7c8cb.gif","QQ-25":"https://7.dusays.com/2021/01/15/5993ed35f6d49.gif","QQ-26":"https://7.dusays.com/2021/01/15/8fe0ec5ef3f69.gif","QQ-27":"https://7.dusays.com/2021/01/15/9f7ff1464be4c.gif","QQ-28":"https://7.dusays.com/2021/01/15/ced6f2c057160.gif","QQ-29":"https://7.dusays.com/2021/01/15/404754a6c6fa2.gif","QQ-3":"https://7.dusays.com/2021/01/15/cd20be11abcce.gif","QQ-30":"https://7.dusays.com/2021/01/15/ab932a53b58a3.gif","QQ-31":"https://7.dusays.com/2021/01/15/2d366ab8e5e9e.gif","QQ-32":"https://7.dusays.com/2021/01/15/837b455fd15fc.gif","QQ-33":"https://7.dusays.com/2021/01/15/196a7ac1f41f1.gif","QQ-34":"https://7.dusays.com/2021/01/15/aeaa075dbd734.gif","QQ-35":"https://7.dusays.com/2021/01/15/3a8f0774b9dae.gif","QQ-36":"https://7.dusays.com/2021/01/15/0e18c10485931.gif","QQ-37":"https://7.dusays.com/2021/01/15/9605e27e400c0.gif","QQ-38":"https://7.dusays.com/2021/01/15/34f2ef866b3ca.gif","QQ-39":"https://7.dusays.com/2021/01/15/9241b131f6d52.gif","QQ-4":"https://7.dusays.com/2021/01/15/110c67a8cd42a.gif","QQ-40":"https://7.dusays.com/2021/01/15/468fc2660dc41.gif","QQ-41":"https://7.dusays.com/2021/01/15/dd4b05f14e180.gif","QQ-42":"https://7.dusays.com/2021/01/15/0c1d65cad7ddd.gif","QQ-43":"https://7.dusays.com/2021/01/15/ca5dfef7dc5b6.gif","QQ-44":"https://7.dusays.com/2021/01/15/627cd1c4d591d.gif","QQ-45":"https://7.dusays.com/2021/01/15/66d92d3ff3297.gif","QQ-46":"https://7.dusays.com/2021/01/15/713aae4354061.gif","QQ-47":"https://7.dusays.com/2021/01/15/927f5e879af60.gif","QQ-48":"https://7.dusays.com/2021/01/15/62d20c83f754e.gif","QQ-49":"https://7.dusays.com/2021/01/15/0aa84e1f7c51d.gif","QQ-5":"https://7.dusays.com/2021/01/15/d4fbad555d826.gif","QQ-50":"https://7.dusays.com/2021/01/15/5a8f103c7f7a6.gif","QQ-51":"https://7.dusays.com/2021/01/15/4b474c7966afe.gif","QQ-52":"https://7.dusays.com/2021/01/15/a7c1a56b40a72.gif","QQ-53":"https://7.dusays.com/2021/01/15/d58b434fe8acf.gif","QQ-54":"https://7.dusays.com/2021/01/15/e7477cbce1c30.gif","QQ-55":"https://7.dusays.com/2021/01/15/fc97eaa6e5853.gif","QQ-56":"https://7.dusays.com/2021/01/15/06fd40a7bf77d.gif","QQ-57":"https://7.dusays.com/2021/01/15/28812822c01aa.gif","QQ-58":"https://7.dusays.com/2021/01/15/7997817d2503d.gif","QQ-59":"https://7.dusays.com/2021/01/15/805daa7195f2c.gif","QQ-6":"https://7.dusays.com/2021/01/15/0a1bf206e6ae9.gif","QQ-60":"https://7.dusays.com/2021/01/15/9a92f54aca20d.gif","QQ-61":"https://7.dusays.com/2021/01/15/926dd2cba14c6.gif","QQ-62":"https://7.dusays.com/2021/01/15/9037338ec9bc5.gif","QQ-63":"https://7.dusays.com/2021/01/15/8ab1357161687.gif","QQ-64":"https://7.dusays.com/2021/01/15/cfacd1babd14b.gif","QQ-65":"https://7.dusays.com/2021/01/15/87f81ce1fd008.gif","QQ-66":"https://7.dusays.com/2021/01/15/b6a582fed3bda.gif","QQ-67":"https://7.dusays.com/2021/01/15/8c5b85d3cd3c7.gif","QQ-68":"https://7.dusays.com/2021/01/15/d927193fcff8c.gif","QQ-69":"https://7.dusays.com/2021/01/15/b95de272e27ba.gif","QQ-7":"https://7.dusays.com/2021/01/15/4c0631cb31bfc.gif","QQ-70":"https://7.dusays.com/2021/01/15/f09d97e885c26.gif","QQ-71":"https://7.dusays.com/2021/01/15/3698c4fe6151f.gif","QQ-72":"https://7.dusays.com/2021/01/15/429eae09fcaed.gif","QQ-73":"https://7.dusays.com/2021/01/15/006232fd75b4f.gif","QQ-74":"https://7.dusays.com/2021/01/15/b5302a85814b7.gif","QQ-75":"https://7.dusays.com/2021/01/15/0a05c30806fe0.gif","QQ-76":"https://7.dusays.com/2021/01/15/8b670e52b61ec.gif","QQ-77":"https://7.dusays.com/2021/01/15/e7bbed5bda51a.gif","QQ-78":"https://7.dusays.com/2021/01/15/02b1e32036ed4.gif","QQ-79":"https://7.dusays.com/2021/01/15/319b45bdaced1.gif","QQ-8":"https://7.dusays.com/2021/01/15/514fc3a849b94.gif","QQ-80":"https://7.dusays.com/2021/01/15/948b0bb1b1147.gif","QQ-81":"https://7.dusays.com/2021/01/15/8a268e9f4f6c4.gif","QQ-82":"https://7.dusays.com/2021/01/15/ef898256928e9.gif","QQ-83":"https://7.dusays.com/2021/01/15/d49b581e203cb.gif","QQ-84":"https://7.dusays.com/2021/01/15/2dc09beb0f627.gif","QQ-85":"https://7.dusays.com/2021/01/15/480e405d8aab9.gif","QQ-86":"https://7.dusays.com/2021/01/15/682341ae85a49.gif","QQ-87":"https://7.dusays.com/2021/01/15/1c7ba3af0f0f8.gif","QQ-88":"https://7.dusays.com/2021/01/15/81a32d6380404.gif","QQ-89":"https://7.dusays.com/2021/01/15/161407c141f74.gif","QQ-9":"https://7.dusays.com/2021/01/15/333ca8158377b.gif","QQ-90":"https://7.dusays.com/2021/01/15/aa757c7f53f66.gif","QQ-91":"https://7.dusays.com/2021/01/15/766fd95462727.gif","QQ-92":"https://7.dusays.com/2021/01/15/4eff2dfd36cfb.gif","QQ-93":"https://7.dusays.com/2021/01/15/0ef3ae2acddf0.gif","QQ-94":"https://7.dusays.com/2021/01/15/807a44282df46.gif","QQ-95":"https://7.dusays.com/2021/01/15/f84ff66189a8d.gif","QQ-96":"https://7.dusays.com/2021/01/15/e0454a54ad84b.gif","QQ-97":"https://7.dusays.com/2021/01/15/b63a098facfb2.gif","QQ-98":"https://7.dusays.com/2021/01/15/3b6ed67c2a54f.gif","QQ-99":"https://7.dusays.com/2021/01/15/dad0a76be3d48.gif","QQ-不你不想":"https://7.dusays.com/2021/01/18/1fe9d7fc2d679.gif","QQ-哇哦":"https://7.dusays.com/2021/01/18/0c8030b35dc45.gif","QQ-哦":"https://7.dusays.com/2021/01/18/e2deda94f7fe9.gif","QQ-打call":"https://7.dusays.com/2021/01/18/8038a5d46e822.gif","QQ-打脸":"https://7.dusays.com/2021/01/18/2cc550223b16a.gif","QQ-摸鱼":"https://7.dusays.com/2021/01/18/60891c4e72059.gif","QQ-敬礼":"https://7.dusays.com/2021/01/18/27db33aa7a424.gif","QQ-无眼笑":"https://7.dusays.com/2021/01/18/5c0060e18accf.gif","QQ-比心":"https://7.dusays.com/2021/01/18/eee0aa3f76053.gif","QQ-没眼看":"https://7.dusays.com/2021/01/18/dedd7c3530aa4.gif","QQ-滚":"https://7.dusays.com/2021/01/18/5ba245a20c154.gif","QQ-狂笑":"https://7.dusays.com/2021/01/18/d72781e9e35dd.gif","QQ-睁眼":"https://7.dusays.com/2021/01/18/3b847d18f10c8.gif","QQ-考虑中":"https://7.dusays.com/2021/01/18/0fc06cf6d8982.gif","QQ-面无表情":"https://7.dusays.com/2021/01/18/bf5a929ca94f6.gif","QQ-魔鬼笑":"https://7.dusays.com/2021/01/18/69ae4fba3efd1.gif","bilibili_tv_gif-doge":"https://7.dusays.com/2021/01/15/3de5568861758.gif","bilibili_tv_gif-亲亲":"https://7.dusays.com/2021/01/15/48f8fb39734fd.gif","bilibili_tv_gif-偷笑":"https://7.dusays.com/2021/01/15/f7272fe624fae.gif","bilibili_tv_gif-再见":"https://7.dusays.com/2021/01/15/8252ffdb2cd6c.gif","bilibili_tv_gif-发怒":"https://7.dusays.com/2021/01/15/6fc804d102f33.gif","bilibili_tv_gif-发财":"https://7.dusays.com/2021/01/15/934731e956a6d.gif","bilibili_tv_gif-可爱":"https://7.dusays.com/2021/01/15/df742ca600b6f.gif","bilibili_tv_gif-吐血":"https://7.dusays.com/2021/01/15/825e474035d41.gif","bilibili_tv_gif-呆":"https://7.dusays.com/2021/01/15/dc01b83c8b63c.gif","bilibili_tv_gif-呕吐":"https://7.dusays.com/2021/01/15/e84d2b2f164d5.gif","bilibili_tv_gif-困":"https://7.dusays.com/2021/01/15/1ebb4265e35d6.gif","bilibili_tv_gif-坏笑":"https://7.dusays.com/2021/01/15/0d4b84c868ac1.gif","bilibili_tv_gif-大佬":"https://7.dusays.com/2021/01/15/554bc754252fb.gif","bilibili_tv_gif-大哭":"https://7.dusays.com/2021/01/15/a61cf83e2a393.gif","bilibili_tv_gif-委屈":"https://7.dusays.com/2021/01/15/bb706ad009ca3.gif","bilibili_tv_gif-害羞":"https://7.dusays.com/2021/01/15/6783d7b3f85b5.gif","bilibili_tv_gif-尴尬":"https://7.dusays.com/2021/01/15/94fde68114d10.gif","bilibili_tv_gif-微笑":"https://7.dusays.com/2021/01/15/ae8b966f5d6dd.gif","bilibili_tv_gif-思考":"https://7.dusays.com/2021/01/15/4779160502ea4.gif","bilibili_tv_gif-惊吓":"https://7.dusays.com/2021/01/15/cf308976cfcff.gif","bilibili_tv_gif-打脸":"https://7.dusays.com/2021/01/15/1e73ac65adedb.gif","bilibili_tv_gif-抓狂":"https://7.dusays.com/2021/01/15/a9a2816b47155.gif","bilibili_tv_gif-抠鼻子":"https://7.dusays.com/2021/01/15/da0e09a7df77c.gif","bilibili_tv_gif-斜眼笑":"https://7.dusays.com/2021/01/15/ef02f8604d8da.gif","bilibili_tv_gif-无奈":"https://7.dusays.com/2021/01/15/34f110a029e9f.gif","bilibili_tv_gif-晕":"https://7.dusays.com/2021/01/15/3c1ec79da1798.gif","bilibili_tv_gif-流汗":"https://7.dusays.com/2021/01/15/f8476b1819899.gif","bilibili_tv_gif-流鼻血":"https://7.dusays.com/2021/01/15/0c7f2fc4aa9ac.gif","bilibili_tv_gif-点赞":"https://7.dusays.com/2021/01/15/3a52c830b19d1.gif","bilibili_tv_gif-生气":"https://7.dusays.com/2021/01/15/52386ddb3e00b.gif","bilibili_tv_gif-生病":"https://7.dusays.com/2021/01/15/a196e70f1892d.gif","bilibili_tv_gif-疑问":"https://7.dusays.com/2021/01/15/5df1be7cebfcc.gif","bilibili_tv_gif-白眼":"https://7.dusays.com/2021/01/15/dde92b9d44d0a.gif","bilibili_tv_gif-睡着":"https://7.dusays.com/2021/01/15/fde17be95e29a.gif","bilibili_tv_gif-笑哭":"https://7.dusays.com/2021/01/15/6c2742bef700b.gif","bilibili_tv_gif-腼腆":"https://7.dusays.com/2021/01/15/c23c85b649289.gif","bilibili_tv_gif-色":"https://7.dusays.com/2021/01/15/f75d5f33ae1df.gif","bilibili_tv_gif-调皮":"https://7.dusays.com/2021/01/15/1d06267e48ecb.gif","bilibili_tv_gif-鄙视":"https://7.dusays.com/2021/01/15/5696d02abd653.gif","bilibili_tv_gif-闭嘴":"https://7.dusays.com/2021/01/15/1f90ef05d7af2.gif","bilibili_tv_gif-难过":"https://7.dusays.com/2021/01/15/7535d32a53d50.gif","bilibili_tv_gif-馋":"https://7.dusays.com/2021/01/15/13375b80ddacb.gif","bilibili_tv_gif-黑人问号":"https://7.dusays.com/2021/01/15/48f24129bf37c.gif","bilibili_tv_gif-鼓掌":"https://7.dusays.com/2021/01/15/d7e60de1a2e5b.gif"},
+      enableQQ: true,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = () => {
+    const serverURL = 'https://ap0wxVCD.api.lncldglobal.com'
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'ap0wxVCDc5JxFU1hw3IbBAne-gzGzoHsz',
+        "X-LC-Key": 'r0t4h8GIwleAWHx8j02VQAGc',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(function (e) {
+          return {
+            'avatar': getIcon(e.QQAvatar, e.mail),
+            'content': changeContent(e.comment),
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.updatedAt,
+          }
+        })
+        saveToLocal.set('valine-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      }) 
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('valine-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script>(function(d, w, c) {
+    w.ChatraID = 'a6YzsH3iRrmCX8Biy';
+    var s = d.createElement('script');
+    w[c] = w[c] || function() {
+        (w[c].q = w[c].q || []).push(arguments);
+    };
+    s.async = true;
+    s.src = 'https://call.chatra.io/chatra.js';
+    if (d.head) d.head.appendChild(s);
+})(document, window, 'Chatra');
+
+if (true) {
+  var chatBtnFn = () => {
+    var chatBtn = document.getElementById("chat_btn")
+    chatBtn.addEventListener("click", function(){
+      Chatra('openChat')
+    });
+  }
+  chatBtnFn()
+} else {
+  if (true) {
+    function chatBtnHide () {
+      Chatra('hide')
+    }
+    function chatBtnShow () {
+      Chatra('show')
+    }
+  }
+}</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"]):not([href="/music/"]):not([href="/no-pjax/"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
