@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>深入理解计数机系统Bomblab实验报告（超详细） | 扶明の小站</title><meta name="keywords" content="计算机系统实验"><meta name="author" content="扶明"><meta name="copyright" content="扶明"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言经过datalab的洗礼后，然后就迫不及待地开始上手bomblab啦，但是我万万没想到啊，这一个实验居然需要用到汇编的知识还要求学会调试器gdb的使用 可是这么点困难这么能湮灭心中的的热情呢，于是我打开 国内著名大学 B站 找了一个又一个的gdb教程，然而这些教程还！不！够！😭 无奈只能在积灰已久的收藏夹中翻出了那个陪伴我失眠的夜老爷子亲传 （助眠） 课程，于是翻到了以前很难理解的部分，发现">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>深入理解计数机系统Bomblab实验报告（超详细） | 扶明の小站</title><meta name="keywords" content="计算机系统实验"><meta name="author" content="扶明"><meta name="copyright" content="扶明"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言 经过datalab的洗礼后，然后就迫不及待地开始上手bomblab啦，但是我万万没想到啊，这一个实验居然需要用到汇编的知识还要求学会调试器gdb的使用 可是这么点困难这么能湮灭心中的的热情呢，于是我打开 国内著名大学 B站 找了一个又一个的gdb教程，然而这些教程还！不！够！😭 无奈只能在积灰已久的收藏夹中翻出了那个陪伴我失眠的夜老爷子亲传 （助眠） 课程，于是翻到了以前很难理解的部分，发">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入理解计数机系统Bomblab实验报告（超详细）">
 <meta property="og:url" content="https://alden-elias.github.io/2022/01/25/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E6%95%B0%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%EF%BC%882%EF%BC%89bomblab/index.html">
 <meta property="og:site_name" content="扶明の小站">
-<meta property="og:description" content="前言经过datalab的洗礼后，然后就迫不及待地开始上手bomblab啦，但是我万万没想到啊，这一个实验居然需要用到汇编的知识还要求学会调试器gdb的使用 可是这么点困难这么能湮灭心中的的热情呢，于是我打开 国内著名大学 B站 找了一个又一个的gdb教程，然而这些教程还！不！够！😭 无奈只能在积灰已久的收藏夹中翻出了那个陪伴我失眠的夜老爷子亲传 （助眠） 课程，于是翻到了以前很难理解的部分，发现">
+<meta property="og:description" content="前言 经过datalab的洗礼后，然后就迫不及待地开始上手bomblab啦，但是我万万没想到啊，这一个实验居然需要用到汇编的知识还要求学会调试器gdb的使用 可是这么点困难这么能湮灭心中的的热情呢，于是我打开 国内著名大学 B站 找了一个又一个的gdb教程，然而这些教程还！不！够！😭 无奈只能在积灰已久的收藏夹中翻出了那个陪伴我失眠的夜老爷子亲传 （助眠） 课程，于是翻到了以前很难理解的部分，发">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (32).jpg">
 <meta property="article:published_time" content="2022-01-25T11:42:28.370Z">
@@ -151,151 +151,182 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/Fu_ming.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">45</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pictures"><i class="fa-fw fas fa-image"></i><span> 图库</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 社交</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 小伙伴</span></a></li><li><a class="site-page child" href="/message_board/"><i class="fa-fw fa fa-edit"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (32).jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">扶明の小站</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pictures"><i class="fa-fw fas fa-image"></i><span> 图库</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 社交</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 小伙伴</span></a></li><li><a class="site-page child" href="/message_board/"><i class="fa-fw fa fa-edit"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">深入理解计数机系统Bomblab实验报告（超详细）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2022-01-25T11:42:28.370Z" title="undefined 2022-01-25 19:42:28">2022-01-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CS-APP/">CS:APP</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">10.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>40分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="深入理解计数机系统Bomblab实验报告（超详细）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>经过<code>datalab</code>的洗礼后，然后就迫不及待地开始上手<code>bomblab</code>啦，但是我万万没想到啊，这一个实验居然需要用到汇编的知识还要求学会调试器<code>gdb</code>的使用</p>
-<p>可是这么点困难这么能湮灭心中的的热情呢，于是我打开 <del>国内著名大学</del> B站 找了一个又一个的<code>gdb</code>教程，然而这些教程还！不！够！😭</p>
-<p>无奈只能在积灰已久的收藏夹中翻出了那个陪伴我失眠的夜老爷子亲传 <del>（助眠）</del> 课程，于是翻到了以前很难理解的部分，发现有了一定的计算机基础知识作铺垫在加上刚学的<code>gdb</code>入门知识再去理解课程就会逐渐顺畅起来😆</p>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" data-lazy-src="https://gitee.com/kong_lingyun/img_bed/raw/master/img/Fu_ming.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">45</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pictures"><i class="fa-fw fas fa-image"></i><span> 图库</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 社交</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 小伙伴</span></a></li><li><a class="site-page child" href="/message_board/"><i class="fa-fw fa fa-edit"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gitee.com/kong_lingyun/img_bed/raw/master/img/bg_ (32).jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">扶明の小站</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pictures"><i class="fa-fw fas fa-image"></i><span> 图库</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 社交</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 小伙伴</span></a></li><li><a class="site-page child" href="/message_board/"><i class="fa-fw fa fa-edit"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">深入理解计数机系统Bomblab实验报告（超详细）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2022-01-25T11:42:28.370Z" title="undefined 2022-01-25 19:42:28">2022-01-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CS-APP/">CS:APP</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">10.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>40分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="深入理解计数机系统Bomblab实验报告（超详细）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="前言">前言</h2>
+<p>经过<code>datalab</code>的洗礼后，然后就迫不及待地开始上手<code>bomblab</code>啦，但是我万万没想到啊，这一个实验居然需要用到汇编的知识还要求学会调试器<code>gdb</code>的使用</p>
+<p>可是这么点困难这么能湮灭心中的的热情呢，于是我打开 <s>国内著名大学</s> B站 找了一个又一个的<code>gdb</code>教程，然而这些教程还！不！够！😭</p>
+<p>无奈只能在积灰已久的收藏夹中翻出了那个陪伴我失眠的夜老爷子亲传 <s>（助眠）</s> 课程，于是翻到了以前很难理解的部分，发现有了一定的计算机基础知识作铺垫在加上刚学的<code>gdb</code>入门知识再去理解课程就会逐渐顺畅起来😆</p>
 <p>于是，肝过视频后就迫不及待地开始实验啦 ~</p>
-<h2 id="实验准备"><a href="#实验准备" class="headerlink" title="实验准备"></a>实验准备</h2><p>这次的实验几乎不需要环境搭建（可能是我的Linux主机已经安装好了<code>gdb</code>的原因吧）需要用到的前置知识则要比<code>datelab</code>还是更专精些的，下面给刚刚新手推荐的一些前置知识讲解的视频供大家参考：</p>
+<h2 id="实验准备">实验准备</h2>
+<p>这次的实验几乎不需要环境搭建（可能是我的Linux主机已经安装好了<code>gdb</code>的原因吧）需要用到的前置知识则要比<code>datelab</code>还是更专精些的，下面给刚刚新手推荐的一些前置知识讲解的视频供大家参考：</p>
 <p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Kq4y1D7n2?p=1">Linux 使用gdb调试入门</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1iW411d7hd?p=5">【精校中英字幕】2015 CMU 15-213 CSAPP 深入理解计算机系统 Lecture5~6</a></p>
 <p>还有就是后知后觉发现真的非常不错的<code>gdb</code>学习文档</p>
 <p><a target="_blank" rel="noopener" href="http://beej.us/guide/bggdb/">Beej’s Quick Guide to GDB</a></p>
 <p>然后阅读一下<code>bomb.c</code>文件，可以发现老爷子在为我们构造一个邪恶博士的故事模型帮助我们代入到其中一共有6个关卡，然而除此之外并没有其他线索🤣</p>
-<h2 id="正式实验"><a href="#正式实验" class="headerlink" title="正式实验"></a>正式实验</h2><h3 id="phase-1"><a href="#phase-1" class="headerlink" title="phase_1"></a>phase_1</h3><ol>
-<li><p>先用<code>gdb</code>将程序运行起来<code>gdb ./bomb</code></p>
+<h2 id="正式实验">正式实验</h2>
+<h3 id="phase-1">phase_1</h3>
+<ol>
+<li>
+<p>先用<code>gdb</code>将程序运行起来<code>gdb ./bomb</code></p>
 </li>
-<li><p>然后为程序在<code>phase_1</code>处设置一下断点<code>break phase_1</code>（然后你会发现这意义并不大🤣）</p>
+<li>
+<p>然后为程序在<code>phase_1</code>处设置一下断点<code>break phase_1</code>（然后你会发现这意义并不大🤣）</p>
 </li>
-<li><p>然后对这个函数进行反编译<code>disassemble phase_1</code>就可以得到下面的输出</p>
+<li>
+<p>然后对这个函数进行反编译<code>disassemble phase_1</code>就可以得到下面的输出</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Dump of assembler code for function phase_1:</span><br><span class="line">   0x0000000000400ee0 &lt;+0&gt;:	sub    $0x8,%rsp</span><br><span class="line">   0x0000000000400ee4 &lt;+4&gt;:	mov    $0x402400,%esi</span><br><span class="line">   0x0000000000400ee9 &lt;+9&gt;:	callq  0x401338 &lt;strings_not_equal&gt;</span><br><span class="line">   0x0000000000400eee &lt;+14&gt;:	test   %eax,%eax</span><br><span class="line">   0x0000000000400ef0 &lt;+16&gt;:	je     0x400ef7 &lt;phase_1+23&gt;</span><br><span class="line">   0x0000000000400ef2 &lt;+18&gt;:	callq  0x40143a &lt;explode_bomb&gt;</span><br><span class="line">   0x0000000000400ef7 &lt;+23&gt;:	add    $0x8,%rsp</span><br><span class="line">   0x0000000000400efb &lt;+27&gt;:	retq      </span><br><span class="line">End of assembler dump.</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
+<li>
+<p>第一关还是比较好分析的</p>
 <ol>
-<li><p>第一关还是比较好分析的</p>
-<ol>
-<li><p><code>sub    $0x8,%rsp</code>是对栈状态寄存器减去一个值，属于栈操作与主要逻辑无关</p>
+<li>
+<p><code>sub    $0x8,%rsp</code>是对栈状态寄存器减去一个值，属于栈操作与主要逻辑无关</p>
 </li>
-<li><p><code>mov    $0x402400,%esi</code>是将一个固定地址的下的内容复制到寄存器<code>%esi</code>下</p>
+<li>
+<p><code>mov    $0x402400,%esi</code>是将一个固定地址的下的内容复制到寄存器<code>%esi</code>下</p>
 </li>
-<li><p><code>callq  0x401338 &lt;strings_not_equal&gt;</code>这里调用了一个子程序看程序名可知是一个字符串判等的函数，于是我们知道了需要输入的值其实是一个字符串</p>
+<li>
+<p><code>callq  0x401338 &lt;strings_not_equal&gt;</code>这里调用了一个子程序看程序名可知是一个字符串判等的函数，于是我们知道了需要输入的值其实是一个字符串</p>
 </li>
-<li><p><code>test   %eax,%eax</code>由寄存器<code>%eax</code>用于存储程序调用的返回值，而整个指令来看就是判断<code>strings_not_equal</code>函数的返回值是否为<code>0</code></p>
+<li>
+<p><code>test   %eax,%eax</code>由寄存器<code>%eax</code>用于存储程序调用的返回值，而整个指令来看就是判断<code>strings_not_equal</code>函数的返回值是否为<code>0</code></p>
 </li>
-<li><p><code>je     0x400ef7 &lt;phase_1+23&gt;</code>这个是一个无条件的跳转指令，结合其跳转的位置可知执行到这就跳出函数了</p>
+<li>
+<p><code>je     0x400ef7 &lt;phase_1+23&gt;</code>这个是一个无条件的跳转指令，结合其跳转的位置可知执行到这就跳出函数了</p>
 </li>
-<li><p><code>callq  0x40143a &lt;explode_bomb&gt;</code>同样是调用了一个函数，有函数名可知是触发爆炸的程序</p>
+<li>
+<p><code>callq  0x40143a &lt;explode_bomb&gt;</code>同样是调用了一个函数，有函数名可知是触发爆炸的程序</p>
 </li>
-<li><p><code>add    $0x8,%rsp</code>同样的栈操作</p>
+<li>
+<p><code>add    $0x8,%rsp</code>同样的栈操作</p>
 </li>
-<li><p><code>retq</code>这里直接就是函数出口了</p>
+<li>
+<p><code>retq</code>这里直接就是函数出口了</p>
 </li>
-<li><p>经过上面的分析我们就很容易得到了，这就是一个简单的判断字符是否相等的函数而已，需要避免爆炸（执行到<code>explode_bomb</code>函数）还要字符相同即可，于是我们打印出<code>0x402400</code>地址处的字符串值于是就有：</p>
+<li>
+<p>经过上面的分析我们就很容易得到了，这就是一个简单的判断字符是否相等的函数而已，需要避免爆炸（执行到<code>explode_bomb</code>函数）还要字符相同即可，于是我们打印出<code>0x402400</code>地址处的字符串值于是就有：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) <span class="built_in">print</span> (char*)0x402400</span><br><span class="line"><span class="variable">$1</span> = 0x402400 <span class="string">&quot;Border relations with Canada have never been better.&quot;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 </li>
-</ol>
-<ol>
-<li>于是第一关的解码字符串为<code>Border relations with Canada have never been better.</code></li>
-</ol>
-<h3 id="phase-2"><a href="#phase-2" class="headerlink" title="phase_2"></a>phase_2</h3><ol>
-<li><p>同样我们查看一下第二关的汇编<code>disassemble phase_2</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">Dump of assembler code for function phase_2:</span><br><span class="line">   0x0000000000400efc &lt;+0&gt;:	push   %rbp</span><br><span class="line">   0x0000000000400efd &lt;+1&gt;:	push   %rbx</span><br><span class="line">   0x0000000000400efe &lt;+2&gt;:	sub    $0x28,%rsp</span><br><span class="line">   0x0000000000400f02 &lt;+6&gt;:	mov    %rsp,%rsi</span><br><span class="line">   0x0000000000400f05 &lt;+9&gt;:	callq  0x40145c &lt;read_six_numbers&gt;</span><br><span class="line">   0x0000000000400f0a &lt;+14&gt;:	cmpl   $0x1,(%rsp)</span><br><span class="line">   0x0000000000400f0e &lt;+18&gt;:	je     0x400f30 &lt;phase_2+52&gt;</span><br><span class="line">   0x0000000000400f10 &lt;+20&gt;:	callq  0x40143a &lt;explode_bomb&gt;</span><br><span class="line">   0x0000000000400f15 &lt;+25&gt;:	jmp    0x400f30 &lt;phase_2+52&gt;</span><br><span class="line">   0x0000000000400f17 &lt;+27&gt;:	mov    -0x4(%rbx),%eax</span><br><span class="line">   0x0000000000400f1a &lt;+30&gt;:	add    %eax,%eax</span><br><span class="line">   0x0000000000400f1c &lt;+32&gt;:	cmp    %eax,(%rbx)</span><br><span class="line">   0x0000000000400f1e &lt;+34&gt;:	je     0x400f25 &lt;phase_2+41&gt;</span><br><span class="line">   0x0000000000400f20 &lt;+36&gt;:	callq  0x40143a &lt;explode_bomb&gt;</span><br><span class="line">   0x0000000000400f25 &lt;+41&gt;:	add    $0x4,%rbx</span><br><span class="line">   0x0000000000400f29 &lt;+45&gt;:	cmp    %rbp,%rbx</span><br><span class="line">   0x0000000000400f2c &lt;+48&gt;:	jne    0x400f17 &lt;phase_2+27&gt;</span><br><span class="line">   0x0000000000400f2e &lt;+50&gt;:	jmp    0x400f3c &lt;phase_2+64&gt;</span><br><span class="line">   0x0000000000400f30 &lt;+52&gt;:	lea    0x4(%rsp),%rbx</span><br><span class="line">   0x0000000000400f35 &lt;+57&gt;:	lea    0x18(%rsp),%rbp</span><br><span class="line">   0x0000000000400f3a &lt;+62&gt;:	jmp    0x400f17 &lt;phase_2+27&gt;</span><br><span class="line">   0x0000000000400f3c &lt;+64&gt;:	add    $0x28,%rsp</span><br><span class="line">   0x0000000000400f40 &lt;+68&gt;:	pop    %rbx</span><br><span class="line">   0x0000000000400f41 &lt;+69&gt;:	pop    %rbp</span><br><span class="line">   0x0000000000400f42 &lt;+70&gt;:	retq   </span><br><span class="line">End of assembler dump.</span><br></pre></td></tr></table></figure>
+<li>
+<p>于是第一关的解码字符串为<code>Border relations with Canada have never been better.</code></p>
 </li>
 </ol>
+<h3 id="phase-2">phase_2</h3>
 <ol>
-<li><p>前面一些框架性的东西就不需要重复了，这个也显然和先前的线性思维的程序不一样，所以我们按程序运行的顺序进行拆解</p>
+<li>
+<p>同样我们查看一下第二关的汇编<code>disassemble phase_2</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">Dump of assembler code for function phase_2:</span><br><span class="line">   0x0000000000400efc &lt;+0&gt;:	push   %rbp</span><br><span class="line">   0x0000000000400efd &lt;+1&gt;:	push   %rbx</span><br><span class="line">   0x0000000000400efe &lt;+2&gt;:	sub    $0x28,%rsp</span><br><span class="line">   0x0000000000400f02 &lt;+6&gt;:	mov    %rsp,%rsi</span><br><span class="line">   0x0000000000400f05 &lt;+9&gt;:	callq  0x40145c &lt;read_six_numbers&gt;</span><br><span class="line">   0x0000000000400f0a &lt;+14&gt;:	cmpl   $0x1,(%rsp)</span><br><span class="line">   0x0000000000400f0e &lt;+18&gt;:	je     0x400f30 &lt;phase_2+52&gt;</span><br><span class="line">   0x0000000000400f10 &lt;+20&gt;:	callq  0x40143a &lt;explode_bomb&gt;</span><br><span class="line">   0x0000000000400f15 &lt;+25&gt;:	jmp    0x400f30 &lt;phase_2+52&gt;</span><br><span class="line">   0x0000000000400f17 &lt;+27&gt;:	mov    -0x4(%rbx),%eax</span><br><span class="line">   0x0000000000400f1a &lt;+30&gt;:	add    %eax,%eax</span><br><span class="line">   0x0000000000400f1c &lt;+32&gt;:	cmp    %eax,(%rbx)</span><br><span class="line">   0x0000000000400f1e &lt;+34&gt;:	je     0x400f25 &lt;phase_2+41&gt;</span><br><span class="line">   0x0000000000400f20 &lt;+36&gt;:	callq  0x40143a &lt;explode_bomb&gt;</span><br><span class="line">   0x0000000000400f25 &lt;+41&gt;:	add    $0x4,%rbx</span><br><span class="line">   0x0000000000400f29 &lt;+45&gt;:	cmp    %rbp,%rbx</span><br><span class="line">   0x0000000000400f2c &lt;+48&gt;:	jne    0x400f17 &lt;phase_2+27&gt;</span><br><span class="line">   0x0000000000400f2e &lt;+50&gt;:	jmp    0x400f3c &lt;phase_2+64&gt;</span><br><span class="line">   0x0000000000400f30 &lt;+52&gt;:	lea    0x4(%rsp),%rbx</span><br><span class="line">   0x0000000000400f35 &lt;+57&gt;:	lea    0x18(%rsp),%rbp</span><br><span class="line">   0x0000000000400f3a &lt;+62&gt;:	jmp    0x400f17 &lt;phase_2+27&gt;</span><br><span class="line">   0x0000000000400f3c &lt;+64&gt;:	add    $0x28,%rsp</span><br><span class="line">   0x0000000000400f40 &lt;+68&gt;:	pop    %rbx</span><br><span class="line">   0x0000000000400f41 &lt;+69&gt;:	pop    %rbp</span><br><span class="line">   0x0000000000400f42 &lt;+70&gt;:	retq   </span><br><span class="line">End of assembler dump.</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>前面一些框架性的东西就不需要重复了，这个也显然和先前的线性思维的程序不一样，所以我们按程序运行的顺序进行拆解</p>
 <ol>
-<li><p><code>callq  0x40145c &lt;read_six_numbers&gt;</code>根据函数名猜测我们要输入的应该是6个数字，我们进入<code>read_six_numbers</code>查看一下这个函数的汇编</p>
+<li>
+<p><code>callq  0x40145c &lt;read_six_numbers&gt;</code>根据函数名猜测我们要输入的应该是6个数字，我们进入<code>read_six_numbers</code>查看一下这个函数的汇编</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">0x000000000040145c &lt;+0&gt;:	sub    $0x18,%rsp</span><br><span class="line">0x0000000000401460 &lt;+4&gt;:	mov    %rsi,%rdx</span><br><span class="line">0x0000000000401463 &lt;+7&gt;:	lea    0x4(%rsi),%rcx</span><br><span class="line">0x0000000000401467 &lt;+11&gt;:	lea    0x14(%rsi),%rax</span><br><span class="line">0x000000000040146b &lt;+15&gt;:	mov    %rax,0x8(%rsp)</span><br><span class="line">0x0000000000401470 &lt;+20&gt;:	lea    0x10(%rsi),%rax</span><br><span class="line">0x0000000000401474 &lt;+24&gt;:	mov    %rax,(%rsp)</span><br><span class="line">0x0000000000401478 &lt;+28&gt;:	lea    0xc(%rsi),%r9</span><br><span class="line">0x000000000040147c &lt;+32&gt;:	lea    0x8(%rsi),%r8</span><br><span class="line">0x0000000000401480 &lt;+36&gt;:	mov    $0x4025c3,%esi</span><br><span class="line">0x0000000000401485 &lt;+41&gt;:	mov    $0x0,%eax</span><br><span class="line">0x000000000040148a &lt;+46&gt;:	callq  0x400bf0 &lt;__isoc99_sscanf@plt&gt;</span><br><span class="line">0x000000000040148f &lt;+51&gt;:	cmp    $0x5,%eax</span><br><span class="line">0x0000000000401492 &lt;+54&gt;:	jg     0x401499 &lt;read_six_numbers+61&gt;</span><br><span class="line">0x0000000000401494 &lt;+56&gt;:	callq  0x40143a &lt;explode_bomb&gt;</span><br><span class="line">0x0000000000401499 &lt;+61&gt;:	add    $0x18,%rsp</span><br><span class="line">0x000000000040149d &lt;+65&gt;:	retq</span><br></pre></td></tr></table></figure>
 <p>聚焦<code>&lt; +41 ~ +56&gt;</code>这段会发现当我们的输入小于6个数字时程序也会发生爆炸</p>
 </li>
-<li><p>然后我们回到原函数的<code>&lt;+14 ~ +20&gt;</code>这里，我们可以看到首先是<code>(%rsp)</code>和<code>1</code>的一个差关系（    <code>cmpl</code>）如果为<code>0</code>则跳转到<code>0x400f30</code>地址处对应了<code>&lt;+52&gt;</code>处（<code>je</code>），否则就会爆炸</p>
+<li>
+<p>然后我们回到原函数的<code>&lt;+14 ~ +20&gt;</code>这里，我们可以看到首先是<code>(%rsp)</code>和<code>1</code>的一个差关系（	<code>cmpl</code>）如果为<code>0</code>则跳转到<code>0x400f30</code>地址处对应了<code>&lt;+52&gt;</code>处（<code>je</code>），否则就会爆炸</p>
 </li>
-<li><p>我们看到<code>&lt; +52 ~ +57&gt;</code>这里实际上就是将<code>%rsp</code>往后4字节暂存到<code>%rbx</code>中，而4字节就是一个int，所以这里就是将<code>%rsp</code>的下一个int放到<code>%rbx</code>中去，同样的<code>%rbp</code>只是暂存了后面32个字节即<code>%rsp</code>往后6个int</p>
+<li>
+<p>我们看到<code>&lt; +52 ~ +57&gt;</code>这里实际上就是将<code>%rsp</code>往后4字节暂存到<code>%rbx</code>中，而4字节就是一个int，所以这里就是将<code>%rsp</code>的下一个int放到<code>%rbx</code>中去，同样的<code>%rbp</code>只是暂存了后面32个字节即<code>%rsp</code>往后6个int</p>
 </li>
-<li><p>然后<code>&lt;+62&gt;</code>其实就是一个简单的无条件跳转指令跳转到的地址对应我们<code>&lt;+27&gt;</code></p>
+<li>
+<p>然后<code>&lt;+62&gt;</code>其实就是一个简单的无条件跳转指令跳转到的地址对应我们<code>&lt;+27&gt;</code></p>
 </li>
-<li><p>我们看到<code>&lt;+27 ~ +30&gt;</code>将<code>%rbx</code>的前一个int存入<code>%eax</code>，由上面的分析可知<code>%eax</code>存的值就是<code>1</code>，然后<code>%eax</code>就作了一个倍增，于是<code>%eax</code>中存的值就是<code>2</code></p>
+<li>
+<p>我们看到<code>&lt;+27 ~ +30&gt;</code>将<code>%rbx</code>的前一个int存入<code>%eax</code>，由上面的分析可知<code>%eax</code>存的值就是<code>1</code>，然后<code>%eax</code>就作了一个倍增，于是<code>%eax</code>中存的值就是<code>2</code></p>
 </li>
-<li><p>继续往下分析<code>&lt;+32 ~ +36&gt;</code>这一步其实和前面的很相似就是对<code>%eas</code>和<code>(%rbx)</code>判等，如果不等就会爆炸，于是下一个值就是<code>2</code></p>
+<li>
+<p>继续往下分析<code>&lt;+32 ~ +36&gt;</code>这一步其实和前面的很相似就是对<code>%eas</code>和<code>(%rbx)</code>判等，如果不等就会爆炸，于是下一个值就是<code>2</code></p>
 </li>
-<li><p>然后就是<code>&lt;+41 ~ +50&gt;</code>这里对<code>%rbx</code>往后移了一个int距离，然后又是判断了<code>%rbp</code>和<code>%rbx</code>是否相等，如果不相等就会跳回到<code>&lt;+27&gt;</code>，否则会跳转到<code>&lt;+64&gt;</code>往后就是程序结束释放栈空间了</p>
+<li>
+<p>然后就是<code>&lt;+41 ~ +50&gt;</code>这里对<code>%rbx</code>往后移了一个int距离，然后又是判断了<code>%rbp</code>和<code>%rbx</code>是否相等，如果不相等就会跳回到<code>&lt;+27&gt;</code>，否则会跳转到<code>&lt;+64&gt;</code>往后就是程序结束释放栈空间了</p>
 </li>
-<li><p>于是就可以得到这其实就是一个循环，每次循环<code>$eax</code>都倍增，然后初始还是<code>1</code>所以就可以得到答案序列<code>1 2 4 8 16 32</code></p>
+<li>
+<p>于是就可以得到这其实就是一个循环，每次循环<code>$eax</code>都倍增，然后初始还是<code>1</code>所以就可以得到答案序列<code>1 2 4 8 16 32</code></p>
 </li>
 </ol>
 </li>
-<li><p>测试后发现可以通过，故这一关的答案序列就是<code>1 2 4 8 16 32</code></p>
+<li>
+<p>测试后发现可以通过，故这一关的答案序列就是<code>1 2 4 8 16 32</code></p>
 </li>
 </ol>
-<h3 id="phase-3"><a href="#phase-3" class="headerlink" title="phase_3"></a>phase_3</h3><ol>
-<li><p>先上汇编</p>
+<h3 id="phase-3">phase_3</h3>
+<ol>
+<li>
+<p>先上汇编</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">Dump of assembler code for function phase_3:</span><br><span class="line">=&gt; 0x0000000000400f43 &lt;+0&gt;:	sub    $0x18,%rsp</span><br><span class="line">   0x0000000000400f47 &lt;+4&gt;:	lea    0xc(%rsp),%rcx</span><br><span class="line">   0x0000000000400f4c &lt;+9&gt;:	lea    0x8(%rsp),%rdx</span><br><span class="line">   0x0000000000400f51 &lt;+14&gt;:	mov    $0x4025cf,%esi</span><br><span class="line">   0x0000000000400f56 &lt;+19&gt;:	mov    $0x0,%eax</span><br><span class="line">   0x0000000000400f5b &lt;+24&gt;:	callq  0x400bf0 &lt;__isoc99_sscanf@plt&gt;</span><br><span class="line">   0x0000000000400f60 &lt;+29&gt;:	cmp    $0x1,%eax</span><br><span class="line">   0x0000000000400f63 &lt;+32&gt;:	jg     0x400f6a &lt;phase_3+39&gt;</span><br><span class="line">   0x0000000000400f65 &lt;+34&gt;:	callq  0x40143a &lt;explode_bomb&gt;</span><br><span class="line">   0x0000000000400f6a &lt;+39&gt;:	cmpl   $0x7,0x8(%rsp)</span><br><span class="line">   0x0000000000400f6f &lt;+44&gt;:	ja     0x400fad &lt;phase_3+106&gt;</span><br><span class="line">   0x0000000000400f71 &lt;+46&gt;:	mov    0x8(%rsp),%eax</span><br><span class="line">   0x0000000000400f75 &lt;+50&gt;:	jmpq   *0x402470(,%rax,8)</span><br><span class="line">   0x0000000000400f7c &lt;+57&gt;:	mov    $0xcf,%eax</span><br><span class="line">   0x0000000000400f81 &lt;+62&gt;:	jmp    0x400fbe &lt;phase_3+123&gt;</span><br><span class="line">   0x0000000000400f83 &lt;+64&gt;:	mov    $0x2c3,%eax</span><br><span class="line">   0x0000000000400f88 &lt;+69&gt;:	jmp    0x400fbe &lt;phase_3+123&gt;</span><br><span class="line">   0x0000000000400f8a &lt;+71&gt;:	mov    $0x100,%eax</span><br><span class="line">   0x0000000000400f8f &lt;+76&gt;:	jmp    0x400fbe &lt;phase_3+123&gt;</span><br><span class="line">   0x0000000000400f91 &lt;+78&gt;:	mov    $0x185,%eax</span><br><span class="line">   0x0000000000400f96 &lt;+83&gt;:	jmp    0x400fbe &lt;phase_3+123&gt;</span><br><span class="line">   0x0000000000400f98 &lt;+85&gt;:	mov    $0xce,%eax</span><br><span class="line">   0x0000000000400f9d &lt;+90&gt;:	jmp    0x400fbe &lt;phase_3+123&gt;</span><br><span class="line">   0x0000000000400f9f &lt;+92&gt;:	mov    $0x2aa,%eax</span><br><span class="line">   0x0000000000400fa4 &lt;+97&gt;:	jmp    0x400fbe &lt;phase_3+123&gt;</span><br><span class="line">   0x0000000000400fa6 &lt;+99&gt;:	mov    $0x147,%eax</span><br><span class="line">   0x0000000000400fab &lt;+104&gt;:	jmp    0x400fbe &lt;phase_3+123&gt;</span><br><span class="line">   0x0000000000400fad &lt;+106&gt;:	callq  0x40143a &lt;explode_bomb&gt;</span><br><span class="line">   0x0000000000400fb2 &lt;+111&gt;:	mov    $0x0,%eax</span><br><span class="line">   0x0000000000400fb7 &lt;+116&gt;:	jmp    0x400fbe &lt;phase_3+123&gt;</span><br><span class="line">   0x0000000000400fb9 &lt;+118&gt;:	mov    $0x137,%eax</span><br><span class="line">   0x0000000000400fbe &lt;+123&gt;:	cmp    0xc(%rsp),%eax</span><br><span class="line">   0x0000000000400fc2 &lt;+127&gt;:	je     0x400fc9 &lt;phase_3+134&gt;</span><br><span class="line">   0x0000000000400fc4 &lt;+129&gt;:	callq  0x40143a &lt;explode_bomb&gt;</span><br><span class="line">   0x0000000000400fc9 &lt;+134&gt;:	add    $0x18,%rsp</span><br><span class="line">   0x0000000000400fcd &lt;+138&gt;:	retq   </span><br><span class="line">End of assembler dump.</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
+<li>
+<p>先整体看一下这里的汇编代码，可以发现在<code>&lt;+57 ~ +104&gt;</code>之间有很多的赋值和跳转语句而且所有的跳转都是跳转到<code>&lt;+123&gt;</code>这个比较语句的，这个语句结束后程序就结束了，根据老爷子的上课内容（机器水平编程第2节）猜测这个可能是一个<code>switch case</code>语句然后一个<code>if</code>语句就结束了，然后我们具体分析：</p>
 <ol>
-<li><p>先整体看一下这里的汇编代码，可以发现在<code>&lt;+57 ~ +104&gt;</code>之间有很多的赋值和跳转语句而且所有的跳转都是跳转到<code>&lt;+123&gt;</code>这个比较语句的，这个语句结束后程序就结束了，根据老爷子的上课内容（机器水平编程第2节）猜测这个可能是一个<code>switch case</code>语句然后一个<code>if</code>语句就结束了，然后我们具体分析：</p>
-<ol>
-<li><p><code>&lt;+4, +9&gt;</code>将<code>%rsp + 0x8</code>和<code>%rsp + 0xc</code>暂存到两个寄存器中但是通读过后没有发现这两个寄存器有啥用啊，难道是老爷子的烟雾弹？（黑人问号）</p>
+<li>
+<p><code>&lt;+4, +9&gt;</code>将<code>%rsp + 0x8</code>和<code>%rsp + 0xc</code>暂存到两个寄存器中但是通读过后没有发现这两个寄存器有啥用啊，难道是老爷子的烟雾弹？（黑人问号）</p>
 </li>
-<li><p><code>&lt;+14 ~ +19&gt;</code>两个赋值语句，<code>%eax</code>置零还是比较好理解的，然而同样的我们发现<code>%esi</code>在后面的语句中也没有用到它的地方，为了保险起见我们还是打印一下这里出现的值😟</p>
+<li>
+<p><code>&lt;+14 ~ +19&gt;</code>两个赋值语句，<code>%eax</code>置零还是比较好理解的，然而同样的我们发现<code>%esi</code>在后面的语句中也没有用到它的地方，为了保险起见我们还是打印一下这里出现的值😟</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p 0x4025cf</span><br><span class="line"><span class="variable">$1</span> = 4203983</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
+<li>
+<p>然后就是一个读取数据的函数了，但是这次没有带有明确的函数名标识的包装我们就连要输入啥也不知道啊😅</p>
 </li>
-</ol>
-<ol>
-<li><p>然后就是一个读取数据的函数了，但是这次没有带有明确的函数名标识的包装我们就连要输入啥也不知道啊😅</p>
-</li>
-<li><p>然后查了一下，原来是被我一直忽略的<code>%esi</code>啊😂</p>
+<li>
+<p>然后查了一下，原来是被我一直忽略的<code>%esi</code>啊😂</p>
 <blockquote>
-<p>ESI/EDI 分别叫做”源/目标索引寄存器”(source/destinationindex),因为在很多字符串操作指令中,DS:ESI指向源串,而ES:EDI指向目标串.</p>
+<p>ESI/EDI 分别叫做&quot;源/目标索引寄存器&quot;(source/destinationindex),因为在很多字符串操作指令中,DS:ESI指向源串,而ES:EDI指向目标串.</p>
 </blockquote>
 </li>
-<li><p>于是调整打印格式就得到了下面的结论，也就是我们需要输入两个整数</p>
+<li>
+<p>于是调整打印格式就得到了下面的结论，也就是我们需要输入两个整数</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p (char *)0x4025cf</span><br><span class="line"><span class="variable">$3</span> = 0x4025cf <span class="string">&quot;%d %d&quot;</span></span><br></pre></td></tr></table></figure>
 </li>
-</ol>
-<ol>
-<li><p>然后<code>&lt;+29 ~ +34&gt;</code>是值当<code>%eax</code>的值小于1也就是输入小于<code>2</code>的时候就会爆炸</p>
+<li>
+<p>然后<code>&lt;+29 ~ +34&gt;</code>是值当<code>%eax</code>的值小于1也就是输入小于<code>2</code>的时候就会爆炸</p>
 </li>
-<li><p><code>&lt;+39 ~ +44&gt;</code>判断<code>%rsp+0x8</code>了中存的数据是否大于7，大于的话会跳转到<code>&lt;+106&gt;</code>也就是会爆炸，于是猜测这里的<code>%rsp+0x8</code>应该是存放了第一个输入的参数</p>
+<li>
+<p><code>&lt;+39 ~ +44&gt;</code>判断<code>%rsp+0x8</code>了中存的数据是否大于7，大于的话会跳转到<code>&lt;+106&gt;</code>也就是会爆炸，于是猜测这里的<code>%rsp+0x8</code>应该是存放了第一个输入的参数</p>
 </li>
-<li><p><code>&lt;+46&gt;</code>就是在将<code>%rsp + 0x8</code>的地址存入<code>%eax</code></p>
+<li>
+<p><code>&lt;+46&gt;</code>就是在将<code>%rsp + 0x8</code>的地址存入<code>%eax</code></p>
 </li>
-<li><p><code>&lt;+50&gt;</code>很可惜的是我们并不知道<code>%rax</code>的值，但是我们已经知道了这个跳转一定是到这个赋值语句里面去然后跳转到<code>&lt;+123&gt;</code>于是我们先确定了第一个数必须小于7，为了方便我们就直接去为0（然后第二个随便取毕竟输入小于2个数字也会爆炸），我们直接打一个断点在<code>&lt;+123&gt;</code>处</p>
+<li>
+<p><code>&lt;+50&gt;</code>很可惜的是我们并不知道<code>%rax</code>的值，但是我们已经知道了这个跳转一定是到这个赋值语句里面去然后跳转到<code>&lt;+123&gt;</code>于是我们先确定了第一个数必须小于7，为了方便我们就直接去为0（然后第二个随便取毕竟输入小于2个数字也会爆炸），我们直接打一个断点在<code>&lt;+123&gt;</code>处</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) <span class="built_in">break</span> *0x0000000000400fbe</span><br><span class="line">Breakpoint 2 at 0x400fbe</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
-<ol>
-<li><p><code>&lt;+123 ~ +129&gt;</code>比较了<code>%rsp+0xc</code>中存的数据与<code>%eax</code>的大小关系，如果不相等就会爆炸，否则就是正常退出，所以我们可以知道了<code>%rsp+0xc</code>中存的应该是我们输入的第二个值，我们已经知道了在前面的赋值时<code>%eax</code>会根据<code>%rsp+0x8</code>中的数据跳转到不同的赋值语句中，所以我们就直接打印出现在的<code>%eax</code>就可以了，然后在下一次输入的时候更改为对应的值就好啦</p>
+<li>
+<p><code>&lt;+123 ~ +129&gt;</code>比较了<code>%rsp+0xc</code>中存的数据与<code>%eax</code>的大小关系，如果不相等就会爆炸，否则就是正常退出，所以我们可以知道了<code>%rsp+0xc</code>中存的应该是我们输入的第二个值，我们已经知道了在前面的赋值时<code>%eax</code>会根据<code>%rsp+0x8</code>中的数据跳转到不同的赋值语句中，所以我们就直接打印出现在的<code>%eax</code>就可以了，然后在下一次输入的时候更改为对应的值就好啦</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Breakpoint 2, 0x0000000000400fbe <span class="keyword">in</span> phase_3 ()</span><br><span class="line">(gdb) <span class="built_in">print</span> (int)<span class="variable">$eax</span></span><br><span class="line"><span class="variable">$1</span> = 207</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<ol>
-<li>于是就可以得到一组可行的解<code>0 207</code>，经测试后通过</li>
+</li>
+<li>
+<p>于是就可以得到一组可行的解<code>0 207</code>，经测试后通过</p>
+</li>
 </ol>
-<h3 id="phase-4"><a href="#phase-4" class="headerlink" title="phase_4"></a>phase_4</h3><ol>
-<li><p>汇编如下</p>
+<h3 id="phase-4">phase_4</h3>
+<ol>
+<li>
+<p>汇编如下</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Dump of assembler code for function phase_4:</span><br><span class="line">   0x000000000040100c &lt;+0&gt;:	sub    $0x18,%rsp</span><br><span class="line">   0x0000000000401010 &lt;+4&gt;:	lea    0xc(%rsp),%rcx</span><br><span class="line">   0x0000000000401015 &lt;+9&gt;:	lea    0x8(%rsp),%rdx</span><br><span class="line">   0x000000000040101a &lt;+14&gt;:	mov    $0x4025cf,%esi</span><br><span class="line">   0x000000000040101f &lt;+19&gt;:	mov    $0x0,%eax</span><br><span class="line">   0x0000000000401024 &lt;+24&gt;:	callq  0x400bf0 &lt;__isoc99_sscanf@plt&gt;</span><br><span class="line">   0x0000000000401029 &lt;+29&gt;:	cmp    $0x2,%eax</span><br><span class="line">   0x000000000040102c &lt;+32&gt;:	jne    0x401035 &lt;phase_4+41&gt;</span><br><span class="line">   0x000000000040102e &lt;+34&gt;:	cmpl   $0xe,0x8(%rsp)</span><br><span class="line">   0x0000000000401033 &lt;+39&gt;:	jbe    0x40103a &lt;phase_4+46&gt;</span><br><span class="line">   0x0000000000401035 &lt;+41&gt;:	callq  0x40143a &lt;explode_bomb&gt;</span><br><span class="line">   0x000000000040103a &lt;+46&gt;:	mov    $0xe,%edx</span><br><span class="line">   0x000000000040103f &lt;+51&gt;:	mov    $0x0,%esi</span><br><span class="line">   0x0000000000401044 &lt;+56&gt;:	mov    0x8(%rsp),%edi</span><br><span class="line">   0x0000000000401048 &lt;+60&gt;:	callq  0x400fce &lt;func4&gt;</span><br><span class="line">   0x000000000040104d &lt;+65&gt;:	test   %eax,%eax</span><br><span class="line">   0x000000000040104f &lt;+67&gt;:	jne    0x401058 &lt;phase_4+76&gt;</span><br><span class="line">   0x0000000000401051 &lt;+69&gt;:	cmpl   $0x0,0xc(%rsp)</span><br><span class="line">   0x0000000000401056 &lt;+74&gt;:	je     0x40105d &lt;phase_4+81&gt;</span><br><span class="line">   0x0000000000401058 &lt;+76&gt;:	callq  0x40143a &lt;explode_bomb&gt;</span><br><span class="line">   0x000000000040105d &lt;+81&gt;:	add    $0x18,%rsp</span><br><span class="line">   0x0000000000401061 &lt;+85&gt;:	retq   </span><br><span class="line">End of assembler dump.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 </li>
-</ol>
+<li>
+<p>整体看上去应该是一个一些<code>if else</code>组成的直线型结构，然后我们具体来看：</p>
 <ol>
-<li><p>整体看上去应该是一个一些<code>if else</code>组成的直线型结构，然后我们具体来看：</p>
-<ol>
-<li><p><code>&lt;+14 ~ +32&gt;</code>有了前一个实验的铺垫这里就直接一起分析啦，首先打印出源目标索引里面的值，可以发现是两个整数；然后这里的要求应该是严格了一点如果输入值不是两个就会跳转到声明爆炸的那一行</p>
+<li>
+<p><code>&lt;+14 ~ +32&gt;</code>有了前一个实验的铺垫这里就直接一起分析啦，首先打印出源目标索引里面的值，可以发现是两个整数；然后这里的要求应该是严格了一点如果输入值不是两个就会跳转到声明爆炸的那一行</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p (char*)0x4025cf</span><br><span class="line"><span class="variable">$2</span> = 0x4025cf <span class="string">&quot;%d %d&quot;</span></span><br></pre></td></tr></table></figure>
 </li>
-</ol>
+<li>
+<p><code>&lt;+34 ~ +41&gt;</code>这里就是判断了<code>%rsp+0x8</code>内中存的数据是否小于或等于<code>0xe</code>也就是<code>14</code>，如果不是就会爆炸</p>
 </li>
-</ol>
-<ol>
-<li><p><code>&lt;+34 ~ +41&gt;</code>这里就是判断了<code>%rsp+0x8</code>内中存的数据是否小于或等于<code>0xe</code>也就是<code>14</code>，如果不是就会爆炸</p>
+<li>
+<p><code>&lt;+46 ~ +56&gt;</code>就是一些简单的赋值，将<code>%edx</code>置为<code>0xe</code>（14），<code>%esi</code>置为<code>0</code>而<code>%edi</code>存储了刚才的<code>%rsp+0x8</code></p>
 </li>
-<li><p><code>&lt;+46 ~ +56&gt;</code>就是一些简单的赋值，将<code>%edx</code>置为<code>0xe</code>（14），<code>%esi</code>置为<code>0</code>而<code>%edi</code>存储了刚才的<code>%rsp+0x8</code></p>
-</li>
-<li><p><code>&lt;+60 ~ +67&gt;</code>然后就是这里声明了一个函数无法从函数名得到其功能，但是通过<code>&lt;+65&gt;</code>可知函数的返回值要是0，所以我们对这个函数也进行反编译</p>
+<li>
+<p><code>&lt;+60 ~ +67&gt;</code>然后就是这里声明了一个函数无法从函数名得到其功能，但是通过<code>&lt;+65&gt;</code>可知函数的返回值要是0，所以我们对这个函数也进行反编译</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Dump of assembler code for function func4:</span><br><span class="line">   0x0000000000400fce &lt;+0&gt;:	sub    $0x8,%rsp</span><br><span class="line">   0x0000000000400fd2 &lt;+4&gt;:	mov    %edx,%eax</span><br><span class="line">   0x0000000000400fd4 &lt;+6&gt;:	sub    %esi,%eax</span><br><span class="line">   0x0000000000400fd6 &lt;+8&gt;:	mov    %eax,%ecx</span><br><span class="line">   0x0000000000400fd8 &lt;+10&gt;:	shr    $0x1f,%ecx</span><br><span class="line">   0x0000000000400fdb &lt;+13&gt;:	add    %ecx,%eax</span><br><span class="line">   0x0000000000400fdd &lt;+15&gt;:	sar    %eax</span><br><span class="line">   0x0000000000400fdf &lt;+17&gt;:	lea    (%rax,%rsi,1),%ecx</span><br><span class="line">   0x0000000000400fe2 &lt;+20&gt;:	cmp    %edi,%ecx</span><br><span class="line">   0x0000000000400fe4 &lt;+22&gt;:	jle    0x400ff2 &lt;func4+36&gt;</span><br><span class="line">   0x0000000000400fe6 &lt;+24&gt;:	lea    -0x1(%rcx),%edx</span><br><span class="line">   0x0000000000400fe9 &lt;+27&gt;:	callq  0x400fce &lt;func4&gt;</span><br><span class="line">   0x0000000000400fee &lt;+32&gt;:	add    %eax,%eax</span><br><span class="line">   0x0000000000400ff0 &lt;+34&gt;:	jmp    0x401007 &lt;func4+57&gt;</span><br><span class="line">   0x0000000000400ff2 &lt;+36&gt;:	mov    $0x0,%eax</span><br><span class="line">   0x0000000000400ff7 &lt;+41&gt;:	cmp    %edi,%ecx</span><br><span class="line">   0x0000000000400ff9 &lt;+43&gt;:	jge    0x401007 &lt;func4+57&gt;</span><br><span class="line">   0x0000000000400ffb &lt;+45&gt;:	lea    0x1(%rcx),%esi</span><br><span class="line">   0x0000000000400ffe &lt;+48&gt;:	callq  0x400fce &lt;func4&gt;</span><br><span class="line">   0x0000000000401003 &lt;+53&gt;:	lea    0x1(%rax,%rax,1),%eax</span><br><span class="line">   0x0000000000401007 &lt;+57&gt;:	add    $0x8,%rsp</span><br><span class="line">   0x000000000040100b &lt;+61&gt;:	retq   </span><br><span class="line">End of assembler dump.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p><code>&lt;+4 ~ +8&gt;</code>简单赋值和运算<code>%eax</code>赋值为<code>%edx</code>也就是<code>0xe</code>（14），然后<code>%eax</code>减去了一个<code>%esi</code>也就是<code>0</code>这时<code>%eax</code>仍然为<code>0xe</code>，</p>
 <p><code>&lt;+10&gt;</code>对<code>%ecx</code>的值进行逻辑右移31位也就是得到了<code>%edc</code>的符号位,得到<code>%edc</code>为<code>0</code></p>
@@ -306,202 +337,229 @@
 <p><code>&lt;+41 ~ +53&gt;</code>这个结构和上面的挺像的，当<code>%edi</code>大于等于7 就会跳转到程序结束，否则就将<code>%edx</code>置为<code>(%rcx)+1</code>然后继续调用原函数然后将<code>%eax</code>置为<code>2 * %rax + 1</code></p>
 <p>结合前面两个，为了避免节外生枝（无论如何惹到递归去总不会是好主意🤣）其实当<code>%edi</code>正好为<code>7</code>的时候就可以令<code>%eax</code>为<code>0</code>返回了，又<code>%edi</code>的值是<code>%rsp + 0x8</code>所以其值就是<code>7</code></p>
 </li>
-<li><p><code>&lt;+69 ~ +76&gt;</code>这里就是一个简单的比较若<code>%rsp + 0xc</code>的值不为0就会爆炸，否则就顺利退出了</p>
+<li>
+<p><code>&lt;+69 ~ +76&gt;</code>这里就是一个简单的比较若<code>%rsp + 0xc</code>的值不为0就会爆炸，否则就顺利退出了</p>
 </li>
 </ol>
-<ol>
-<li>总结可知正确结果（起码是一种正确的结果）就是<code>7 0</code>，测试通过</li>
+</li>
+<li>
+<p>总结可知正确结果（起码是一种正确的结果）就是<code>7 0</code>，测试通过</p>
+</li>
 </ol>
-<h3 id="phase-5"><a href="#phase-5" class="headerlink" title="phase_5"></a>phase_5</h3><ol>
-<li><p>汇编如下</p>
+<h3 id="phase-5">phase_5</h3>
+<ol>
+<li>
+<p>汇编如下</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">Dump of assembler code for function phase_5:</span><br><span class="line">   0x0000000000401062 &lt;+0&gt;:	push   %rbx</span><br><span class="line">   0x0000000000401063 &lt;+1&gt;:	sub    $0x20,%rsp</span><br><span class="line">   0x0000000000401067 &lt;+5&gt;:	mov    %rdi,%rbx</span><br><span class="line">   0x000000000040106a &lt;+8&gt;:	mov    %fs:0x28,%rax</span><br><span class="line">   0x0000000000401073 &lt;+17&gt;:	mov    %rax,0x18(%rsp)</span><br><span class="line">   0x0000000000401078 &lt;+22&gt;:	xor    %eax,%eax</span><br><span class="line">   0x000000000040107a &lt;+24&gt;:	callq  0x40131b &lt;string_length&gt;</span><br><span class="line">   0x000000000040107f &lt;+29&gt;:	cmp    $0x6,%eax</span><br><span class="line">   0x0000000000401082 &lt;+32&gt;:	je     0x4010d2 &lt;phase_5+112&gt;</span><br><span class="line">   0x0000000000401084 &lt;+34&gt;:	callq  0x40143a &lt;explode_bomb&gt;</span><br><span class="line">   0x0000000000401089 &lt;+39&gt;:	jmp    0x4010d2 &lt;phase_5+112&gt;</span><br><span class="line">   0x000000000040108b &lt;+41&gt;:	movzbl (%rbx,%rax,1),%ecx</span><br><span class="line">   0x000000000040108f &lt;+45&gt;:	mov    %cl,(%rsp)</span><br><span class="line">   0x0000000000401092 &lt;+48&gt;:	mov    (%rsp),%rdx</span><br><span class="line">   0x0000000000401096 &lt;+52&gt;:	and    $0xf,%edx</span><br><span class="line">   0x0000000000401099 &lt;+55&gt;:	movzbl 0x4024b0(%rdx),%edx</span><br><span class="line">   0x00000000004010a0 &lt;+62&gt;:	mov    %dl,0x10(%rsp,%rax,1)</span><br><span class="line">   0x00000000004010a4 &lt;+66&gt;:	add    $0x1,%rax</span><br><span class="line">   0x00000000004010a8 &lt;+70&gt;:	cmp    $0x6,%rax</span><br><span class="line">   0x00000000004010ac &lt;+74&gt;:	jne    0x40108b &lt;phase_5+41&gt;</span><br><span class="line">   0x00000000004010ae &lt;+76&gt;:	movb   $0x0,0x16(%rsp)</span><br><span class="line">   0x00000000004010b3 &lt;+81&gt;:	mov    $0x40245e,%esi</span><br><span class="line">   0x00000000004010b8 &lt;+86&gt;:	lea    0x10(%rsp),%rdi</span><br><span class="line">   0x00000000004010bd &lt;+91&gt;:	callq  0x401338 &lt;strings_not_equal&gt;</span><br><span class="line">   0x00000000004010c2 &lt;+96&gt;:	test   %eax,%eax</span><br><span class="line">   0x00000000004010c4 &lt;+98&gt;:	je     0x4010d9 &lt;phase_5+119&gt;</span><br><span class="line">   0x00000000004010c6 &lt;+100&gt;:	callq  0x40143a &lt;explode_bomb&gt;</span><br><span class="line">   0x00000000004010cb &lt;+105&gt;:	nopl   0x0(%rax,%rax,1)</span><br><span class="line">   0x00000000004010d0 &lt;+110&gt;:	jmp    0x4010d9 &lt;phase_5+119&gt;</span><br><span class="line">   0x00000000004010d2 &lt;+112&gt;:	mov    $0x0,%eax</span><br><span class="line">   0x00000000004010d7 &lt;+117&gt;:	jmp    0x40108b &lt;phase_5+41&gt;</span><br><span class="line">   0x00000000004010d9 &lt;+119&gt;:	mov    0x18(%rsp),%rax</span><br><span class="line">   0x00000000004010de &lt;+124&gt;:	xor    %fs:0x28,%rax</span><br><span class="line">   0x00000000004010e7 &lt;+133&gt;:	je     0x4010ee &lt;phase_5+140&gt;</span><br><span class="line">   0x00000000004010e9 &lt;+135&gt;:	callq  0x400b30 &lt;__stack_chk_fail@plt&gt;</span><br><span class="line">   0x00000000004010ee &lt;+140&gt;:	add    $0x20,%rsp</span><br><span class="line">   0x00000000004010f2 &lt;+144&gt;:	pop    %rbx</span><br><span class="line">   0x00000000004010f3 &lt;+145&gt;:	retq   </span><br><span class="line">End of assembler dump.</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
+<li>
+<p>整体看过之后就会感觉是一个反复横跳的循环体，特别是看到这里的<code>&lt;+66 ~ +74&gt;</code>就会发现感觉起来是个<code>for</code>循环了😆，我们整体分析来看：</p>
 <ol>
-<li><p>整体看过之后就会感觉是一个反复横跳的循环体，特别是看到这里的<code>&lt;+66 ~ +74&gt;</code>就会发现感觉起来是个<code>for</code>循环了😆，我们整体分析来看：</p>
-<ol>
-<li><p><code>&lt;+5 ~ +22&gt;</code>是一些比较简单的赋值，为了根据前面的经验并不是每一个寄存器里面的值最后都用到了，所有我们就不一一分解开讲啦；值得注意的是<code>&lt;+22&gt;</code>行的这个语句就是对自己取异或就相当于对<code>%eax</code>置<code>0</code>而已</p>
+<li>
+<p><code>&lt;+5 ~ +22&gt;</code>是一些比较简单的赋值，为了根据前面的经验并不是每一个寄存器里面的值最后都用到了，所有我们就不一一分解开讲啦；值得注意的是<code>&lt;+22&gt;</code>行的这个语句就是对自己取异或就相当于对<code>%eax</code>置<code>0</code>而已</p>
 </li>
-<li><p><code>&lt;+24 ~ +34&gt;</code>然后声明了一个函数<code>string_length</code>根据函数名可以得到这个大概就是一个返回字符串长度的函数，我们为了以防万一还是将其汇编大致过一下：</p>
+<li>
+<p><code>&lt;+24 ~ +34&gt;</code>然后声明了一个函数<code>string_length</code>根据函数名可以得到这个大概就是一个返回字符串长度的函数，我们为了以防万一还是将其汇编大致过一下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Dump of assembler code for function string_length:</span><br><span class="line">   0x000000000040131b &lt;+0&gt;:	cmpb   $0x0,(%rdi)</span><br><span class="line">   0x000000000040131e &lt;+3&gt;:	je     0x401332 &lt;string_length+23&gt;</span><br><span class="line">   0x0000000000401320 &lt;+5&gt;:	mov    %rdi,%rdx</span><br><span class="line">   0x0000000000401323 &lt;+8&gt;:	add    $0x1,%rdx</span><br><span class="line">   0x0000000000401327 &lt;+12&gt;:	mov    %edx,%eax</span><br><span class="line">   0x0000000000401329 &lt;+14&gt;:	sub    %edi,%eax</span><br><span class="line">   0x000000000040132b &lt;+16&gt;:	cmpb   $0x0,(%rdx)</span><br><span class="line">   0x000000000040132e &lt;+19&gt;:	jne    0x401323 &lt;string_length+8&gt;</span><br><span class="line">   0x0000000000401330 &lt;+21&gt;:	repz retq </span><br><span class="line">   0x0000000000401332 &lt;+23&gt;:	mov    $0x0,%eax</span><br><span class="line">   0x0000000000401337 &lt;+28&gt;:	retq   </span><br><span class="line">End of assembler dump.</span><br></pre></td></tr></table></figure>
+<p>还是挺简单的，<code>&lt;+0&gt;</code>上来就判断了是否是字符结尾如果是就直接返回0跳出，然后就是一个循环找字符结尾就行了 由于较简单就不细究了</p>
+<p>然后就是判断返回值是否为<code>0x6</code>如果不是就会爆炸否则就直接跳到<code>&lt;+112&gt;</code></p>
+<p>看到这里我兴奋了一切就要结束了，谁想后面还有一个跳回来的<code>jmp</code>🤣</p>
 </li>
-</ol>
+<li>
+<p><code>&lt;+112 ~ +117&gt;</code>这里就是将<code>%eax</code>置<code>0</code>然后就是一个无条件跳转到<code>&lt;+41&gt;</code></p>
 </li>
-</ol>
-<pre><code>  还是挺简单的，`&lt;+0&gt;`上来就判断了是否是字符结尾如果是就直接返回0跳出，然后就是一个循环找字符结尾就行了 由于较简单就不细究了
-
-  然后就是判断返回值是否为`0x6`如果不是就会爆炸否则就直接跳到`&lt;+112&gt;`
-
-  看到这里我兴奋了一切就要结束了，谁想后面还有一个跳回来的`jmp`🤣
-</code></pre><ol>
-<li><p><code>&lt;+112 ~ +117&gt;</code>这里就是将<code>%eax</code>置<code>0</code>然后就是一个无条件跳转到<code>&lt;+41&gt;</code></p>
+<li>
+<p><code>&lt;+41 ~ +62&gt;</code>一大串的赋值和运算，同样的我们暂时不关心等用到这些寄存器内的值在返回看在哪里发生了修改</p>
 </li>
-<li><p><code>&lt;+41 ~ +62&gt;</code>一大串的赋值和运算，同样的我们暂时不关心等用到这些寄存器内的值在返回看在哪里发生了修改</p>
+<li>
+<p><code>&lt;+66 ~ +74&gt;</code>在最开头我们说了这个很像一个<code>for</code>循环的过程，当我们跳出循环的时候也就是当<code>%rax</code>等于<code>0x6</code>的时候就是要跳出的时候；我们可以注意到这里的<code>0x6</code>在最早判断字符串长度的时候就出现过，所以猜测这里的循环应该就是和要求我们输入的字符串相关的</p>
 </li>
-<li><p><code>&lt;+66 ~ +74&gt;</code>在最开头我们说了这个很像一个<code>for</code>循环的过程，当我们跳出循环的时候也就是当<code>%rax</code>等于<code>0x6</code>的时候就是要跳出的时候；我们可以注意到这里的<code>0x6</code>在最早判断字符串长度的时候就出现过，所以猜测这里的循环应该就是和要求我们输入的字符串相关的</p>
-</li>
-<li><p><code>&lt;+76 ~ +100&gt;</code>这一整段就和第一关非常相似了，我们直接打印出<code>0x40245e</code>内的去看一下就行了</p>
+<li>
+<p><code>&lt;+76 ~ +100&gt;</code>这一整段就和第一关非常相似了，我们直接打印出<code>0x40245e</code>内的去看一下就行了</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p (char*)0x40245e</span><br><span class="line"><span class="variable">$1</span> = 0x40245e <span class="string">&quot;flyers&quot;</span></span><br></pre></td></tr></table></figure>
 <p>(偷偷去测了一下输入<code>flyers</code>会不会就过了，结果显然 BOOM 了😂)</p>
 </li>
-<li><p><code>&lt;+119 ~ +135&gt;</code>这里就是，这里是将我们的输入值装入<code>%rax</code>然后来了个异或，我们之前已经知道了当异或的两个值相同的话就会返回<code>0</code>，而当结果为<code>0</code>时就会跳过一个貌似和栈相关的函数结束函数，同样的为了减少麻烦我们尽量凑到跳过这个和栈相关的函数</p>
+<li>
+<p><code>&lt;+119 ~ +135&gt;</code>这里就是，这里是将我们的输入值装入<code>%rax</code>然后来了个异或，我们之前已经知道了当异或的两个值相同的话就会返回<code>0</code>，而当结果为<code>0</code>时就会跳过一个貌似和栈相关的函数结束函数，同样的为了减少麻烦我们尽量凑到跳过这个和栈相关的函数</p>
 </li>
 </ol>
+</li>
+<li>
+<p>一通操作分析下来结果我们连输入存在了哪里我们都还不知道呢😂，但是我们已经发现了整个程序里面最重要的应该就是在那个循环语句里面了，而这个语句应该就是按字符修改过我们的字符串了的，我们返回去看一下赋值和修改过数据的这一部分</p>
 <ol>
-<li><p>一通操作分析下来结果我们连输入存在了哪里我们都还不知道呢😂，但是我们已经发现了整个程序里面最重要的应该就是在那个循环语句里面了，而这个语句应该就是按字符修改过我们的字符串了的，我们返回去看一下赋值和修改过数据的这一部分</p>
-<ol>
-<li><p><code>&lt;+5 ~ +17&gt;</code>这一段唯一难以理解的就是<code>%fs:0x28</code>语句了，查找过资料后发现这原来是一个随机值😅，然后<code>&lt;+5&gt;</code>这里的寄存器<code>%rdi</code>总感觉在哪里见过，翻到前面可以看到<code>ESI/EDI 分别叫做&quot;源/目标索引寄存器&quot;</code>猜测这里的<code>%rdi</code>会不会也是一样的作用啊指向目标索引寄存器也就是这里存了我们输入时的索引，毕竟这里接下来就要做一个判断输入字符串的长度的函数了，所以我们打个断点然后将<code>%rdi</code>中的内容打印出来</p>
+<li>
+<p><code>&lt;+5 ~ +17&gt;</code>这一段唯一难以理解的就是<code>%fs:0x28</code>语句了，查找过资料后发现这原来是一个随机值😅，然后<code>&lt;+5&gt;</code>这里的寄存器<code>%rdi</code>总感觉在哪里见过，翻到前面可以看到<code>ESI/EDI 分别叫做&quot;源/目标索引寄存器&quot;</code>猜测这里的<code>%rdi</code>会不会也是一样的作用啊指向目标索引寄存器也就是这里存了我们输入时的索引，毕竟这里接下来就要做一个判断输入字符串的长度的函数了，所以我们打个断点然后将<code>%rdi</code>中的内容打印出来</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(gdb) <span class="built_in">break</span> *0x000000000040106a</span><br><span class="line">Breakpoint 3 at 0x40106a</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 3, 0x000000000040106a <span class="keyword">in</span> phase_5 ()</span><br><span class="line">(gdb) p (char*)<span class="variable">$rdi</span></span><br><span class="line"><span class="variable">$3</span> = 0x6038c0 &lt;input_strings+320&gt; <span class="string">&quot;abcdfe&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>可以发现就是我们输入的值，所以这里就是将我们输入的值存储到了<code>%rbx</code>，然后下面的两个寄存器就是存储了个随机值而已没啥需要注意的😆</p>
 </li>
-<li><p>然后就是在循环里面进行的赋值和运算了<code>&lt;+41 ~ +62&gt;</code></p>
+<li>
+<p>然后就是在循环里面进行的赋值和运算了<code>&lt;+41 ~ +62&gt;</code></p>
 <p><code>&lt;+41&gt;</code>显然一就给我整蒙了，为什么会将<code>%rbx + %rax * 1</code>也就是<code>%rbx + %rax</code>这个随机值存到<code>%ecx</code>中，而且这里还以一个随机值去递增后作为跳出循环的条件，起始按照正常的思维这里的<code>%rax</code>应该是被赋值为一个定值的而且这个定值应该会是<code>0</code>才正常，所以这里还是打印一下<code>%rax</code>的值查看一下比较好，查看果然符合我们的预期（猜测是在<code>string_length</code>函数运行的时候修改了🤔？）这段指令的意思就是取我们输入的字符串的每一位字符然后存到<code>%eax</code>中</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(gdb) <span class="built_in">break</span> *0x000000000040108f</span><br><span class="line">Breakpoint 4 at 0x40108f</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 4, 0x000000000040108f <span class="keyword">in</span> phase_5 ()</span><br><span class="line">(gdb) p (int)<span class="variable">$rax</span></span><br><span class="line"><span class="variable">$5</span> = 0</span><br></pre></td></tr></table></figure>
 <p><code>&lt;+45 ~ +48&gt;</code>这里是将<code>%cl</code>的地址装入<code>%rdx</code>这里的<code>(%sp)</code>是个临时变量？同时我们还没用到过<code>%cl</code>这个寄存器，所以打印出来看一下，因为还不知道这里<code>%cl</code>中存了什么类型的数据所以测了几次，第一次得到了<code>int</code>型的<code>97</code>敏感点的应该能猜到这个就是Ascll码中的<code>a</code>，所以当作字符串打印出来但发现好像是不可以的所以直接当做字符打印就行了，所以这里存的也是<code>%ecx</code>里面的值？</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(gdb) stepi </span><br><span class="line">0x0000000000401092 <span class="keyword">in</span> phase_5 ()</span><br><span class="line">(gdb) p <span class="variable">$cl</span></span><br><span class="line"><span class="variable">$6</span> = 97</span><br><span class="line">(gdb) p (char*)<span class="variable">$cl</span></span><br><span class="line"><span class="variable">$7</span> = 0x61 &lt;Address 0x61 out of bounds&gt;</span><br><span class="line">(gdb) p (char)<span class="variable">$cl</span></span><br><span class="line"><span class="variable">$8</span> = 97 <span class="string">&#x27;a&#x27;</span></span><br></pre></td></tr></table></figure>
+<p><code>&lt;+52&gt;</code>这里就是将<code>%edx</code>的值与上<code>0xf</code>也就是取<code>%edx</code>二进制的低4位，然后又不知道<code>%edx</code>是个啥，所以这里再打印出来发现这个值又是<code>a</code>奇奇怪怪，这个值也是我们输入的第一个字符所以这个值又是在啥时候被赋值为<code>%rbx</code>的呢😬？</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p (char)<span class="variable">$edx</span></span><br><span class="line"><span class="variable">$10</span> = 97 <span class="string">&#x27;a&#x27;</span></span><br></pre></td></tr></table></figure>
+<p><code>&lt;+55&gt;</code>这里的<code>%rdx</code>又一次地不知道是个啥，打印出来就好啦，但是好像没啥意义，然后还赋值给了刚才已经赋过值的<code>%edx</code>😵</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p <span class="variable">$rdx</span></span><br><span class="line"><span class="variable">$1</span> = 1</span><br></pre></td></tr></table></figure>
+<p><code>&lt;+62&gt;</code>这里又是将一个奇怪的寄存器里的值赋给了<code>0x10(%rsp,%rax,1)</code>也就是<code>16+%rsp+%rax</code>这里的<code>%rax</code>就是循环的条件，根据我们编程的习惯这里的<code>%rax</code>应该就是我们字符串的索引了而<code>16+%rsp+%rax</code>就是找到字符串的地址（玄学），但是我们还是不知道<code>%dl</code>的值使什么，打印出其值也不知道是从何而来（这里输入的测试字符串是<code>abcdef</code>而一二次得到的值分别是<code>ad</code>）😧</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p (char)<span class="variable">$dl</span></span><br><span class="line"><span class="variable">$16</span> = 97 <span class="string">&#x27;a&#x27;</span></span><br><span class="line">(gdb) p (char)<span class="variable">$dl</span></span><br><span class="line"><span class="variable">$17</span> = 100 <span class="string">&#x27;d&#x27;</span></span><br></pre></td></tr></table></figure>
 </li>
-</ol>
+<li>
+<p>通读过整个循环语句并没有找到我们希望的对<code>%rbx</code>修改的部分，但是这里该如何解释判等的时候出现的错误呢？真的不能理解了🤯</p>
 </li>
-</ol>
-<pre><code>  `&lt;+52&gt;`这里就是将`%edx`的值与上`0xf`也就是取`%edx`二进制的低4位，然后又不知道`%edx`是个啥，所以这里再打印出来发现这个值又是`a`奇奇怪怪，这个值也是我们输入的第一个字符所以这个值又是在啥时候被赋值为`%rbx`的呢😬？
-
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p (char)<span class="variable">$edx</span></span><br><span class="line"><span class="variable">$10</span> = 97 <span class="string">&#x27;a&#x27;</span></span><br></pre></td></tr></table></figure>
-
-  `&lt;+55&gt;`这里的`%rdx`又一次地不知道是个啥，打印出来就好啦，但是好像没啥意义，然后还赋值给了刚才已经赋过值的`%edx`😵
-
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p <span class="variable">$rdx</span></span><br><span class="line"><span class="variable">$1</span> = 1</span><br></pre></td></tr></table></figure>
-
-  `&lt;+62&gt;`这里又是将一个奇怪的寄存器里的值赋给了`0x10(%rsp,%rax,1)`也就是`16+%rsp+%rax`这里的`%rax`就是循环的条件，根据我们编程的习惯这里的`%rax`应该就是我们字符串的索引了而`16+%rsp+%rax`就是找到字符串的地址（玄学），但是我们还是不知道`%dl`的值使什么，打印出其值也不知道是从何而来（这里输入的测试字符串是`abcdef`而一二次得到的值分别是`ad`）😧
-
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p (char)<span class="variable">$dl</span></span><br><span class="line"><span class="variable">$16</span> = 97 <span class="string">&#x27;a&#x27;</span></span><br><span class="line">(gdb) p (char)<span class="variable">$dl</span></span><br><span class="line"><span class="variable">$17</span> = 100 <span class="string">&#x27;d&#x27;</span></span><br></pre></td></tr></table></figure>
-</code></pre><ol>
-<li><p>通读过整个循环语句并没有找到我们希望的对<code>%rbx</code>修改的部分，但是这里该如何解释判等的时候出现的错误呢？真的不能理解了🤯</p>
+<li>
+<p>最终查找资料后发现：<code>%edx %dl</code>和<code>%rdx</code>是同一个寄存器，<code>%ecx %cl</code>和<code>%rcx</code>是同一个寄存器</p>
 </li>
-<li><p>最终查找资料后发现：<code>%edx %dl</code>和<code>%rdx</code>是同一个寄存器，<code>%ecx %cl</code>和<code>%rcx</code>是同一个寄存器</p>
-</li>
-<li><p>根据这个线索我们把前面的推导串联起来就得到了：对输入字符串的每一个字符对<code>0xf</code>取与后得到的值加上<code>0x4024b0</code>作为地址再到对应的字符串再赋值给原值，于是就将<code>0x4024b0</code>作为字符串打印出来</p>
+<li>
+<p>根据这个线索我们把前面的推导串联起来就得到了：对输入字符串的每一个字符对<code>0xf</code>取与后得到的值加上<code>0x4024b0</code>作为地址再到对应的字符串再赋值给原值，于是就将<code>0x4024b0</code>作为字符串打印出来</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p (char*) 0x4024b0</span><br><span class="line"><span class="variable">$18</span> = 0x4024b0 &lt;array.3449&gt; <span class="string">&quot;maduiersnfotvbylSo you think you can stop the bomb with ctrl-c, do you?&quot;</span></span><br></pre></td></tr></table></figure>
 <p>原来这里还有一个来自邪恶博士的嘲讽啊🤪</p>
 </li>
-<li><p>回归正题我们需要按照规定规则找到能够与<code>flyers</code>匹配的字符串，为了避免ascll码中的非可见字符干扰，我们把输入都映射到<code>a~z</code>，我们可以设置程序将所有的映射组都找到就再组合出来就行了</p>
+<li>
+<p>回归正题我们需要按照规定规则找到能够与<code>flyers</code>匹配的字符串，为了避免ascll码中的非可见字符干扰，我们把输入都映射到<code>a~z</code>，我们可以设置程序将所有的映射组都找到就再组合出来就行了</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> s[] = <span class="string">&quot;maduiersnfotvbylSo you think you can stop the bomb with ctrl-c, do you?&quot;</span>;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">0xf</span>; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%c --&gt;  %c\n&quot;</span>,<span class="string">&#x27;a&#x27;</span>+i,s[(<span class="string">&#x27;a&#x27;</span>+i)&amp;<span class="number">0xf</span>]);</span><br><span class="line">    &#125;   </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">a --&gt;  a</span><br><span class="line">b --&gt;  d</span><br><span class="line">c --&gt;  u</span><br><span class="line">d --&gt;  i</span><br><span class="line">e --&gt;  e</span><br><span class="line">f --&gt;  r</span><br><span class="line">g --&gt;  s</span><br><span class="line">h --&gt;  n</span><br><span class="line">i --&gt;  f</span><br><span class="line">j --&gt;  o</span><br><span class="line">k --&gt;  t</span><br><span class="line">l --&gt;  v</span><br><span class="line">m --&gt;  b</span><br><span class="line">n --&gt;  y</span><br><span class="line">o --&gt;  l</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>最后得到一组可行的解为<code>ionefg</code>，好像后面还有一个赋值和运算的过程并没有啥用啊😂</p>
 </li>
 </ol>
-<pre><code>  输出为：
-
-  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">a --&gt;  a</span><br><span class="line">b --&gt;  d</span><br><span class="line">c --&gt;  u</span><br><span class="line">d --&gt;  i</span><br><span class="line">e --&gt;  e</span><br><span class="line">f --&gt;  r</span><br><span class="line">g --&gt;  s</span><br><span class="line">h --&gt;  n</span><br><span class="line">i --&gt;  f</span><br><span class="line">j --&gt;  o</span><br><span class="line">k --&gt;  t</span><br><span class="line">l --&gt;  v</span><br><span class="line">m --&gt;  b</span><br><span class="line">n --&gt;  y</span><br><span class="line">o --&gt;  l</span><br></pre></td></tr></table></figure>
-</code></pre><ol>
-<li>最后得到一组可行的解为<code>ionefg</code>，好像后面还有一个赋值和运算的过程并没有啥用啊😂</li>
+</li>
+<li>
+<p>经验证可通过</p>
+</li>
 </ol>
+<h3 id="phase-6">phase_6</h3>
 <ol>
-<li>经验证可通过</li>
-</ol>
-<h3 id="phase-6"><a href="#phase-6" class="headerlink" title="phase_6"></a>phase_6</h3><ol>
-<li><p>先上汇编</p>
+<li>
+<p>先上汇编</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line">Dump of assembler code for function phase_6:</span><br><span class="line">   0x00000000004010f4 &lt;+0&gt;:	push   %r14</span><br><span class="line">   0x00000000004010f6 &lt;+2&gt;:	push   %r13</span><br><span class="line">   0x00000000004010f8 &lt;+4&gt;:	push   %r12</span><br><span class="line">   0x00000000004010fa &lt;+6&gt;:	push   %rbp</span><br><span class="line">   0x00000000004010fb &lt;+7&gt;:	push   %rbx</span><br><span class="line">   0x00000000004010fc &lt;+8&gt;:	sub    $0x50,%rsp</span><br><span class="line">   0x0000000000401100 &lt;+12&gt;:	mov    %rsp,%r13</span><br><span class="line">   0x0000000000401103 &lt;+15&gt;:	mov    %rsp,%rsi</span><br><span class="line">   0x0000000000401106 &lt;+18&gt;:	callq  0x40145c &lt;read_six_numbers&gt;</span><br><span class="line">   0x000000000040110b &lt;+23&gt;:	mov    %rsp,%r14</span><br><span class="line">   0x000000000040110e &lt;+26&gt;:	mov    $0x0,%r12d</span><br><span class="line">   0x0000000000401114 &lt;+32&gt;:	mov    %r13,%rbp</span><br><span class="line">   0x0000000000401117 &lt;+35&gt;:	mov    0x0(%r13),%eax</span><br><span class="line">   0x000000000040111b &lt;+39&gt;:	sub    $0x1,%eax</span><br><span class="line">   0x000000000040111e &lt;+42&gt;:	cmp    $0x5,%eax</span><br><span class="line">   0x0000000000401121 &lt;+45&gt;:	jbe    0x401128 &lt;phase_6+52&gt;</span><br><span class="line">   0x0000000000401123 &lt;+47&gt;:	callq  0x40143a &lt;explode_bomb&gt;</span><br><span class="line">   0x0000000000401128 &lt;+52&gt;:	add    $0x1,%r12d</span><br><span class="line">   0x000000000040112c &lt;+56&gt;:	cmp    $0x6,%r12d</span><br><span class="line">   0x0000000000401130 &lt;+60&gt;:	je     0x401153 &lt;phase_6+95&gt;</span><br><span class="line">   0x0000000000401132 &lt;+62&gt;:	mov    %r12d,%ebx</span><br><span class="line">   0x0000000000401135 &lt;+65&gt;:	movslq %ebx,%rax</span><br><span class="line">   0x0000000000401138 &lt;+68&gt;:	mov    (%rsp,%rax,4),%eax</span><br><span class="line">   0x000000000040113b &lt;+71&gt;:	cmp    %eax,0x0(%rbp)</span><br><span class="line">   0x000000000040113e &lt;+74&gt;:	jne    0x401145 &lt;phase_6+81&gt;</span><br><span class="line">   0x0000000000401140 &lt;+76&gt;:	callq  0x40143a &lt;explode_bomb&gt;</span><br><span class="line">   0x0000000000401145 &lt;+81&gt;:	add    $0x1,%ebx</span><br><span class="line">   0x0000000000401148 &lt;+84&gt;:	cmp    $0x5,%ebx</span><br><span class="line">   0x000000000040114b &lt;+87&gt;:	jle    0x401135 &lt;phase_6+65&gt;</span><br><span class="line">   0x000000000040114d &lt;+89&gt;:	add    $0x4,%r13</span><br><span class="line">   0x0000000000401151 &lt;+93&gt;:	jmp    0x401114 &lt;phase_6+32&gt;</span><br><span class="line">   0x0000000000401153 &lt;+95&gt;:	lea    0x18(%rsp),%rsi</span><br><span class="line">   0x0000000000401158 &lt;+100&gt;:	mov    %r14,%rax</span><br><span class="line">   0x000000000040115b &lt;+103&gt;:	mov    $0x7,%ecx</span><br><span class="line">   0x0000000000401160 &lt;+108&gt;:	mov    %ecx,%edx</span><br><span class="line">   0x0000000000401162 &lt;+110&gt;:	sub    (%rax),%edx</span><br><span class="line">   0x0000000000401164 &lt;+112&gt;:	mov    %edx,(%rax)</span><br><span class="line">   0x0000000000401166 &lt;+114&gt;:	add    $0x4,%rax</span><br><span class="line">   0x000000000040116a &lt;+118&gt;:	cmp    %rsi,%rax</span><br><span class="line">   0x000000000040116d &lt;+121&gt;:	jne    0x401160 &lt;phase_6+108&gt;</span><br><span class="line">   0x000000000040116f &lt;+123&gt;:	mov    $0x0,%esi</span><br><span class="line">   0x0000000000401174 &lt;+128&gt;:	jmp    0x401197 &lt;phase_6+163&gt;</span><br><span class="line">   0x0000000000401176 &lt;+130&gt;:	mov    0x8(%rdx),%rdx</span><br><span class="line">   0x000000000040117a &lt;+134&gt;:	add    $0x1,%eax</span><br><span class="line">   0x000000000040117d &lt;+137&gt;:	cmp    %ecx,%eax</span><br><span class="line">   0x000000000040117f &lt;+139&gt;:	jne    0x401176 &lt;phase_6+130&gt;</span><br><span class="line">   0x0000000000401181 &lt;+141&gt;:	jmp    0x401188 &lt;phase_6+148&gt;</span><br><span class="line">   0x0000000000401183 &lt;+143&gt;:	mov    $0x6032d0,%edx</span><br><span class="line">   0x0000000000401188 &lt;+148&gt;:	mov    %rdx,0x20(%rsp,%rsi,2)</span><br><span class="line">   0x000000000040118d &lt;+153&gt;:	add    $0x4,%rsi</span><br><span class="line">   0x0000000000401191 &lt;+157&gt;:	cmp    $0x18,%rsi</span><br><span class="line">   0x0000000000401195 &lt;+161&gt;:	je     0x4011ab &lt;phase_6+183&gt;</span><br><span class="line">   0x0000000000401197 &lt;+163&gt;:	mov    (%rsp,%rsi,1),%ecx</span><br><span class="line">   0x000000000040119a &lt;+166&gt;:	cmp    $0x1,%ecx</span><br><span class="line">   0x000000000040119d &lt;+169&gt;:	jle    0x401183 &lt;phase_6+143&gt;</span><br><span class="line">   0x000000000040119f &lt;+171&gt;:	mov    $0x1,%eax</span><br><span class="line">   0x00000000004011a4 &lt;+176&gt;:	mov    $0x6032d0,%edx</span><br><span class="line">   0x00000000004011a9 &lt;+181&gt;:	jmp    0x401176 &lt;phase_6+130&gt;</span><br><span class="line">   0x00000000004011ab &lt;+183&gt;:	mov    0x20(%rsp),%rbx</span><br><span class="line">   0x00000000004011b0 &lt;+188&gt;:	lea    0x28(%rsp),%rax</span><br><span class="line">   0x00000000004011b5 &lt;+193&gt;:	lea    0x50(%rsp),%rsi</span><br><span class="line">   0x00000000004011ba &lt;+198&gt;:	mov    %rbx,%rcx</span><br><span class="line">   0x00000000004011bd &lt;+201&gt;:	mov    (%rax),%rdx</span><br><span class="line">   0x00000000004011c0 &lt;+204&gt;:	mov    %rdx,0x8(%rcx)</span><br><span class="line">   0x00000000004011c4 &lt;+208&gt;:	add    $0x8,%rax</span><br><span class="line">   0x00000000004011c8 &lt;+212&gt;:	cmp    %rsi,%rax</span><br><span class="line">   0x00000000004011cb &lt;+215&gt;:	je     0x4011d2 &lt;phase_6+222&gt;</span><br><span class="line">   0x00000000004011cd &lt;+217&gt;:	mov    %rdx,%rcx</span><br><span class="line">   0x00000000004011d0 &lt;+220&gt;:	jmp    0x4011bd &lt;phase_6+201&gt;</span><br><span class="line">   0x00000000004011d2 &lt;+222&gt;:	movq   $0x0,0x8(%rdx)</span><br><span class="line">   0x00000000004011da &lt;+230&gt;:	mov    $0x5,%ebp</span><br><span class="line">   0x00000000004011df &lt;+235&gt;:	mov    0x8(%rbx),%rax</span><br><span class="line">   0x00000000004011e3 &lt;+239&gt;:	mov    (%rax),%eax</span><br><span class="line">   0x00000000004011e5 &lt;+241&gt;:	cmp    %eax,(%rbx)</span><br><span class="line">   0x00000000004011e7 &lt;+243&gt;:	jge    0x4011ee &lt;phase_6+250&gt;</span><br><span class="line">   0x00000000004011e9 &lt;+245&gt;:	callq  0x40143a &lt;explode_bomb&gt;</span><br><span class="line">   0x00000000004011ee &lt;+250&gt;:	mov    0x8(%rbx),%rbx</span><br><span class="line">   0x00000000004011f2 &lt;+254&gt;:	sub    $0x1,%ebp</span><br><span class="line">   0x00000000004011f5 &lt;+257&gt;:	jne    0x4011df &lt;phase_6+235&gt;</span><br><span class="line">   0x00000000004011f7 &lt;+259&gt;:	add    $0x50,%rsp</span><br><span class="line">   0x00000000004011fb &lt;+263&gt;:	pop    %rbx</span><br><span class="line">   0x00000000004011fc &lt;+264&gt;:	pop    %rbp</span><br><span class="line">   0x00000000004011fd &lt;+265&gt;:	pop    %r12</span><br><span class="line">   0x00000000004011ff &lt;+267&gt;:	pop    %r13</span><br><span class="line">   0x0000000000401201 &lt;+269&gt;:	pop    %r14</span><br><span class="line">   0x0000000000401203 &lt;+271&gt;:	retq   </span><br><span class="line">End of assembler dump.</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
+<li>
+<p>我们先整体看一下，可以发现这个程序大概是由多个循环组成的还有很多个带序号的栈的操作，不过貌似只在程序头尾出现问题应该不大（其实我第一眼看过去是在早<code>callq</code>就怕这个还来几个函数调用那这代码量就…😂）然后再仔细分析</p>
 <ol>
-<li><p>我们先整体看一下，可以发现这个程序大概是由多个循环组成的还有很多个带序号的栈的操作，不过貌似只在程序头尾出现问题应该不大（其实我第一眼看过去是在早<code>callq</code>就怕这个还来几个函数调用那这代码量就…….😂）然后再仔细分析</p>
-<ol>
-<li><p><code>&lt;+8 ~ +15&gt;</code>在读入数据前的赋值和运算暂且不关注</p>
+<li>
+<p><code>&lt;+8 ~ +15&gt;</code>在读入数据前的赋值和运算暂且不关注</p>
 </li>
-<li><p><code>&lt;+18&gt;</code>这里调用了一个函数<code>read_six_numbers</code>我们在<code>phase_2</code>就调用并确认过了就是字面意思要求我们输入6个数字，为了使数据具有标识性我们先暂且将输入定为<code>17 19 23 29 31 37</code>（当然你也可以选择其他的值）这样我们可以通过输出寄存器内的值确认我们的输入存在了哪里</p>
+<li>
+<p><code>&lt;+18&gt;</code>这里调用了一个函数<code>read_six_numbers</code>我们在<code>phase_2</code>就调用并确认过了就是字面意思要求我们输入6个数字，为了使数据具有标识性我们先暂且将输入定为<code>17 19 23 29 31 37</code>（当然你也可以选择其他的值）这样我们可以通过输出寄存器内的值确认我们的输入存在了哪里</p>
 </li>
-<li><p><code>&lt;+23 ~ +32&gt;</code>我们可以打断点在<code>&lt;+35&gt;</code>这里然后打印出我们这些寄存器内的值来大致判断寄存器的作用</p>
+<li>
+<p><code>&lt;+23 ~ +32&gt;</code>我们可以打断点在<code>&lt;+35&gt;</code>这里然后打印出我们这些寄存器内的值来大致判断寄存器的作用</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p <span class="variable">$r14</span></span><br><span class="line"><span class="variable">$1</span> = 140737488347856</span><br><span class="line">(gdb) p *<span class="variable">$r14</span></span><br><span class="line"><span class="variable">$2</span> = 17</span><br><span class="line">(gdb) p <span class="variable">$rbp</span></span><br><span class="line"><span class="variable">$3</span> = (void *) 0x7fffffffe2d0</span><br><span class="line">(gdb) p *<span class="variable">$rbp</span></span><br><span class="line">Attempt to dereference a generic pointer.</span><br><span class="line">(gdb) p *<span class="variable">$r13</span></span><br><span class="line"><span class="variable">$4</span> = 17</span><br></pre></td></tr></table></figure>
 <p>可以发现<code>%r13 %r14</code>都是保存着我们输入的值的地址的寄存器</p>
 </li>
-<li><p><code>&lt;+35 ~ +47&gt;</code>我们一段与前一段分割开来分析是因为这里进行赋值的<code>%eax</code>和后面的爆炸有关系，这里将<code>%r13</code>地址所对应的值取出来放进了<code>%eax</code>然后减去了<code>0x1</code>的值要小于或等于<code>0x5</code>否则会爆炸，故我们输入的第一个值应该要小于等于<code>6</code></p>
+<li>
+<p><code>&lt;+35 ~ +47&gt;</code>我们一段与前一段分割开来分析是因为这里进行赋值的<code>%eax</code>和后面的爆炸有关系，这里将<code>%r13</code>地址所对应的值取出来放进了<code>%eax</code>然后减去了<code>0x1</code>的值要小于或等于<code>0x5</code>否则会爆炸，故我们输入的第一个值应该要小于等于<code>6</code></p>
 </li>
-<li><p>于是我们修改了输入的值为<code>3 5 7 11 13 17</code></p>
+<li>
+<p>于是我们修改了输入的值为<code>3 5 7 11 13 17</code></p>
 </li>
-<li><p><code>&lt;+52 ~ +60&gt;</code>这里感觉是个<code>while</code>循环的样子并且应该是循环了5层，以猜测到<code>c</code>的源码大致是长这样的</p>
+<li>
+<p><code>&lt;+52 ~ +60&gt;</code>这里感觉是个<code>while</code>循环的样子并且应该是循环了5层，以猜测到<code>c</code>的源码大致是长这样的</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(++i != <span class="number">6</span>)&#123;...&#125; <span class="comment">// i --&gt; %r12d</span></span><br></pre></td></tr></table></figure>
 </li>
-</ol>
-</li>
-</ol>
-<ol>
-<li><p><code>&lt;+62 ~ +68&gt;</code>这里将<code>%r12d</code>中的值存到了<code>%rax</code>中，然后将<code>%rsp + 4*%rax</code>地址下的值存入了<code>%eax</code>，在上面的分析中我们已经知道了<code>%r13</code>存放着我们输入的值的第一个值的地址而在<code>&lt;+12&gt;</code>我们可以看到<code>%r13</code>的值来自<code>%rsp</code>所以这里的<code>%rsp</code>存放着我们输入的第一个数的地址，而<code>%rax</code>是我们循环的参数而<code>int</code>占4个字节故我们可以合理猜想这里应该是取了我们输入的值的第二个，我们可以打印出来验证一下</p>
+<li>
+<p><code>&lt;+62 ~ +68&gt;</code>这里将<code>%r12d</code>中的值存到了<code>%rax</code>中，然后将<code>%rsp + 4*%rax</code>地址下的值存入了<code>%eax</code>，在上面的分析中我们已经知道了<code>%r13</code>存放着我们输入的值的第一个值的地址而在<code>&lt;+12&gt;</code>我们可以看到<code>%r13</code>的值来自<code>%rsp</code>所以这里的<code>%rsp</code>存放着我们输入的第一个数的地址，而<code>%rax</code>是我们循环的参数而<code>int</code>占4个字节故我们可以合理猜想这里应该是取了我们输入的值的第二个，我们可以打印出来验证一下</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Breakpoint 2, 0x000000000040113b <span class="keyword">in</span> phase_6 ()</span><br><span class="line">(gdb) p <span class="variable">$eax</span></span><br><span class="line"><span class="variable">$5</span> = 5</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
-<ol>
-<li><p><code>&lt;+71 ~ +76&gt;</code>比较了<code>%eax</code>和<code>%rbp</code>的值，相等则爆炸而<code>%rbp</code>存放着我们输入的第一个数值，故这里要求第一个输入值与第二个输入值要不相等</p>
+<li>
+<p><code>&lt;+71 ~ +76&gt;</code>比较了<code>%eax</code>和<code>%rbp</code>的值，相等则爆炸而<code>%rbp</code>存放着我们输入的第一个数值，故这里要求第一个输入值与第二个输入值要不相等</p>
 </li>
-<li><p><code>&lt;+81 ~ +87&gt;</code>这里的<code>%ebx</code>是<code>%r12d</code>的一个副本，而这里又是一重循环感觉上这里应该会是一个<code>do while</code>循环所以这样的两重循环写成<code>c</code>源码大概长成这样：</p>
+<li>
+<p><code>&lt;+81 ~ +87&gt;</code>这里的<code>%ebx</code>是<code>%r12d</code>的一个副本，而这里又是一重循环感觉上这里应该会是一个<code>do while</code>循环所以这样的两重循环写成<code>c</code>源码大概长成这样：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(++i ！= <span class="number">6</span>)&#123; <span class="comment">// i --&gt; %r12d</span></span><br><span class="line">    <span class="keyword">int</span> j = i; <span class="comment">// j --&gt; %ebx</span></span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">int</span> k = j; <span class="comment">// k --&gt; %rax</span></span><br><span class="line">        <span class="keyword">if</span>(nums[k] == nums[<span class="number">0</span>]) explode_bomb();</span><br><span class="line">        <span class="comment">//nums[k] --&gt; %eax   nums[0] --&gt; %rbp</span></span><br><span class="line">    &#125;<span class="keyword">while</span>(++j &lt;= <span class="number">6</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>所以这里的就是其他输入都不能与第一个输入值相同</p>
 </li>
-<li><p><code>&lt;+89 ~ +93&gt;</code>将<code>%r13</code>向后移动了一个<code>int</code>单位然后又跳到了比较输入是否小于<code>6</code>这一步似乎是一个<code>goto</code>语句（有点像循环语句但是这里是个无条件跳转语句），然后结合前面的分析将<code>&lt;+26 ~ +93&gt;</code>这一部分给化为<code>c</code>源码就长这样：</p>
+<li>
+<p><code>&lt;+89 ~ +93&gt;</code>将<code>%r13</code>向后移动了一个<code>int</code>单位然后又跳到了比较输入是否小于<code>6</code>这一步似乎是一个<code>goto</code>语句（有点像循环语句但是这里是个无条件跳转语句），然后结合前面的分析将<code>&lt;+26 ~ +93&gt;</code>这一部分给化为<code>c</code>源码就长这样：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">label:</span><br><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>; <span class="comment">// i --&gt; %r12d</span></span><br><span class="line"><span class="keyword">int</span>* rbp = nums; <span class="comment">// rbp --&gt; %rbp</span></span><br><span class="line"><span class="keyword">if</span>(*rbp<span class="number">-1</span> &lt;= <span class="number">5</span>) explode_bomb();</span><br><span class="line"><span class="keyword">while</span>(++i != <span class="number">6</span>)&#123;</span><br><span class="line">    <span class="keyword">int</span> j = i; <span class="comment">// j --&gt; %ebx</span></span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">int</span> k = j; <span class="comment">// k --&gt; %rax</span></span><br><span class="line">        <span class="keyword">int</span> eax = *(nums+k); <span class="comment">// eax --&gt; %eax</span></span><br><span class="line">        <span class="keyword">if</span>(eax == *rbp) explode_bomb();</span><br><span class="line">    &#125;<span class="keyword">while</span>(++j &lt;= <span class="number">6</span>);</span><br><span class="line">    <span class="keyword">goto</span> label;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>虽然具体实现不一定是这样但是逻辑大概是这个样子的</p>
 </li>
-<li><p>通过分析到<code>&lt;+26 ~ +93&gt;</code>我们可以知道了这段大概讲的就是我们输入的<code>6</code>个数都要小于等于<code>6</code>并且互不相等，这里虽然没有限制不能是负数和零但是根据这里大费周章判等和比大小的过程我们大概可以分析出这里要输入的就是<code>1 ~ 6</code>的组合，根据排列组合的原理共720种情况，按照正态分布我们大概会在测试过<code>360</code>此后得到结果，假设我们一秒钟测试一种我们就能在<strong>大概6分钟解决最后一个题</strong>了而剩下的近三分之二的汇编我们必定无法在6分钟内看完并找到答案，故逐个测试具有完备的合理性（一本正经 胡说八道🤣 其实也未尝不可😜）</p>
+<li>
+<p>通过分析到<code>&lt;+26 ~ +93&gt;</code>我们可以知道了这段大概讲的就是我们输入的<code>6</code>个数都要小于等于<code>6</code>并且互不相等，这里虽然没有限制不能是负数和零但是根据这里大费周章判等和比大小的过程我们大概可以分析出这里要输入的就是<code>1 ~ 6</code>的组合，根据排列组合的原理共720种情况，按照正态分布我们大概会在测试过<code>360</code>此后得到结果，假设我们一秒钟测试一种我们就能在<strong>大概6分钟解决最后一个题</strong>了而剩下的近三分之二的汇编我们必定无法在6分钟内看完并找到答案，故逐个测试具有完备的合理性（一本正经 胡说八道🤣 其实也未尝不可😜）</p>
 </li>
-<li><p>更具已知我们调整一下输入的数字为<code>2 3 5 1 4 6</code>（只是将质数与非质数分离也可以选择其他序列输入）</p>
+<li>
+<p>更具已知我们调整一下输入的数字为<code>2 3 5 1 4 6</code>（只是将质数与非质数分离也可以选择其他序列输入）</p>
 </li>
-<li><p><code>&lt;+95 ~ +112&gt;</code>将栈顶+<code>0x18</code>后的地址装入<code>%rsi</code>由于我们并不知道这里的<code>%rsi</code>是个啥值所以打印出来看看得到的是结果<code>0</code>并看不出啥，然后是<code>%r14</code>可以看出存放的是我们输入的第一个数（其实也可以在<code>&lt;+23&gt;</code>看出来）</p>
+<li>
+<p><code>&lt;+95 ~ +112&gt;</code>将栈顶+<code>0x18</code>后的地址装入<code>%rsi</code>由于我们并不知道这里的<code>%rsi</code>是个啥值所以打印出来看看得到的是结果<code>0</code>并看不出啥，然后是<code>%r14</code>可以看出存放的是我们输入的第一个数（其实也可以在<code>&lt;+23&gt;</code>看出来）</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p <span class="variable">$rsi</span></span><br><span class="line"><span class="variable">$1</span> = 140737488347880</span><br><span class="line">(gdb) p *<span class="variable">$rsi</span></span><br><span class="line"><span class="variable">$2</span> = 0</span><br><span class="line"></span><br><span class="line">(gdb) p <span class="variable">$r14</span></span><br><span class="line"><span class="variable">$3</span> = 140737488347856</span><br><span class="line">(gdb) p *<span class="variable">$r14</span></span><br><span class="line"><span class="variable">$4</span> = 2</span><br></pre></td></tr></table></figure>
 <p>然后<code>&lt;+108 ~ +112&gt;</code>一起看就是将<code>7 - nums[0]</code>装入<code>%rax</code>的地址，然后<code>%rax</code>向上移动了一个<code>int</code>单位然后比较了这个与<code>%rsi</code>的大小如果不等就会再次循环于是我们就可以知道了这里的<code>%rsi</code>不是其数值作用的，而是其地址作用的<code>%rsp</code>存的地址是我们输入的第一个数的地址，而<code>0x18 = 24 = 4 * 6</code>也就是指向我们输入的最后一个地址的下一个位置，于是我们可以分析出这里的<code>c</code>源码大概就是：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>* rsi = nums+<span class="number">6</span>; <span class="comment">// rsi --&gt; %rsi</span></span><br><span class="line"><span class="keyword">int</span>* rax = nums; <span class="comment">//rax --&gt; %rax</span></span><br><span class="line"><span class="keyword">int</span> ecx = <span class="number">7</span>; <span class="comment">//ecx --&gt; %ecx</span></span><br><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">    *rax = ecx-*rax;</span><br><span class="line">&#125;<span class="keyword">while</span>(++rax != rsi);</span><br></pre></td></tr></table></figure>
 <p>所以这里的结论就是原输入被改成了<code>7 - nums[i]</code></p>
 </li>
-<li><p><code>&lt;+123&gt;</code>就是直接将<code>%esi</code>置零</p>
+<li>
+<p><code>&lt;+123&gt;</code>就是直接将<code>%esi</code>置零</p>
 </li>
-<li><p><code>&lt;+128&gt;</code>无条件跳转到<code>&lt;+163&gt;</code></p>
+<li>
+<p><code>&lt;+128&gt;</code>无条件跳转到<code>&lt;+163&gt;</code></p>
 </li>
-<li><p><code>&lt;+163&gt;</code>将<code>%rsp+%rsi</code>地址内的值放入<code>%ecx</code>由上一个循环的跳出条件可知此时<code>%rsi</code>的值就是<code>0</code>，所以这里的<code>%ecx</code>的值就是第一个输入的数的（经过调整后应该是5）我们可以打印出来验证一下</p>
+<li>
+<p><code>&lt;+163&gt;</code>将<code>%rsp+%rsi</code>地址内的值放入<code>%ecx</code>由上一个循环的跳出条件可知此时<code>%rsi</code>的值就是<code>0</code>，所以这里的<code>%ecx</code>的值就是第一个输入的数的（经过调整后应该是5）我们可以打印出来验证一下</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p <span class="variable">$ecx</span></span><br><span class="line"><span class="variable">$5</span> = 5</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
-<ol>
-<li><p><code>&lt;+166 ~ +169&gt;</code>条件跳转当<code>%ecx</code>小于或等于<code>1</code>就跳到<code>&lt;+143&gt;</code>否则就继续，显然我们这里的值不会小于等于<code>1</code>（实际上合理的应该就是我们最开始输入<code>6</code>的位置）</p>
+<li>
+<p><code>&lt;+166 ~ +169&gt;</code>条件跳转当<code>%ecx</code>小于或等于<code>1</code>就跳到<code>&lt;+143&gt;</code>否则就继续，显然我们这里的值不会小于等于<code>1</code>（实际上合理的应该就是我们最开始输入<code>6</code>的位置）</p>
 </li>
-<li><p><code>&lt;+171 ~ +176&gt;</code>将两个寄存器置为常数，<code>%eax</code>置为<code>1</code>，而<code>%edx</code>置为<code>0x6032d0</code>这个其实更像一个地址，所以我们不妨试着将其当做一个地址输出，但好像并不是个有含义的值</p>
+<li>
+<p><code>&lt;+171 ~ +176&gt;</code>将两个寄存器置为常数，<code>%eax</code>置为<code>1</code>，而<code>%edx</code>置为<code>0x6032d0</code>这个其实更像一个地址，所以我们不妨试着将其当做一个地址输出，但好像并不是个有含义的值</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p *0x6032d0</span><br><span class="line"><span class="variable">$6</span> = 332</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
-<ol>
-<li><p><code>&lt;+181&gt;</code>这里就是直接无条件跳转到<code>&lt;+130&gt;</code>（还想着就要结束了 居然又是个循环😅）</p>
+<li>
+<p><code>&lt;+181&gt;</code>这里就是直接无条件跳转到<code>&lt;+130&gt;</code>（还想着就要结束了 居然又是个循环😅）</p>
 </li>
-<li><p><code>&lt;+130&gt;</code>这里将<code>%rdx</code>向前移了2个<code>int</code>单位</p>
+<li>
+<p><code>&lt;+130&gt;</code>这里将<code>%rdx</code>向前移了2个<code>int</code>单位</p>
 </li>
-<li><p><code>&lt;+134 ~ +139&gt;</code>这里又是一个类似<code>for</code>循环的东西<code>for(int eax = 1; ecx != eax; eax++)</code>，又我们之前已经得到了<code>%ecx</code>是常数<code>7</code>也就是我们这里会循环<code>6</code>层即<code>%rdx += 6*8</code></p>
+<li>
+<p><code>&lt;+134 ~ +139&gt;</code>这里又是一个类似<code>for</code>循环的东西<code>for(int eax = 1; ecx != eax; eax++)</code>，又我们之前已经得到了<code>%ecx</code>是常数<code>7</code>也就是我们这里会循环<code>6</code>层即<code>%rdx += 6*8</code></p>
 </li>
-<li><p><code>&lt;+141&gt;</code>这里就是一个又是一个无条件跳转语句跳转到<code>&lt;+148&gt;</code>（感觉现在这一块的代码已经快乱麻了😬）</p>
+<li>
+<p><code>&lt;+141&gt;</code>这里就是一个又是一个无条件跳转语句跳转到<code>&lt;+148&gt;</code>（感觉现在这一块的代码已经快乱麻了😬）</p>
 </li>
-<li><p><code>&lt;+148&gt;</code>这里又是一个赋值将<code>%rdx</code>也就是我上一行出来得到的值交给<code>%rsp+0x20+ 2*%rsi</code>前面已经说了<code>%rsi</code>值为<code>0</code>而<code>0x20 = 32 = 4*8</code>好像和我们的输入并没有关系，但是我们还是输出这里经过循环得到的<code>%rdx</code>的值</p>
+<li>
+<p><code>&lt;+148&gt;</code>这里又是一个赋值将<code>%rdx</code>也就是我上一行出来得到的值交给<code>%rsp+0x20+ 2*%rsi</code>前面已经说了<code>%rsi</code>值为<code>0</code>而<code>0x20 = 32 = 4*8</code>好像和我们的输入并没有关系，但是我们还是输出这里经过循环得到的<code>%rdx</code>的值</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p <span class="variable">$rdx</span></span><br><span class="line"><span class="variable">$7</span> = 6304528</span><br><span class="line">(gdb) p *<span class="variable">$rdx</span></span><br><span class="line"><span class="variable">$8</span> = 477</span><br></pre></td></tr></table></figure>
 <p>好像又是无意义的数字，但是两次将这些值当做地址取都是可以的说明这里的值大概率是当做地址来用的</p>
 </li>
-<li><p><code>&lt;+153 ~ +161&gt;</code>这里将<code>%rsi</code>加上一个<code>int</code>单位后和<code>0x18 (4*6)</code>比较，如果相等就会跳到<code>&lt;+183&gt;</code>（所有可合理猜测为会进行6次循环并且每一次循环都会和输入的数字每一个有关）</p>
+<li>
+<p><code>&lt;+153 ~ +161&gt;</code>这里将<code>%rsi</code>加上一个<code>int</code>单位后和<code>0x18 (4*6)</code>比较，如果相等就会跳到<code>&lt;+183&gt;</code>（所有可合理猜测为会进行6次循环并且每一次循环都会和输入的数字每一个有关）</p>
 </li>
-<li><p>下面就成功进入了循环<code>&lt;+163&gt;</code>说以这里只有当我们输入的数字是<code>6</code>的那个位置不会有<code>%rdx</code>变化的那部分发生而已，而当处理完6个数据之后按照所给就会跳转到<code>&lt;+183&gt;</code>（感觉这里的部分并没更改什么值🤔）</p>
+<li>
+<p>下面就成功进入了循环<code>&lt;+163&gt;</code>说以这里只有当我们输入的数字是<code>6</code>的那个位置不会有<code>%rdx</code>变化的那部分发生而已，而当处理完6个数据之后按照所给就会跳转到<code>&lt;+183&gt;</code>（感觉这里的部分并没更改什么值🤔）</p>
 </li>
-<li><p><code>&lt;+183 ~ +198&gt;</code>一通赋值并没搞懂在干啥，就都把值打印出来看看：</p>
+<li>
+<p><code>&lt;+183 ~ +198&gt;</code>一通赋值并没搞懂在干啥，就都把值打印出来看看：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p <span class="variable">$rbx</span></span><br><span class="line"><span class="variable">$9</span> = 6</span><br><span class="line">(gdb) p <span class="variable">$rax</span></span><br><span class="line"><span class="variable">$10</span> = 5</span><br><span class="line">(gdb) p <span class="variable">$rsi</span></span><br><span class="line"><span class="variable">$11</span> = 0</span><br></pre></td></tr></table></figure>
 <p>需要注意的是这里的值更具地址并不是我们输入的值，但应该与我们的输入相关</p>
 </li>
-<li><p><code>&lt;+201 ~ +220&gt;</code>又是循环，聚焦到<code>&lt;+208 ~ +215&gt;</code>我们可以发现这里的<code>%rax</code>在整个循环只在<code>&lt;+208&gt;</code>发生了改变而在<code>%rsi</code>完全没发生改变，而更具前面的赋值这两数的分别赋值了<code>%rsp+0x28</code>和<code>%rsp+0x50</code>这两个的差值都不是<code>8</code>的倍数所以这里会进入死循环？（到这里已经完全蒙了🤯）</p>
+<li>
+<p><code>&lt;+201 ~ +220&gt;</code>又是循环，聚焦到<code>&lt;+208 ~ +215&gt;</code>我们可以发现这里的<code>%rax</code>在整个循环只在<code>&lt;+208&gt;</code>发生了改变而在<code>%rsi</code>完全没发生改变，而更具前面的赋值这两数的分别赋值了<code>%rsp+0x28</code>和<code>%rsp+0x50</code>这两个的差值都不是<code>8</code>的倍数所以这里会进入死循环？（到这里已经完全蒙了🤯）</p>
 </li>
-<li><p>最后屈服了，看了其他人的解法原来在<code>&lt;+95 ~ +121&gt;</code>这里的常数<code>0x6032d0</code>是一个链表</p>
+<li>
+<p>最后屈服了，看了其他人的解法原来在<code>&lt;+95 ~ +121&gt;</code>这里的常数<code>0x6032d0</code>是一个链表</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(gdb) x/24wd 0x6032d0</span><br><span class="line">0x6032d0 &lt;node1&gt;:	332	1	6304480	0</span><br><span class="line">0x6032e0 &lt;node2&gt;:	168	2	6304496	0</span><br><span class="line">0x6032f0 &lt;node3&gt;:	924	3	6304512	0</span><br><span class="line">0x603300 &lt;node4&gt;:	691	4	6304528	0</span><br><span class="line">0x603310 &lt;node5&gt;:	477	5	6304544	0</span><br><span class="line">0x603320 &lt;node6&gt;:	443	6	0	0</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
-<ol>
-<li><p><code>&lt;+123 ~ +181&gt;</code>这段代码的作用是依次取出栈中存放的6个数(已经被7减过)，根据每个数x，从前向后遍历链表到链表的第x个节点，然后将节点的地址依次存入<code>$rsp+0x20</code>处的6个位置。</p>
+<li>
+<p><code>&lt;+123 ~ +181&gt;</code>这段代码的作用是依次取出栈中存放的6个数(已经被7减过)，根据每个数x，从前向后遍历链表到链表的第x个节点，然后将节点的地址依次存入<code>$rsp+0x20</code>处的6个位置。</p>
 </li>
-<li><p><code>&lt;+230 ~ +257&gt;</code>这里就是通过<code>$rsp+0x20</code>处存入的6个节点的地址取节点值，保证前一个数&lt;后一个数</p>
+<li>
+<p><code>&lt;+230 ~ +257&gt;</code>这里就是通过<code>$rsp+0x20</code>处存入的6个节点的地址取节点值，保证前一个数&lt;后一个数</p>
 </li>
-<li><p>按照链表节点中存放的值从大到小应该是<code>3 4 5 6 1 2</code>，而这个值是减过<code>7</code>后得到的值，所以这里的得到的最初的输入就是<code>4 3 2 1 6 5</code></p>
+<li>
+<p>按照链表节点中存放的值从大到小应该是<code>3 4 5 6 1 2</code>，而这个值是减过<code>7</code>后得到的值，所以这里的得到的最初的输入就是<code>4 3 2 1 6 5</code></p>
 </li>
 </ol>
-<ol>
-<li>测试后通过</li>
+</li>
+<li>
+<p>测试后通过</p>
+</li>
 </ol>
-<h2 id="实验总结"><a href="#实验总结" class="headerlink" title="实验总结"></a>实验总结</h2><p>第一次真正上手汇编，在此之前只在计算机组成原理课上提到过一些汇编指令和不同的取址方式</p>
+<h2 id="实验总结">实验总结</h2>
+<p>第一次真正上手汇编，在此之前只在计算机组成原理课上提到过一些汇编指令和不同的取址方式</p>
 <p>通过这次实验大概地掌握了部分的汇编指令的阅读能力和使用<code>gdb</code>调试<code>c</code>程序的能力并且掌握了部分的机器水平程序开发的技巧</p>
 <p>不得不感慨<code>c</code>语言是多么地接近底层，很多时候一条汇编就是一个条<code>c</code>的代码而且其对应关系还是比较明显的，对使用汇编代码实现一些简单的<code>c</code>语句的<code>赋值、运算、if-else语句、switch-case语句、while循环、do-while循环、for循环</code>有了较好的理解</p>
 <p>但是本次实验在第六部分实在是被链表给整蒙了，第一次接触如此长的汇编代码加之实验的时间跨度等因素确实完成地不是很理想，希望在下次复盘的时候能彻底解决之前留下的困惑</p>
